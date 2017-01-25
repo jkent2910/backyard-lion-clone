@@ -1,0 +1,129 @@
+<%= title 'Interested Athletes' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Interested
+      <small> athletes</small>
+    </h1>
+  </div>
+  <dl class="dl-horizontal" style="font-size:large;">
+    <dt class="primary-color">Recruit Board</dt>
+    <dd>Below you can find athletes who expressed interest in <%= @college_team.name %>. Save the athlete if you like
+      what you see. All athletes who are saved can be accessed through the navigation bar > "Saved" option.
+      From here, you can manage and prioritize the athletes you want to recruit.
+    </dd>
+  </dl>
+
+  <hr>
+
+  <% if @athletes.empty? %>
+      <div class="col-md-offset-3 col-md-6">
+        <h2 class="text-center">No athletes interested yet</h2>
+        <br>
+        <div class="text-center">
+          <%= link_to 'Search Athletes', athlete_profiles_path, class: 'btn btn-primary-invert' %><br><br>
+
+          Do you want more interested athletes? Let athletes know you're interested
+        </div>
+        <br>
+      </div>
+  <% else %>
+      <div class="table-responsive">
+        <table class="table table-hover">
+
+          <tr style="border-top:0px solid !important;">
+            <th>Name</th>
+            <th>Grad</th>
+            <th>Position</th>
+            <th>Location</th>
+            <th>Ht, Wt</th>
+            <th>Academic</th>
+            <th>Contact</th>
+            <th>Video</th>
+            <th>Your Rank</th>
+            <th>Save</th>
+          </tr>
+
+          <% @athletes.each do |athlete| %>
+              <% athlete_profile = AthleteProfile.find(athlete.athlete_profile_id) %>
+              <% experiences = AthleteExperience.where(athlete_profile_id: athlete_profile.id) %>
+              <% experiences.each do |e| %>
+                  <% @user = User.find(athlete_profile.user_id) %>
+
+
+
+                  <tr>
+                    <td><%= link_to User.find(athlete_profile.user_id).full_name, athlete_profile_path(athlete_profile) %></td>
+                    <td><%= athlete_profile.graduation_year %></td>
+                    <td><%= e.position %></td>
+                    <td><%= e.city %>
+                      <br/>
+                      <%= e.state %>
+                    </td>
+                    <td>
+
+                      <%= athlete_profile.format_height %>"
+                      <br/>
+                      <%= athlete_profile.weight %> lb
+                    </td>
+                    <td>
+
+                      <% unless athlete_profile.cum_gpa_score.blank? %>
+                          GPA <%= athlete_profile.cum_gpa_score %>
+                          out of
+                          <%= athlete_profile.cum_gpa_out_of %>
+                          <br/>
+                      <% end %>
+
+                      <% unless athlete_profile.sat_total.blank? %>
+                          SAT <%= athlete_profile.sat_total %>
+                          <br/>
+                      <% end %>
+
+                      <% unless athlete_profile.act_total.blank? %>
+                          ACT <%= athlete_profile.act_total %>
+                          <br/>
+                      <% end %>
+                    </td>
+
+                    <td><%= athlete_profile.primary_phone %>
+                      <br>
+                      <% athlete_profile.primary_email %>
+                    </td>
+
+                    <td>
+                      <% if e.videos_count < 1 %>
+                          No
+                      <% else %>
+                          Yes
+                      <% end %>
+                    </td>
+
+                    <td>
+                      <%= athlete.decorate.calculate_percentage %>
+                    </td>
+
+                    <td>
+                      <% if user_signed_in? && (current_user.coach? || current_user.college_admin?) %>
+                          <% if current_user.try(:saved_athlete?, athlete_profile) %>
+                              <a onclick="removeAthlete(this)" data="<%= current_user.to_param %>"
+                                 athlete_profile_id="<%= athlete_profile.to_param %>"><%= fa_icon('times') %><br> Remove</a>
+
+                          <% else %>
+                              <a onclick="saveAthlete(this)" data="<%= current_user.to_param %>"
+                                 athlete_profile_id="<%= athlete_profile.to_param %>"><%= fa_icon('plus') %><br> Save</a>
+                          <% end %>
+                      <% end %>
+                    </td>
+                  </tr>
+
+              <% end %>
+          <% end %>
+  <% end %>
+
+  </table>
+  </div>
+
+
+</div>
+</div>

@@ -1,0 +1,72 @@
+<%= title 'Saved Teams' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Saved
+      <small> teams</small>
+    </h1>
+    </h1>
+  </div>
+  <dl class="dl-horizontal" style="font-size:large;">
+    <dt class="primary-color">Recruit Board</dt>
+    <dd>Below you can find saved teams and prioritize them with <u>drag-and-drop</u>
+      functionality. Rank at least <u>10</u> teams and Backyard Lion will
+      let your top teams know that you've rated them highly.
+      Don't worry, we won't tell them the exact ranking.
+      <ol>
+        <li>Drag and drop <strong>(<u>desktop</u>)</strong> to prioritize</li>
+        <li>Order at least 10 teams</li>
+        <li>Refresh the page for rankings</li>
+      </ol>
+    </dd>
+  </dl>
+
+  <div class="text-center">
+    <button class="btn btn-primary-invert" onClick="location.reload();">Refresh Rankings</button>
+    <%= link_to 'Search Teams', teams_path, class: 'btn btn-primary-invert' %>
+    <% if request.original_url.include?("?challenge=interests") %>
+      <% if @athlete_profile.decorate.rank_count == false %>
+          <%= link_to_unless @athlete_profile.decorate.rank_count == false, "<div class='btn btn-search-colleges-transparent'>Challenge Step 8</div>".html_safe, challenge_step_eight_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", disabled: true %>
+      <% else %>
+          <%= link_to "Challenge Step 8", challenge_step_eight_athlete_profile_path(@athlete_profile), method: :get, class: 'btn btn-primary-invert', id: 'challenge-step-nine' %>
+      <% end %>
+    <% else %>
+    <% end %>
+  </div>
+
+  <br>
+
+  <div class="row header-recruit-board text-left">
+
+    <div class="col-md-2">Rank</div>
+    <div class="col-md-2">College</div>
+    <div class="col-md-2">Team</div>
+    <div class="col-md-2">City</div>
+    <div class="col-md-2">State</div>
+    <div class="col-md-2 text-rigth">Remove</div>
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-12 team-sortable" data-athlete-profile="<%= current_user.athlete_profile.to_param %>">
+      <% if @interests.empty? %>
+          <div class="col-md-offset-3 col-md-6">
+            <h2 class="text-center">No saved teams yet</h2>
+            <br>
+            <div class="text-center">
+              <%= link_to 'Search Teams', teams_path, class: 'btn btn-primary-invert' %>
+              <br>
+              <br>
+
+              Do you want more saved teams? Find teams who interest you
+            </div>
+            <br>
+          </div>
+      <% else %>
+          <%= render 'saved_teams' %>
+      <% end %>
+    </div>
+  </div>
+  <br>
+  <i class="pull-right">Use a desktop for best results.</i>
+</div>

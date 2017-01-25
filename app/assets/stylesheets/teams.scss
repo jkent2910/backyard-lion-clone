@@ -1,0 +1,319 @@
+.teams-index-container {
+  margin-top: 66px;
+}
+
+.main-connection-wrapper-mobile {
+  margin: 0px !important;
+}
+
+.main-inner-content-wrapper {
+  margin-top: 10px;
+  margin-bottom: 60px;
+}
+
+.college-grade-badge {
+  font-size: 18px !important;
+  color: #367cb8 !important;
+  border: 1px solid;
+  background-color: #fff !important;
+  border-radius: 100px !important;
+}
+
+.college-express-interest-box {
+  color: #3A87AD;
+  -webkit-border-radius: 0;
+  background-color: #fff !important;
+  text-align: left;
+  border: none !important;
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 400;
+  padding: 15px;
+}
+
+.professors-badge {
+  font-size: xx-large !important;
+  color: #367cb8 !important;
+  background-color: #fff !important;
+  border-radius: 100px !important;
+  padding: 10px !important;
+  padding-left: 15px !important;
+  border: 1px solid;
+  padding-right: 15px !important;
+}
+
+.team-search-results-container {
+    background: #ffffff;
+    overflow: hidden;
+    padding: 10px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-interested-athletes {
+  font-size: small;
+}
+
+.users-table th, td {
+  border-right: none !important;
+  border-left: none !important;
+  border-bottom: none !important;
+  border-top: 1px solid #ddd !important;
+}
+
+.saved-athletes-container {
+  background: #ffffff;
+  overflow: hidden;
+  padding: 10px;
+  padding-bottom: 18px;
+  border: 1px solid #dddddd;
+}
+
+.search-team-paginate {
+text-align:center;
+}
+
+.team-submit-interest-wrapper {
+  background: #dddddd;
+  overflow: hidden;
+  padding: 20px;
+  padding-bottom: 20px;
+  border: 1px solid #ddd;
+}
+
+.interest-container {
+  margin-bottom: 0px !important;
+}
+
+.team-container {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+.team-wrapper {
+  margin-bottom: 0px!important;
+}
+
+.attributes-container {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+@media only screen and (max-width: 425px) {
+  .search-team-paginate {
+  text-align:center;
+  margin-bottom: 60px;
+  }
+}
+
+.submit-interest-txt-box {
+  margin-top: 0px;
+  font-weight: 500;
+  color: #333;
+  font-size: 24px;
+  padding: 20px
+}
+
+.submit-interest-txt-box span {
+  margin-top: 0px;
+  font-weight: bold;
+  color: #1E69A6;
+  font-size: 24px;
+}
+
+.college-show-container {
+    margin-top: 75px !important;
+    margin-bottom: 0px !important;
+}
+
+.submit-interest-btn {
+  font-weight: 600;
+  color: #fff;
+  margin: 5px 0;
+  font-size: 15px;
+  padding: 6px 30px;
+  background: #0D4775;
+  border-radius: 50px;
+}
+
+.remove-interest-btn {
+  font-weight: 600;
+  color: #fff;
+  margin: 5px 0;
+  font-size: 15px;
+  padding: 6px 30px;
+  background: red;
+  border-radius: 50px;
+}
+
+.saved-athlete-number-rank {
+  text-align: center;
+  border-right: 1px solid grey; 
+  background-color: gray;    
+  color: white; 
+  font-size: xx-large; 
+  margin-left: 14px;
+}
+
+.remove-interest-saved-athletes-btn {
+    /* font-weight: 600; */
+    color: #fff;
+    /* margin: 5px 0; */
+    font-size: 13px;
+    padding: 2px 5px;
+    background: red;
+    border-radius: 4px;
+    }
+
+.college-logo {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.col-logo {
+  max-width: 100%;
+}
+
+.college-name {
+  font-size: 25px;
+  font-weight: bold;
+  color: #1E69A6;
+  margin-bottom: 0px;
+}
+
+.college-name span {
+  font-size: 18px;
+  color: #1E69A6;
+  font-weight: 400;
+  margin-left: 20px;
+}
+
+.college-location {
+  font-size: 15px;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.team-bubble-info {
+  color: #1E69A6 !important;
+  font-weight: 400 !important;
+  margin-left: 20px !important;
+  border: 1px solid rgba(30,105,166,0.32) !important;
+  font-size: 12px !important;
+  float:right;
+  padding: 2px 5px;
+  -webkit-border-radius: 50px;
+}
+
+.team-bubble-info-search {
+  color: #1E69A6 !important;
+  font-weight: 400 !important;
+  margin-left: 20px !important;
+  border: 1px solid rgba(30,105,166,0.32) !important;
+  font-size: 12px !important;
+  float:right;
+  padding: 2px 5px;
+  -webkit-border-radius: 50px;
+  margin-top: 5px;
+}
+
+
+.other-college-info {
+  font-size: 18px;
+  font-weight: 500;
+  color: #666;
+  margin-top: 0px;
+  margin-bottom: 8px;
+}
+
+.other-college-info span {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-left: 5px;
+}
+
+.section-mini-header {
+  background: #0d4775;
+  padding: 10px 20px;
+  color: #fff;
+  font-weight: bold;
+  float: left;
+  margin-left: -20px;
+  margin-top: -10px;
+  clear: both;
+}
+
+.search-results {
+  font-size: 17px;
+  font-weight: bold;
+  color: #0d4775;
+  margin-right: 20px;
+}
+
+.main-connection-wrapper {
+  margin: 27px 0px 10px 0px !important;
+}
+
+.random-div {
+  padding-top: 6px;
+  height: 30px;
+  margin-right: 11px;
+}
+
+.team-search-wrapper {
+  background: #ffffff;
+  overflow: hidden;
+  padding: 10px 0;
+  margin-bottom: 15px;
+  padding-bottom: 18px;
+  border: 1px solid #F0EFEF;
+}
+
+.btn-search-colleges {
+    display: inline-block;
+    text-align: center;
+    font-weight: normal;
+    font-size: 15px;
+    color: #ffffff !important;
+    background: rgb(51, 122, 183);
+    margin: 0 5px;
+    padding: 7px 15px !important;
+    border-radius: 4px !important;
+}
+
+.btn-search-colleges-transparent {
+    display: inline-block;
+    text-align: center;
+    font-weight: normal;
+    font-size: 15px;
+    color: #ffffff !important;
+    background: rgb(51, 122, 183);
+    margin: 0 5px;
+    padding: 7px 15px !important;
+    border-radius: 4px !important;
+  opacity: 0.5
+}
+
+
+.follow-team-btn {
+  font-weight: 600;
+  color: #fff;
+  margin: 5px 0;
+  font-size: 15px;
+  padding: 6px 30px;
+  background: darkgreen;
+  border-radius: 50px;
+}
+
+.unfollow-team-btn {
+  font-weight: 600;
+  color: #fff;
+  margin: 5px 0;
+  font-size: 15px;
+  padding: 6px 30px;
+  background: red;
+  border-radius: 50px;
+}

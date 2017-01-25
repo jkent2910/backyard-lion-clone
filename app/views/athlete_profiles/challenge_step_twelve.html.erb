@@ -1,0 +1,44 @@
+<%= title 'Challenge Step 12' %>
+
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Step 12
+      <small> improve communication with coaches</small>
+    </h1>
+  </div>
+
+  <dl class="dl-horizontal large">
+    <dt class="text-muted dt-font-challenge">
+      Add a Number
+    </dt>
+    <dd class="dd-font-challenge">How can coaches reach you?
+    </dd>
+  </dl>
+
+  <div class="col-md-offset-2 col-md-8">
+    <div class="caption text-center"
+         style="padding: 20px !important; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+
+      <div class="text-center">
+        <%= form_for(@athlete_profile) do |f| %>
+
+            <%= f.text_field :primary_phone, placeholder: "Phone Number", class: "form-control" %>
+
+            <%= hidden_field_tag(:challenge_step_twelve, 'challenge_step_twelve') %><br/><br/>
+
+            <%= f.submit "Save Phone Number", class: 'btn btn-md btn-primary edit-button' %>
+
+        <% end %>
+
+        <br>
+
+        <% if @athlete_profile.primary_phone.blank? %>
+            <%= link_to_unless @athlete_profile.primary_phone.blank?, "<div class='btn btn-search-colleges-transparent'>Challenge Step 13</div>".html_safe, stand_out_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", disabled: true %>
+        <% else %>
+            <%= link_to "Challenge Step 13", challenge_step_thirteen_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", id: 'challenge-step-thirteen' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

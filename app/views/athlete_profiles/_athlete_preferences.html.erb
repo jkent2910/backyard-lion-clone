@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="col-md-8">
+    <h4>Preferences</h4>
+    <% Factor.all.includes(:factor_choices, :factor_preferences).each do |factor| %>
+        <% factor_rating = @athlete_profile.factor_ratings.where(factor_id: factor.id).take %>
+        <% choices = factor.factor_choices.map { |choice| [choice.name, choice.id] } %>
+        <% preferences = factor.factor_preferences.map { |preference| [preference.name, preference.id] } %>
+        <div class="row factor-<%= factor.name.gsub(/\s+/, "-").downcase %>">
+          <div class="col-md-3">
+            <%= label_tag "athlete_profile[factor_ratings_attributes][]factor_choice_id", factor.name %>
+            <%= hidden_field_tag "athlete_profile[factor_ratings_attributes][]id", factor_rating.try(:id) %>
+            <%= hidden_field_tag "athlete_profile[factor_ratings_attributes][]factor_id", factor.id %>
+          </div>
+          <div class="col-md-4">
+            <%= select_tag "athlete_profile[factor_ratings_attributes][]factor_preference_id", options_for_select(preferences, factor_rating.try(:factor_preference_id)), :prompt => "Please Select" %>
+          </div>
+          <div class="col-md-5 factors-select">
+            Importance: <%= select_tag "athlete_profile[factor_ratings_attributes][]factor_choice_id", options_for_select(choices, factor_rating.try(:factor_choice_id)), :prompt => "Please Select"  %>
+          </div>
+        </div>
+      <hr>
+    <% end %>
+  </div>
+</div>
+
+
+<ul>
+<div class="row col-md-12">
+  <div class="col-md-12" style="margin-bottom: 200px;">
+    <h4>Region/State Preferences</h4>
+    <% Region.all.each do |region| %>
+      <% region_rating = @athlete_profile.region_ratings.where(region_id: region.id).take %>
+      <% preferences = region.region_preferences.map { |p| [p.name, p.id] } %>
+
+      <div class="row">
+        <a data-toggle="collapse" data-parent="#accordion" href="ui-tabs-accordions.html#region-<%= region.id %>-desktop" class="reco-accordion collapsed">
+          <%= fa_icon("caret-right", style: "margin-left: 3px;") %>
+          <%= image_tag "region-logos/#{regions[region.try(:name)].try(:[], :logo)}" %> <%= region.name %>
+            <%= hidden_field_tag "athlete_profile[region_ratings_attributes][]id", region_rating.try(:id) %>
+            <%= hidden_field_tag "athlete_profile[region_ratings_attributes][]region_id", region.id %>
+            <%= select_tag "athlete_profile[region_ratings_attributes][]region_preference_id", options_for_select(preferences, region_rating.try(:region_preference_id)), :prompt => "Please Select"   %>
+        </a>
+      </div>
+
+        <div id="region-<%= region.id %>-desktop" class="panel-collapse collapse" style="height: 0px">
+          <% region.states.each do |state| %>
+            <% state_rating = @athlete_profile.state_ratings.where(state_id: state.id).take %>
+            <% state_preferences = state.state_preferences.map { |s| [s.name, s.id] } %>
+            <div class="row">
+              <%= state.name %>
+              <%= hidden_field_tag "athlete_profile[state_ratings_attributes][]id", state_rating.try(:id) %>
+              <%= hidden_field_tag "athlete_profile[state_ratings_attributes][]state_id", state.id %>
+              <%= select_tag "athlete_profile[state_ratings_attributes][]state_preference_id", options_for_select(state_preferences, state_rating.try(:state_preference_id)), :prompt => "Please Select"   %>
+            </div>
+          <% end %>
+        </div>
+    <% end %>
+  </div>
+</div>
+</ul>

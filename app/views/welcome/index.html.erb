@@ -1,0 +1,216 @@
+<div class="jumbotron">
+  <div class="container">
+    <!-- coverphoto -->
+    <%= image_tag("hero-image-cover.jpg", class: "background-cover-head dj") %>
+  </div>
+</div>
+
+<!-- begin: page header -->
+<div class="container">
+  <div class="page-header">
+    <h1 class="primary-color" style="font-size: 48px;">Sports
+      <small> Are you going to miss your athletic opportunity?</small>
+    </h1><br>
+    <p class="lead">Backyard Lion cares about giving you the opportunity to continue your athletic career.  That's why we made it simple and free to signup and connect
+      to all recruiters - takes 2 minutes!</p>
+  </div>
+
+  <!-- begin: signup form -->
+  <div class="container">
+    <div class="border-form-div">
+      <div class="form-signin">
+        <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+            <%= devise_error_messages! %>
+            <h2 class="primary-color">It's free<small> >> signup</small></h2>
+            <%= f.text_field :first_name, class: "form-control", placeholder: "First Name",
+                             :style => 'margin-bottom: -1px; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 0px;border-bottom-left-radius: 0px;' %>
+            <%= f.text_field :last_name, placeholder: "Last Name", :class => 'form-control',
+                             :style => 'margin-bottom: -1px; border-top-left-radius: 0; border-top-right-radius: 0; border-radius: 0px;' %>
+            <%= f.email_field :email, :autofocus => true, :placeholder => 'Email address', :class => 'form-control',
+                              :style => 'margin-bottom: -1px; border-top-left-radius: 0; border-top-right-radius: 0; border-radius: 0px;' %>
+            <%= f.password_field :password, :placeholder => 'Password', :class => 'form-control', :style => 'margin-bottom: -1px; border-top-left-radius: 0; border-top-right-radius: 0; border-radius: 0px;' %>
+            <%= f.password_field :password_confirmation, :placeholder => 'Password confirmation', :class => 'form-control' %>
+            <label class="radio-inline">
+              <%= f.radio_button(:user_type, "athlete") %>I'm an Athlete
+            </label>
+            <br>
+            <label class="radio-inline">
+              <%= f.radio_button(:user_type, "coach") %>I'm a College Coach
+            </label>
+            <br>
+            <label class="radio-inline" style="color: #777777;">
+              <%= f.radio_button(:user_type, "supporter") %> I'm a Supporter (HS Coach, Teacher, Counselor, etc.)
+            </label>
+            <br>
+            <%= f.submit "Sign up", :class => 'btn btn-lg btn-primary btn-block', :style => 'margin-top: 10px;' %>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="remember-me"> Remember me
+              </label>
+            </div>
+            <% if flash[:errors].present? %>
+                <% flash[:errors].each do |msg| %>
+
+                    <div class="alert alert-warning alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <strong><%= msg %></strong>
+                    </div>
+
+                <% end %>
+            <% end %>
+            <br>
+        <% end %>
+        <br>
+        <p class="text-muted">Other</p>
+        <%= render "devise/shared/links" %>
+
+      </div>
+    </div>
+  </div>
+
+  <hr class="featurette-divider">
+
+  <div class="header">
+    <h1 class="primary-color text-center">We Have Some News for You >></h1>
+  </div>
+
+
+  <hr class="featurette-divider">
+
+  <div class="row featurette">
+    <div class="col-md-7">
+      <h2 class="featurette-heading primary-color">Because you're an athlete: <span class="text-muted"> here's an exclusive free subscription -
+      take a look inside!</span></h2>
+      <p class="lead">Recruiting websites and services charge athletes money. Backyard Lion believes making you pay is wrong because every athlete
+      deserves the opportunity for discovery!</p>
+    </div>
+    <div class="col-md-5">
+        <table class="table table-hover">
+          <tr>
+            <th class="primary-color" style="vertical-align: bottom;">BYL Cares About YOU</th>
+            <th class="text-left"><%= image_tag("logo.png", class: 'logo-header') %><span class="trade-mark">TM</span></th>
+            <th style="vertical-align: bottom;"><small>Other services</small></th>
+          </tr>
+          <tr>
+            <td>Unrestricted Exposure</td>
+            <td class="primary-color">FREE</td>
+            <td class="text-center"><i class="fa fa-usd" aria-hidden="true"></i><i class="fa fa-usd" aria-hidden="true"></i><i class="fa fa-usd" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
+            <td>Knows Who's Interested in You</td>
+            <td class="primary-color">FREE</td>
+            <td class="text-center"><i class="fa fa-usd" aria-hidden="true"></i><i class="fa fa-usd" aria-hidden="true"></i><i class="fa fa-usd" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
+            <td>Communication with Coaches</td>
+            <td class="primary-color">FREE</td>
+            <td class="text-center"><i class="fa fa-usd" aria-hidden="true"></i><i class="fa fa-usd" aria-hidden="true"></i><i class="fa fa-usd" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
+            <td>Profile Promotion</td>
+            <td class="primary-color">FREE</td>
+            <td class="text-center"><i class="fa fa-usd" aria-hidden="true"></i><i class="fa fa-usd" aria-hidden="true"></i><i class="fa fa-usd" aria-hidden="true"></i></td>
+          </tr>
+          <tr>
+            <td>Use of All Features</td>
+            <td class="primary-color">FREE</td>
+            <td class="text-center"><i class="fa fa-usd" aria-hidden="true"></i><i class="fa fa-usd" aria-hidden="true"></i><i class="fa fa-usd" aria-hidden="true"></i></td>
+          </tr>
+        </table>
+    </div>
+  </div>
+
+  <hr class="featurette-divider">
+
+  <div class="row featurette">
+    <div class="col-md-7 col-md-push-5">
+      <h2 class="featurette-heading primary-color">You're invited :-) <span class="text-muted">Take 2 minutes to connect with college coaches</span></h2>
+      <p class="lead">Complete a simple, step-by-step profile builder and then begin engagement with colleges. </p>
+    </div>
+    <div class="col-md-5 col-md-pull-7" style="text-align: -webkit-center;">
+      <%= fa_icon('rocket', class:"dashboard-icon featurette-image img-responsive center-block") %>
+    </div>
+  </div>
+
+  <hr class="featurette-divider">
+
+  <div class="row featurette">
+    <div class="col-md-7">
+      <h2 class="featurette-heading primary-color">Generate Interest >> <span class="text-muted"> maximize engagement with college coaches</span></h2>
+      <p class="lead">Powered by computing technologies, our platform eliminates the random process behind discovery,
+        while delivering a unique experience that enables athletes to drive action</p>
+    </div>
+    <div class="col-md-5" style="text-align: -webkit-center;">
+      <%= fa_icon("bolt", class:"dashboard-icon featurette-image img-responsive center-block") %>
+    </div>
+  </div>
+
+  <hr class="featurette-divider">
+
+  <div class="row featurette">
+    <div class="col-md-7">
+      <h1 class="primary-color">Recent News >><small> Erin Martin Commits</small></h1>
+      <p class="lead">Proud and excited to announce that Erin Martin has committed to play Division 1 Volleyball at the
+        University of New Mexico.</p>
+    </div>
+    <div class="col-md-5" style="text-align: -webkit-center;">
+      <%= image_tag("erin-martin", class:"featurette-image img-responsive center-block") %>
+    </div>
+  </div>
+
+  <hr class="featurette-divider">
+
+  <div class="header">
+    <h1 class="primary-color text-center">READY TO TRY IT OUT? START NOW</h1>
+  </div>
+  <div class="border-form-div">
+    <div class="form-signin">
+      <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+          <%= devise_error_messages! %>
+          <%= f.text_field :first_name, class: "form-control", placeholder: "First Name",
+                           :style => 'margin-bottom: -1px; border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 0px;border-bottom-left-radius: 0px;' %>
+          <%= f.text_field :last_name, placeholder: "Last Name", :class => 'form-control',
+                           :style => 'margin-bottom: -1px; border-top-left-radius: 0; border-top-right-radius: 0; border-radius: 0px;' %>
+          <%= f.email_field :email, :autofocus => true, :placeholder => 'Email address', :class => 'form-control',
+                            :style => 'margin-bottom: -1px; border-top-left-radius: 0; border-top-right-radius: 0; border-radius: 0px;' %>
+          <%= f.password_field :password, :placeholder => 'Password', :class => 'form-control', :style => 'margin-bottom: -1px; border-top-left-radius: 0; border-top-right-radius: 0; border-radius: 0px;' %>
+          <%= f.password_field :password_confirmation, :placeholder => 'Password confirmation', :class => 'form-control' %>
+          <label class="radio-inline">
+            <%= f.radio_button(:user_type, "athlete") %>I'm an Athlete
+          </label>
+          <br>
+          <label class="radio-inline">
+            <%= f.radio_button(:user_type, "coach") %>I'm a College Coach
+          </label>
+          <br>
+          <label class="radio-inline" style="color: #777777;">
+            <%= f.radio_button(:user_type, "supporter") %> I'm a Supporter (HS Coach, Teacher, Counselor, etc.)
+          </label>
+          <br>
+          <%= f.submit "Sign up", :class => 'btn btn-lg btn-primary btn-block', :style => 'margin-top: 10px;' %>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="remember-me"> Remember me
+            </label>
+          </div>
+          <% if flash[:errors].present? %>
+              <% flash[:errors].each do |msg| %>
+
+                  <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong><%= msg %></strong>
+                  </div>
+
+              <% end %>
+          <% end %>
+          <br>
+      <% end %>
+    </div>
+  </div>
+
+
+  <div>
+    <%= render "footer" %>
+  </div>
+  
+</div>

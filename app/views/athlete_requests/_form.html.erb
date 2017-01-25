@@ -1,0 +1,65 @@
+<div class="col-md-offset-2 col-md-8">
+
+  <%= form_for ([@athlete_profile, @athlete_request]) do |f| %>
+
+      <div class="header" style="border-bottom: 1px solid lightgray">
+        <h3 class="primary-color">Contact
+          <small> information</small>
+        </h3>
+      </div>
+      <br>
+      <%= check_box_tag 'athlete_request[athlete_profile_field][]', 'Contact Information' %> Your Contact Information
+      <br/>
+      <%= check_box_tag 'athlete_request[athlete_profile_field][]', 'Guardian Contact Information' %> Guardian Contact
+      Information <br/>
+      <%= check_box_tag 'athlete_request[athlete_profile_field][]', 'Coach Contact' %> Coach Contact Information <br/>
+
+      <div class="header" style="border-bottom: 1px solid lightgray">
+        <h3 class="primary-color">Academic
+          <small> information</small>
+        </h3>
+      </div>
+      <br>
+      <%= check_box_tag 'athlete_request[athlete_profile_field][]', 'Cumulative GPA' %> Cumulative GPA <br/>
+      <%= check_box_tag 'athlete_request[athlete_profile_field][]', 'Extracurricular Activities' %> Extracurricular
+      Activities <br/>
+      <%= check_box_tag 'athlete_request[athlete_profile_field][]', 'Class Rank' %> Class Rank <br/>
+      <%= check_box_tag 'athlete_request[athlete_profile_field][]', 'Test Scores' %> ACT/SAT Test Scores <br/>
+      <%= check_box_tag 'athlete_request[athlete_profile_field][]', 'Preferred Major' %> Preferred Major <br/>
+
+      <div class="header" style="border-bottom: 1px solid lightgray">
+        <h3 class="primary-color">Athletic
+          <small> information</small>
+        </h3>
+      </div>
+      <br>
+      <%= check_box_tag 'athlete_request[athlete_profile_field][]', 'Award' %> Athletic Award <br/>
+      <%= check_box_tag 'athlete_request[athlete_profile_field][]', 'Video' %> Video <br/>
+      <%= check_box_tag 'athlete_request[athlete_profile_field][]', 'Skill' %> Skill <br/>
+
+
+      <div class="header" style="border-bottom: 1px solid lightgray">
+        <h3 class="primary-color">Reference
+          <small> information</small>
+        </h3>
+      </div>
+      <br>
+      <%= check_box_tag 'athlete_request[athlete_profile_field][]', 'Recommendation' %> Recommendation <br/>
+      <hr>
+
+      Other Comments
+      <%= text_area_tag 'athlete_request[athlete_profile_field][]', nil, class: 'form-control' %>
+
+
+      <%= f.hidden_field :user_id, :value => current_user.id %>
+      <%= f.hidden_field :athlete_profile_id, :value => @athlete_profile.id %>
+      <hr>
+      <div class="actions text-center">
+        <%= f.submit "Submit Request", class: 'btn btn-md btn-primary' %>
+      </div>
+
+  <% end %>
+
+</div>
+</div>
+</div>

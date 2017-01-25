@@ -1,0 +1,21 @@
+<%= title 'Challenge Step 8' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Profile Strength Challenge
+    </h1>
+  </div>
+
+  <dl class="dl-horizontal" style="font-size:large;">
+    <dt style="color:#444;">Improve profile</dt>
+    <dd><%= @athlete_profile.user.first_name %>, college coaches may form a judgment about you from your profile in just
+      a few seconds. Let's focus on making your profile generate as much interest as it can.
+    </dd>
+  </dl>
+  <div class="text-center">
+    <h4 class="text-muted">Are you up for the challenge?</h4><br/>
+    <p><%= link_to "YES!", challenge_step_nine_athlete_profile_path(@athlete_profile), class: "btn btn-primary btn-lg", id: 'profile-strength-challenge' %>
+      <%= link_to "No", athlete_profile_path(@athlete_profile), class: "btn btn-default btn-lg active" %>
+    </p>
+  </div>
+</div>

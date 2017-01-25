@@ -1,0 +1,255 @@
+<%= title 'Profile Views' %>
+
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Notifications</h1>
+  </div>
+  <div class="inner-container">
+    <div class="jumbotron jumbotron-premium">
+      <dl class="dl-horizontal" style="font-size:large;">
+        <dt style="color:#444;"><%= image_tag (@athlete_profile.profile_picture(:thumb)), class: "athlete-profile-image" %></dt>
+        <dd>
+          <address>
+            <strong class="primary-color"><%= @athlete_profile.user.full_name %> </strong><br>
+            Class of <%= @athlete_profile.graduation_year %> <br>
+            <%= @athlete_profile.athlete_experiences.first.sport rescue nil  %><br>
+            <%= @athlete_profile.athlete_experiences.first.position rescue nil  %> <br>
+            <%= @athlete_profile.height_feet.round %>'<%= @athlete_profile.height_inches.round %>"<br>
+            <%= @athlete_profile.weight %> lbs<br><br>
+          </address>
+        </dd>
+      </dl>
+      <% unless @athlete_profile.profile_strength.nil? %>
+          Profile Strength
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width:<%= @athlete_profile.profile_strength %>%">
+              <%= @athlete_profile.profile_strength.round %>%
+            </div>
+          </div>
+          <p style="font-size:20px; text-align: center;">The
+            average <%= @athlete_profile.athlete_experiences.first.sport %> athlete has 62.8% profile strength.</p>
+          <div class="text-center">
+            <%= link_to "Improve Profile", edit_athlete_profile_path(current_user.athlete_profile), class: 'btn btn-primary-invert' %>
+          </div>
+      <% end %>
+    </div>
+
+    <div class="thumbnail" style="padding: 15px;">
+      <div class="caption">
+        <h1 class="primary-color" style="font-size: 30px;"><%= @athlete_profile.athlete_experiences.first.sport %>
+          <small> <%= @athlete_profile.user.full_name %></small>
+        </h1>
+        <h3 class="text-muted">Notification Count</h3>
+        <h4 class="lead" style="color: #367cb8;">
+          <span class="primary-color badge grade-badge"><%= @athlete_notifications.count %></span>
+          <small> Based on ratings, recommendations, endorsements, views, comments, info requests and more.</small>
+        </h4>
+
+        <hr>
+
+
+        <div>
+          <table class="table table-hover">
+            <tr>
+              <th>Notification</th>
+              <th class="primary-color text-right"><%= @athlete_notifications.count %></th>
+            </tr>
+            <% if current_user.id == @athlete_profile.user_id %>
+                <% @athlete_notifications.each do |notification| %>
+                    <% if notification.notification_type == "skill_endorsement" %>
+                        <% endorsement = Endorsement.find(notification.notification_id) rescue nil %>
+                        <% unless endorsement.nil? %>
+                            <% if endorsement.user_type == "athlete" %>
+                                <% athlete = AthleteProfile.find(endorsement.endorser_id) rescue nil %>
+                                <% unless athlete.nil? %>
+                                    <% user = User.find(athlete.user_id) %>
+                                    <tr>
+                                      <td><%= link_to user.full_name, athlete_profile_path(athlete), class: 'notification-dropdown-notification-display', method: :get %></td>
+                                      <td class="text-right">endorsed you!</td>
+                                    </tr>
+                                <% end %>
+                            <% elsif endorsement.user_type == "supporter" %>
+                                <% user = User.find(endorsement.endorser_id) %>
+                                <tr>
+                                  <td>
+                                    <span class="notification-dropdown-notification-display"><%= user.full_name %></span>
+                                  </td>
+                                  <td class="text-right">endorsed you!</td>
+                                </tr>
+                            <% end %>
+                        <% end %>
+                    <% elsif notification.notification_type == "recommendation" %>
+                        <% reco = AthleteRecommendation.find(notification.notification_id) rescue nil %>
+                        <% unless reco.nil? %>
+                            <% if reco.giver_athlete_profile_id.nil? %>
+                                <% if reco.giver_first_name.nil? %>
+                                    <tr>
+                                      <td><span class="notification-dropdown-notification-display">Someone</span></td>
+                                      <td class="text-right"> left you a recommendation!</td>
+                                    </tr>
+                                <% else %>
+                                    <tr>
+                                      <td>
+                                        <span class="notification-dropdown-notification-display"><%= reco.giver_first_name %> <%= reco.giver_last_name %></span>
+                                      </td>
+                                      <td class="text-right">left you a recommendation!</td>
+                                    </tr>
+                                <% end %>
+                            <% else %>
+                                <% athlete = AthleteProfile.find(reco.giver_athlete_profile_id) rescue nil %>
+                                <% unless athlete.nil? %>
+                                    <% user = User.find(athlete.user_id) %>
+                                    <tr>
+                                      <td><%= link_to User.find(user).full_name, athlete_profile_path(athlete), class: 'notification-dropdown-notification-display', method: :get %></td>
+                                      <td class="text-right">gave you a recommendation!</td>
+                                    </tr>
+                                <% end %>
+                            <% end %>
+                        <% end %>
+
+
+                    <% elsif notification.notification_type == "profile_view" %>
+                        <% user = User.find(notification.notification_id) rescue nil %>
+                        <% unless user.nil? %>
+                            <% @profile = AthleteProfile.find_by(user_id: user.id) %>
+                            <% if @profile.nil? && user.user_type == "supporter" %>
+                                <tr>
+                                  <td>
+                                    <span class="notification-dropdown-notification-display"><%= user.full_name %></span>
+                                  </td>
+                                  <td class="text-right">viewed your profile!</td>
+                                </tr>
+                            <% elsif @profile.nil? && (user.user_type == "coach" || "college_admin") %>
+                                <% if user.team_id.nil? %>
+                                    <tr>
+                                      <td>
+                                        <span class="notification-dropdown-notification-display" style="color:black;">A coach named <%= user.full_name %> </span>
+                                      </td>
+                                      <td class="text-right">viewed your profile!</td>
+                                    </tr>
+                                <% else %>
+                                    <% team = Team.find(user.team_id) %>
+                                    <% college = College.find(team.college_id) %>
+                                    <tr>
+                                      <td><%= link_to user.full_name, college_path(college), class: 'notification-dropdown-notification-display', method: :get %></td>
+                                      <td class="text-right">viewed your profile!</td>
+                                    </tr>
+                                <% end %>
+                            <% else %>
+                                <tr>
+                                  <td><%= link_to user.full_name, athlete_profile_path(@profile), {class: 'notification-dropdown-notification-display', method: :get} %></td>
+                                  <td class="text-right">viewed your profile!</td>
+                                </tr>
+                            <% end %>
+                        <% end %>
+
+                    <% elsif notification.notification_type == "team_profile_view" %>
+                        <% team = Team.find(notification.notification_id) rescue nil %>
+                        <% unless team.nil? %>
+                            <% college = College.find(team.college_id) %>
+                            <tr>
+                              <td>
+                                <span class="notification-dropdown-notification-display" style="color:black;"> Someone at <%= college.name %></span>
+                              </td>
+                              <td class="text-right">viewed your profile!</td>
+                            </tr>
+                        <% end %>
+                    <% elsif notification.notification_type == "rating" %>
+                        <% rating = AthleteRating.find(notification.notification_id) rescue nil %>
+                        <% unless rating.nil? %>
+                            <% user = User.find(rating.rater_id) rescue nil %>
+                            <% unless user.nil? %>
+                                <% @profile = AthleteProfile.find_by(user_id: user.id) %>
+                                <% if @profile.nil? %>
+                                    <tr>
+                                      <td>
+                                        <span class="notification-dropdown-notification-display"><%= user.full_name %></span>
+                                      </td>
+                                      <td class="text-right">rated you!</td>
+                                    </tr>
+                                <% else %>
+                                    <tr>
+                                      <td><%= link_to user.full_name, athlete_profile_path(@profile), {class: 'notification-dropdown-notification-display', method: :get} %></td>
+                                      <td class="text-right">rated you!</td>
+                                    </tr>
+                                <% end %>
+                            <% end %>
+                        <% end %>
+                    <% elsif notification.notification_type == "same_high_school" %>
+                        <% new_athlete = AthleteProfile.find(notification.notification_id) rescue nil %>
+                        <% unless new_athlete.nil? %>
+                            <% user = User.find(new_athlete.user_id) %>
+                            <tr>
+                              <td><%= link_to user.full_name, athlete_profile_path(new_athlete), {class: 'notification-dropdown-notification-display', method: :get} %></td>
+                              <td class="text-right">just joined Backyard Lion!</td>
+                            </tr>
+                        <% end %>
+                    <% elsif notification.notification_type == "info_request" %>
+                        <% athlete_request = AthleteRequest.find(notification.notification_id) rescue nil %>
+                        <% unless athlete_request.nil? %>
+                            <% team = Team.find(athlete_request.team_id) rescue nil %>
+                            <% college = College.find(team.college_id) rescue nil %>
+                            <% unless college.nil? %>
+                                <tr>
+                                  <td><%= link_to college.name, college_path(college), {class: 'notification-dropdown-notification-display', method: :get} %>
+                                    requested information:
+                                  </td>
+                                  <td class="text-right"><%= athlete_request.athlete_profile_field.to_a.join(",") %></td>
+                                </tr>
+                            <% end %>
+                        <% end %>
+                    <% elsif notification.notification_type == "video_comment" %>
+                        <% comment = Comment.find(notification.notification_id) rescue nil %>
+                        <% unless comment.nil? %>
+                            <li class="notification-dropdown-notification-display">
+                              <% user = User.find(comment.user_id) %>
+                              <% unless user.nil? %>
+                                  <% if user.athlete? && !user.athlete_profile.nil? %>
+                                      <tr>
+                                        <td><%= link_to user.full_name, athlete_profile_path(user.athlete_profile), {class: 'notification-dropdown-notification-display', method: :get} %></td>
+                                        <td class="text-right">left a comment on a video!</td>
+                                      </tr>
+                                  <% else %>
+                                      <tr>
+                                        <td><%= user.full_name %></td>
+                                        <td class="text-right">left a comment on your video!</td>
+                                      </tr>
+                                  <% end %>
+                              <% end %>
+                            </li>
+                        <% end %>
+                    <% elsif notification.notification_type == "activity_like" %>
+                        <% activity_like = ActivityLike.find(notification.notification_id) rescue nil %>
+                        <% user = User.find(activity_like.liker_id) rescue nil %>
+                        <% if user.athlete? && user.athlete_profile.valid? %>
+                            <li class="notification-dropdown-notification-display">
+                              <%= link_to user.full_name, athlete_profile_path(user.athlete_profile) %> liked your photo on the newsfeed!
+                            </li>
+                        <% else %>
+                            <li class="notification-dropdown-notification-display">
+                              <%= user.full_name %> liked your photo on the newsfeed!
+                            </li>
+                        <% end %>
+                    <% end %>
+                <% end %>
+            <% end %>
+          </table>
+
+          <div class="pull-right">Total Notifications <strong class="primary-color">
+            <%= @athlete_notifications.count %></strong>
+          </div>
+          <br>
+          <br>
+          <div class="text-center">
+            <%= link_to 'Search Teams', teams_path, class: 'btn btn-primary-invert' %><br><br>
+
+            Do you want more views? Let teams know you're interested
+          </div>
+          <div class="search-team-paginate"> <%= will_paginate @athlete_notifications %> </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

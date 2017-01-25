@@ -1,0 +1,138 @@
+<div class="container no-left-margin">
+  <h3 class="main-header-txt">Athlete Analytics Dashboard</h3>
+  <%= link_to "Add BYL Video", new_video_path, class: 'btn btn-primary' %>
+  <div class="row athletes-admin-dash">
+    <div class="col-md-4">
+      <span class="search-results"><%= @users.count %> Athletes Signed Up</span>
+      <span class="search-results">Total Contacts Invited: <%= @contacts_invited %> (<%= @average_contacts_invited %> per user)</span>
+    </div>
+  </div>
+  <div class="row athletes-admin-dash">
+    <div class="col-md-4">
+      <p>
+        Download:
+        <%= link_to "CSV", byl_admin_path(format: "csv") %>
+      </p>
+    </div>
+  </div>
+  <table class="admin-table">
+    <tr class="header-row">
+      <th>
+        Athlete Profile ID
+      </th>
+      <th>
+        Referred?
+      </th>
+      <th>
+        Profile Pic?
+      </th>
+      <th>
+        Contacts Invited
+      </th>
+      <th class="admin-analytics-header">
+        <%= sort_link(@admin_athlete_search, :created_at, 'Date Signed Up', default_order: :desc) %>
+      </th>
+      <th class="admin-analytics-header">
+        Sign-Up Method
+      </th>
+      <th class="admin-analytics-header">
+        Name
+      </th>
+      <th class="admin-analytics-header">
+        Email
+      </th>
+      <th class="admin-analytics-header">
+        <%= sort_link(@admin_athlete_search, :athlete_profile_gender, 'Gender', default_order: :desc) %>
+      </th>
+      <th class="admin-analytics-header">
+        <%= sort_link(@admin_athlete_search, :athlete_profile_city, 'City', default_order: :desc) %>
+      </th>
+      <th class="admin-analytics-header">
+        <%= sort_link(@admin_athlete_search, :athlete_profile_state, 'State', default_order: :desc) %>
+      </th>
+      <th class="admin-analytics-header">
+        <%= sort_link(@admin_athlete_search, :athlete_profile_graduation_year, 'Graduation Year', default_order: :desc) %>
+      </th>
+      <th class="admin-analytics-header">
+        <%= sort_link(@admin_athlete_search, :athlete_profile_school_name, 'High School', default_order: :desc) %>
+      </th>
+      <th class="admin-analytics-header">
+        Primary Sport & Position
+      </th>
+      <th class="admin-analytics-header">
+        <%= sort_link(@admin_athlete_search, :athlete_profile_profile_strength, 'Profile Strength', default_order: :desc) %>
+      </th>
+      <th class="admin-analytics-header">
+        <%= sort_link(@admin_athlete_search, :sign_in_count, 'Sign In Count', default_order: :desc) %>
+      </th>
+      <th class="admin-analytics-header">
+        Days Since Last Sign In
+      </th>
+      <th class="admin-analytics-header">
+        # Skills
+      </th>
+      <th class="admin-analytics-header">
+        # Experiences
+      </th>
+      <th class="admin-analytics-header">
+        # Teams Followed
+      </th>
+      <th class="admin-analytics-header">
+        # Colleges Submitted Interest
+      </th>
+      <th class="admin-analytics-header">
+        # Videos
+      </th>
+      <th class="admin-analytics-header">
+        # Profile Views
+      </th>
+      <th class="admin-analytics-header">
+        # Ratings Received
+      </th>
+    </tr>
+    <% @users.each do |user| %>
+    <% athlete = user.athlete_profile rescue nil %>
+    <% unless athlete.nil? %>
+    <tr>
+      <td><%= athlete.id %></td>
+      <td><%= user.referred_flag %></td>
+      <td><%= !athlete.profile_picture.blank? %></td>
+      <td><%= athlete.contacts_invited %></td>
+      <td><%= user.created_at.strftime('%x') %></td>
+      <td><%= user.decorate.sign_up_method %></td>
+      <td><%= link_to "#{user.full_name}", athlete_profile_path(athlete) %></td>
+      <td><%= user.email rescue nil %></td>
+      <td><%= athlete.gender.capitalize %></td>
+      <td><%= athlete.city %></td>
+      <td><%= athlete.state %></td>
+      <td><%= athlete.graduation_year %></td>
+      <td><%= athlete.school_name %></td>
+      <td><%= athlete.athlete_experiences.first.sport rescue nil %>, <%= athlete.athlete_experiences.first.position rescue nil %></td>
+      <td><%= athlete.profile_strength.round(2) rescue nil %>%</td>
+      <td><%= user.sign_in_count rescue nil %></td>
+      <td><%= user.decorate.days_since_last_signin %></td>
+      <td><%= athlete.skills.count %></td>
+      <td><%= athlete.athlete_experiences.count %></td>
+      <td><%= athlete.followers.count %></td>
+      <td><%= athlete.interests.count %></td>
+      <% count = 0 %>
+      <td><% athlete.athlete_experiences.each do |experience| %>
+              <% count = count + experience.videos.count %>
+          <% end %>
+        <%= count %>
+      </td>
+      <td>
+      </td>
+      <td>
+        <% count = 0 %>
+        <% athlete.athlete_experiences.each do |experience| %>
+          <% count = AthleteRating.where(athlete_experience_id: experience.id).count + count %>
+        <% end %>
+        <%= count %>
+      </td>
+    </tr>
+    <% end %>
+    <% end %>
+  </table>
+  <div class="search-team-paginate"><%= will_paginate @users %></div>
+</div>

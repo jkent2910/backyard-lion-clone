@@ -1,0 +1,87 @@
+<div class="nested-fields">
+  <div class="individual-experience-prof">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4">
+          Sport:<span class="required-field-asterick">*</span>
+          <%= f.select :sport, options_for_select(valid_sports, selected: f.object.sport), {}, class: "form-control sport-select", id: "#{f.object.class.name}-#{f.index}", onchange: "updatePositions(this.value, this.id, this.name)" %>
+        </div>
+        <div class="col-md-4">
+          Position: <%= f.select :position, options_for_select(sport_positions, selected: f.object.position), {include_blank: true}, class: "form-control position-select", id: "experience-#{f.index}" %>
+        </div>
+        <div class="col-md-4">
+          Secondary
+          Position: <%= f.select :secondary_position, options_for_select(sport_positions, selected: f.object.secondary_position), {include_blank: true}, class: "form-control position-select", id: "experience-#{f.index}" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4">
+          Level:<span class="required-field-asterick">*</span>
+          <%= f.select :level, level_of_play, {selected: f.object.level}, class: "form-control" %>
+        </div>
+        <div class="col-md-4">
+          High School or Club Name: <%= f.text_field :team_name, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4">
+          City: <%= f.text_field :city, :value => @athlete_profile.city, class: "form-control" %>
+        </div>
+        <div class="col-md-4">
+          State: <%= f.select :state, options_for_select(us_states, selected: @athlete_profile.state), {include_blank: true}, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :description %>
+      <br/>
+      <%= f.text_area :description, class: "form-control" %>
+    </div>
+
+    <blockquote class="primary-color">
+      <div id="videos-div">
+        <h4>Videos <small>related to this experience</small>
+        </h4>
+        <div class="links">
+          <%= link_to_add_association 'Add New Video', f, :videos, class: "btn btn-primary-invert" %>
+        </div>
+        <br/>
+        <div id="#videos">
+          <%= f.fields_for :videos do |v| %>
+              <%= render 'video_fields', f: v %>
+              <hr>
+          <% end %>
+        </div>
+        <br/>
+      </div>
+
+      <div id="stats-div">
+        <h4>Stats <small>related to this experience</small>
+        </h4>
+        <div class="links">
+          <%= link_to_add_association 'Add New Stat', f, :statistics, class: "btn btn-primary-invert" %>
+        </div>
+        <br/>
+        <div id="#statistics">
+          <%= f.fields_for :statistics do |v| %>
+              <%= render 'statistic_fields', f: v %>
+              <hr>
+          <% end %>
+        </div>
+        <br/>
+      </div>
+      <div class="text-right">
+        <%= link_to_remove_association "Remove", f, class: "btn btn-danger" %>
+        <p class="italic" style="color: darkred;">This removes the experience,<br> videos and stats.</p>
+      </div>
+    </blockquote>
+  </div>
+  <hr>
+</div>

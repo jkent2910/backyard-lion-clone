@@ -1,0 +1,216 @@
+<%= title 'New Athlete Profile' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Backyard Lion
+      <small> build your profile</small>
+    </h1>
+  </div>
+
+  <div class="container">
+    <div class="col-md-offset-2 col-md-8">
+
+      <%= form_for(@athlete_profile) do |f| %>
+
+          <% if @athlete_profile.errors.any? %>
+              <ul>
+                <% @athlete_profile.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+              </ul>
+          <% end %>
+
+          <div class="profile-step-one">
+
+            <br>
+            <h4 class="primary-color">What's your gender?</h4>
+            <div class="form-group">
+              <label class="radio-inline">
+                <%= f.radio_button(:gender, "female") %>Female
+              </label>
+              <label class="radio-inline">
+                <%= f.radio_button(:gender, "male") %> Male
+              </label>
+            </div>
+            <br>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemax="100" style="width: 20%">20%</div>
+            </div>
+          </div>
+
+          <div class="profile-step-two">
+            <h4 class="primary-color">Where do you live?</h4>
+            <div class="form-group">
+              <%= f.label :city %><br/>
+              <%= f.text_field :city, class: "form-control progressive-profiling-form" %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :state %><br/>
+              <%= f.select :state, options_for_select(us_states), {}, {class: "form-control"} %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :zipcode %><br/>
+              <%= f.text_field :zipcode, class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :country %><br/>
+              <%= f.country_select :country, {priority_countries: ["US"]}, {class: "form-control"} %>
+            </div>
+            <br>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemax="100" style="width: 35%">35%</div>
+            </div>
+          </div>
+
+          <div class="profile-step-three">
+            <h4 class="primary-color">What's your height & weight?</h4>
+            <div class="form-group">
+              <strong>Height</strong><br/>
+              <div class="row">
+                <div class="col-md-2">
+                  <%= f.select :height_feet, options_for_select(4..7, selected: 5), {}, class: "form-control inline-form-element" %>
+                  Feet
+                </div>
+                <div class="col-md-2">
+                  <%= f.select :height_inches, options_for_select(0..12, selected: 10), {}, class: "form-control inline-form-element" %>
+                  Inches
+                </div>
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              <strong>Weight</strong><br/>
+              <div class="row">
+                <div class="col-md-2">
+                  <%= f.select :weight, options_for_select(100..500, selected: 160), {}, class: "form-control" %>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemax="100" style="width: 50%">50%</div>
+            </div>
+          </div>
+
+          <div class="profile-step-four">
+
+            <h4 class="primary-color">When's your birthday?</h4>
+            <div class="form-group">
+              <%= f.label :birthday %> <br/>
+              <%= f.date_select :birthday, {:start_year => 1950, :end_year => 2010, :selected => 1999} %>
+            </div>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="51" aria-valuemax="100" style="width: 65%">65%</div>
+            </div>
+          </div>
+
+          <div class="profile-step-five">
+
+            <h4 class="primary-color">What school do you go to & when do you graduate?</h4>
+            <div class="form-group">
+              <%= f.label :school_name %><br/>
+              <%= f.text_field :school_name, class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :graduation_year %><br/>
+              <%= f.select :graduation_year, options_for_select(2017..2027), {}, class: "form-control" %>
+            </div>
+            <br>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="68" aria-valuemax="100" style="width: 85%">80%</div>
+            </div>
+
+          </div>
+
+          <div class="profile-step-seven" id="progressive-experiences-div">
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemax="100" style="width: 100%">100%</div>
+            </div>
+            <h3 class="primary-color">Experiences <small style="color: orangered;"><i> required</i></small></h3>
+            <% if @athlete_profile.errors.any? %>
+                <ul>
+                  <% @athlete_profile.errors.full_messages.each do |msg| %>
+                      <li><%= msg %></li>
+                  <% end %>
+                </ul>
+            <% end %>
+            <div id="#athlete_experiences">
+              <%= f.fields_for :athlete_experiences do |ae| %>
+                  <%= render 'progressive_experience_fields', f: ae %>
+                  <hr>
+              <% end %>
+            </div>
+            <br/>
+            <div class="links">
+              <%= link_to_add_association 'Add Another Experience', f, :athlete_experiences, class: "btn btn-success" %>
+            </div>
+            <br/>
+          </div>
+
+          <div class="profile-step-eight">
+            <div class="skills-edit">
+              <h4 class="primary-color">You're invited :-) <small>Take 2 seconds to see who is already on Backyard Lion
+                & Invite the rest!</small></h4>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-md-12">
+                    <%= fa_icon("google") %>
+                    <div class="btn btn-default">
+                      <a href="/contacts/gmail"><span style="color:black; font-weight: 800;">Import Gmail Contacts</span></a>
+                    </div>
+                  </div>
+                </div>
+                <br/>
+              </div>
+            </div>
+            <div class="form-group">
+              <br/>
+              <div class="row">
+                <div class="col-md-12">
+                  <strong>Or Input E-mail addresses or Phone Numbers (Separated by a comma)</strong>
+                  <%= f.text_area :contacts, class: "form-control" %>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-12">
+                  <strong>Invite via Facebook</strong><br/>
+                  <div class="fb-send" data-href="https://www.backyardlion.com" data-size="large" data-ref="invite-fb"></div>
+                </div>
+              </div>
+              <br>
+            </div>
+          </div>
+
+
+          <div class="actions submit-create">
+            <%= f.submit "Create Your Profile", class: 'btn btn-md btn-primary edit-button', method: :get %>
+          </div>
+          <br>
+          <div class="new-profile-buttons text-center">
+            <button type="button" class="btn btn-primary progressive-profiling-start-over" id="start-over">Reset
+            </button>
+            <button type="button" class="btn btn-default progressive-profiling-next" id="step-one">Next</button>
+            <button type="button" class="btn btn-default progressive-profiling-next" id="step-two">Next</button>
+            <button type="button" class="btn btn-default progressive-profiling-next" id="step-three">Next</button>
+            <button type="button" class="btn btn-default progressive-profiling-next" id="step-four">Next</button>
+            <button type="button" class="btn btn-default progressive-profiling-next" id="step-five">Next</button>
+            <button type="button" class="btn btn-default progressive-profiling-next" id="step-six">Next</button>
+            <button type="button" class="btn btn-default progressive-profiling-next" id="step-seven">Next</button>
+          </div>
+
+
+
+          </div>
+
+          </div>
+          </div>
+          </div>
+          </div>
+      <% end %>
+      </div>

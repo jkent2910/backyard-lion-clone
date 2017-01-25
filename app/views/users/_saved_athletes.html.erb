@@ -1,0 +1,33 @@
+<% @saved_athletes.each do |sa| %>
+    <% athlete_profile = AthleteProfile.find(sa.athlete_profile_id) %>
+    <div class="panel panel-default" style="    /* border-color: #ddd !important; */ margin: -1px !important;"data-id="<%= sa.id %>">
+      <div class="row table table-hover" style="border: 0px solid #fff;">
+        <div class="col-md-1 saved-athlete-number-rank"><%= sa.rank_order %></div>
+        <div class="col-md-1"><%= athlete_profile.user.full_name %></div>
+        <div class="col-md-1"><%= athlete_profile.graduation_year %></div>
+        <div class="col-md-1"><%= athlete_profile.athlete_experiences.first.position %></div>
+        <div class="col-md-1"><%= athlete_profile.city %></div>
+        <div class="col-md-1"><%= athlete_profile.state %></div>
+        <div class="col-md-1"><%= athlete_profile.format_height %>lb</div>
+        <div class="col-md-1"><%= athlete_profile.weight %></div>
+        <div class="col-md-1"><%= athlete_profile.cum_gpa_score %></div>
+        <div class="col-md-1"><%= athlete_profile.primary_phone %></div>
+        <div class="col-md-1" style="text-align:right;">
+          <% if user_signed_in? && (current_user.coach? || current_user.college_admin?) %>
+              <% if current_user.try(:saved_athlete?, athlete_profile) %>
+
+                  <a onclick="removeAthlete(this)" data="<%= current_user.to_param %>"
+                     athlete_profile_id="<%= athlete_profile.to_param %>"><%= fa_icon('times') %><br> Remove
+                    Athlete</a>
+
+              <% else %>
+                  <a onclick="saveAthlete(this)" data="<%= current_user.to_param %>"
+                     athlete_profile_id="<%= athlete_profile.to_param %>"><%= fa_icon('plus') %><br> Save Athlete</a>
+              <% end %>
+          <% else %>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+<% end %>

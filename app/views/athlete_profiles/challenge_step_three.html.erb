@@ -1,0 +1,46 @@
+<%= title 'Challenge Step 3' %>
+
+
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Did you know?
+    </h1>
+  </div>
+  <blockquote class="blockquote-reverse">
+
+    <p class="primary-color">Users with complete profiles are 40 times more likely <br/> to receive opportunities
+      through Backyard Lion.</p>
+    <footer>Some stat geek at <cite title="Source Title">Backyard Lion</cite></footer>
+  </blockquote>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-offset-2 col-md-8" style="padding: 15px;">
+        <div class="caption text-muted">
+
+          <h4 class="text-muted">What makes your profile complete?</h4>
+          <ul>
+            <li class="primary-color">An up-to-date athletic experience with location</li>
+            <li class="primary-color">Your contact information</li>
+            <li class="primary-color">Academic standing</li>
+            <li class="primary-color">Your college preferences</li>
+            <li class="primary-color">Your skills</li>
+            <li class="primary-color">Game film or skill videos</li>
+            <li class="primary-color">Recommendations</li>
+          </ul>
+          <h4 class="text-muted">Get the most from Backyard Lion — complete your profile.</h4>
+          <hr>
+          <h4 class="text-muted text-center">The average <%= @first_experience_sport %>
+            athlete has 62.8% profile strength. Can you do better than average?</h4>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width:<%= @athlete_profile.profile_strength %>%"></div>
+          </div>
+        </div>
+        <div class="text-center">
+          <%= link_to "Step Four", challenge_step_four_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", id: 'challenge-step-four' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

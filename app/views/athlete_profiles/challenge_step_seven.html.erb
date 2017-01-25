@@ -1,0 +1,63 @@
+<%= title 'Challenge Step 7' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Step Seven
+      <small>add preferences</small>
+    </h1>
+  </div>
+
+  <dl class="dl-horizontal" style="font-size:large;">
+    <dt style="color:#444;">Your top matches</dt>
+    <dd>Our techies are working on an algorithm that uses your preferences to create a personalized match with the
+      best <%= @first_experience_sport %> programs in the United States. This will makes it easier to find teams that
+      match your interests.
+    </dd>
+  </dl>
+
+
+  <%= form_for(@athlete_profile) do |f| %>
+      <div class="col-md-offset-3 col-md-6">
+        <h4 class="primary-color">Preferences</h4>
+        <% Factor.all.includes(:factor_choices, :factor_preferences).each do |factor| %>
+            <% factor_rating = @athlete_profile.factor_ratings.where(factor_id: factor.id).take %>
+            <% choices = factor.factor_choices.map { |choice| [choice.name, choice.id] } %>
+            <% preferences = factor.factor_preferences.map { |preference| [preference.name, preference.id] } %>
+            <div class="table-responsive">
+              <table class="table table-hover table-condensed table-bordered">
+                <tr>
+                  <th class="primary-color">
+                    <%= label_tag "athlete_profile[factor_ratings_attributes][]factor_choice_id", factor.name %>
+                    <%= hidden_field_tag "athlete_profile[factor_ratings_attributes][]id", factor_rating.try(:id) %>
+                    <%= hidden_field_tag "athlete_profile[factor_ratings_attributes][]factor_id", factor.id %>
+                  </th>
+                </tr>
+                <tr>
+                  <td>
+                    <%= select_tag "athlete_profile[factor_ratings_attributes][]factor_preference_id", options_for_select(preferences, factor_rating.try(:factor_preference_id)), :prompt => "Please Select" %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Importance: <%= select_tag "athlete_profile[factor_ratings_attributes][]factor_choice_id", options_for_select(choices, factor_rating.try(:factor_choice_id)), :prompt => "Please Select" %>
+                  </td>
+                </tr>
+              </table>
+            </div>
+        <% end %>
+      </div>
+      </div>
+      <%= hidden_field_tag(:challenge_step_seven, 'challenge_step_seven') %><br/><br/>
+      <div class="actions text-center">
+        <%= f.submit "Save Preferences", class: 'btn btn-lg btn-primary-invert' %>
+      </div>
+  <% end %>
+  </div>
+  <br>
+  <div style="text-align:center;margin-bottom:20px;">
+    <% if @athlete_profile.factor_ratings.count < 14 %>
+        <%= link_to_unless @athlete_profile.factor_ratings.count < 14, "<div class='btn btn-search-colleges-transparent'>Challenge Step 8</div>".html_safe, stand_out_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", disabled: true %>
+    <% else %>
+        <%= link_to "Challenge Step 8", athlete_profile_interests_path(@athlete_profile, challenge: "interests"), method: :get, class: "btn btn-search-colleges", id: 'challenge-step-eight' %>
+    <% end %>
+  </div>

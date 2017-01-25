@@ -1,0 +1,19 @@
+<p>Hi, Coach,</p>
+
+<p>Thanks for signing up for Backyard Lion. To confirm your account, please click the link below.</p>
+
+<p><strong>
+  <% if @social_media == "facebook" %>
+      <%= link_to "Confirm account", user_omniauth_authorize_url(:facebook, :token => @token, :user_id => @user) %>
+  <% elsif @social_media == "twitter" %>
+      <%= link_to "Confirm account", user_omniauth_authorize_url(:twitter, :token => @token, :user_id => @user) %>
+  <% else %>
+      <%= link_to "Confirm account", new_user_session_url(:token => @token, :user_id => @user) %>
+
+  <% end %>
+</strong></p>
+<p>Note: For security reasons, you will need to use your .edu e-mail address <strong>(<%= @email %>)</strong> to sign
+  in.</p>
+<p>Thanks,</p>
+<p>Devan Moylan</p>
+Backyard Lion, CEO

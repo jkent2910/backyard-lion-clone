@@ -1,0 +1,577 @@
+<div class="container inner-container">
+  <div class="col-md-12">
+    <div class="content">
+      <div class="col-md-11">
+        <div class="content">
+          <h5> Profile Strength </h5>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="
+              <% @athlete_profile.profile_strength %>" aria-valuemin="10" aria-valuemax="100" style="width:<%= @athlete_profile.profile_strength %>%">
+            </div>
+          </div>
+          <p style="font-size:20px; text-align: center;">The
+            average <%= @athlete_profile.athlete_experiences.first.sport rescue nil %> athlete has 62.8% profile strength.</p>
+          <br>
+
+
+          <%= form_for(@athlete_profile) do |f| %>
+
+              <% if @athlete_profile.errors.any? %>
+                  <ul>
+                    <% @athlete_profile.errors.full_messages.each do |msg| %>
+                        <li class="prominent-errors" style="font-size: 30px; color:orangered"><%= msg %></li>
+                    <% end %>
+                  </ul>
+              <% end %>
+
+              <div class="btn-group edit-prof-btn-group" role="group" aria-label="...">
+                <button type="button" class="btn btn-default" id="athlete-basic-info-btn">Basic</button>
+<!--
+                <button type="button" class="btn btn-default" id="athlete-photos-btn">Photos</button>
+-->
+                <button type="button" class="btn btn-default" id="athlete-academic-info-btn">Education</button>
+                <button type="button" class="btn btn-default" id="athlete-contact-info-btn">Contact</button>
+                <button type="button" class="btn btn-default" id="athlete-guardian-info-btn">Guardian</button>
+                <button type="button" class="btn btn-default" id="athlete-preferences-btn">Preferences</button>
+                <button type="button" class="btn btn-default" id="experiences-btn">Experiences</button>
+                <button type="button" class="btn btn-default" id="coaches-btn">Coaches</button>
+                <button type="button" class="btn btn-default" id="skills-btn">Skills</button>
+                <button type="button" class="btn btn-default" id="awards-btn">Awards</button>
+              </div>
+
+              <!--BEGIN BASIC EDIT -->
+
+              <div id="athlete-prof-basic-info">
+                <div class="form-group">
+                  <br>
+                  <%= f.label :profile_picture %>
+                  <%= f.file_field :profile_picture, class: "profile-picture-upload" %>
+                </div>
+
+                <div class="form-group">
+                  Athletic Photos <span class="label label-danger" style="color:#fff;">NEW</span>
+                  <br>
+                  <div class="controls">
+                    <%= file_field_tag "images[]", type: :file, multiple: true %>
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label class="radio-inline">
+                    <%= f.radio_button(:gender, "female") %>Female
+                  </label>
+                  <label class="radio-inline">
+                    <%= f.radio_button(:gender, "male") %> Male
+                  </label>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :birthday %> <br/>
+                  <%= f.date_select :birthday, {:start_year => 1950, :end_year => 2010} %>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :city %><br/>
+                  <%= f.text_field :city, class: "form-control" %>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :state %><br/>
+                  <%= f.select :state, options_for_select(us_states, selected: f.object.state), {include_blank: true}, {class: "form-control"} %>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :zipcode %><br/>
+                  <%= f.text_field :zipcode, class: "form-control" %>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :country %><br/>
+                  <%= f.country_select :country, {priority_countries: ["US"]}, {class: "form-control"} %>
+                </div>
+
+                <div class="form-group">
+                  <strong>Height</strong><br/>
+                  <div class="row">
+                    <div class="col-md-2">
+                      <%= f.select :height_feet, options_for_select(5..7, selected: f.object.height_feet.to_i), {include_blank: true}, class: "form-control inline-form-element" %>
+                      Feet
+                    </div>
+                    <div class="col-md-2">
+                      <%= f.select :height_inches, options_for_select(0..12, selected: f.object.height_inches.to_i), {include_blank: true}, class: "form-control inline-form-element" %>
+                      Inches
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <strong>Weight</strong><br/>
+                  <div class="row">
+                    <div class="col-md-2">
+                      <%= f.select :weight, options_for_select(100..500, selected: f.object.weight.to_i), {include_blank: true}, class: "form-control" %>
+                    </div>
+                  </div>
+                </div>
+
+
+                <br/>
+              </div>
+
+              <!-- END BASIC EDIT -->
+
+              <!-- BEGIN: Photos -->
+
+              <div id="athlete-photos-info">
+                <div class="form-group">
+                  Athletic Photos
+                  <div class="controls">
+                    <%= file_field_tag "images[]", type: :file, multiple: true %>
+                  </div>
+                </div>
+
+              </div> <!-- end: photo id -->
+
+
+
+              <!-- BEGIN ACADEMIC EDIT -->
+
+              <div id="athlete-prof-academic-info">
+                <h4>Academic Info</h4>
+
+                <div class="form-group">
+                  <%= f.label :school_name %><br/>
+                  <%= f.text_field :school_name, class: "form-control" %>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :graduation_year %><br/>
+                  <%= f.select :graduation_year, options_for_select(2017..2025, selected: f.object.graduation_year), {include_blank: true}, class: "form-control" %>
+                </div>
+
+                <div class="form-group">
+                  <strong>Activities & Societies</strong><br/>
+                  <%= f.text_area :activities_societies, class: "form-control" %>
+                </div>
+
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-4"><strong>Cumulative GPA Score:</strong>
+                      <%= f.text_field :cum_gpa_score, class: "form-control" %>
+                    </div>
+                    <div class="col-md-4"><strong>Out of:</strong>
+                      <%= f.text_field :cum_gpa_out_of, class: "form-control" %>
+                    </div>
+                    <div class="col-md-4"><strong>Cumulative GPA Scale:</strong>
+                      <%= f.text_field :cum_gpa_scale, class: "form-control" %>
+                    </div>
+                  </div>
+                </div>
+
+                <br/>
+
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-4"><strong>Core GPA Score:</strong>
+                      <%= f.text_field :core_gpa_score, class: "form-control" %>
+                    </div>
+                    <div class="col-md-4"><strong>Out of:</strong>
+                      <%= f.text_field :core_gpa_out_of, class: "form-control" %>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-4"><strong>Weighted GPA Score:</strong>
+                      <%= f.text_field :weighted_gpa_score, class: "form-control" %>
+                    </div>
+                    <div class="col-md-4"><strong>Out of:</strong>
+                      <%= f.text_field :weighted_gpa_out_of, class: "form-control" %>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-4"><strong>Class Rank:</strong>
+                      <%= f.text_field :class_rank, class: "form-control" %>
+                    </div>
+                    <div class="col-md-4"><strong>Out of:</strong>
+                      <%= f.text_field :class_rank_out_of, class: "form-control" %>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-4"><strong>Weighted Class Rank:</strong>
+                      <%= f.text_field :weighted_class_rank, class: "form-control" %>
+                    </div>
+                    <div class="col-md-4"><strong>Out of:</strong>
+                      <%= f.text_field :weighted_class_rank_out_of, class: "form-control" %>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <strong>SAT Total</strong>
+                      <%= f.text_field :sat_total, class: "form-control" %>
+                    </div>
+                    <div class="col-md-3">
+                      <strong>SAT Math</strong>
+                      <%= f.text_field :sat_math, class: "form-control" %>
+                    </div>
+                    <div class="col-md-3">
+                      <strong>SAT Reading</strong>
+                      <%= f.text_field :sat_reading, class: "form-control" %>
+                    </div>
+                    <div class="col-md-3">
+                      <strong>SAT Writing</strong>
+                      <%= f.text_field :sat_writing, class: "form-control" %>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <strong>Second SAT Total</strong>
+                    <%= f.text_field :sat_2_total, class: "form-control" %>
+                  </div>
+                  <div class="col-md-3">
+                    <strong>Second SAT Math</strong>
+                    <%= f.text_field :sat_2_math, class: "form-control" %>
+                  </div>
+                  <div class="col-md-3">
+                    <strong>Second SAT Reading</strong>
+                    <%= f.text_field :sat_2_reading, class: "form-control" %>
+                  </div>
+                  <div class="col-md-3">
+                    <strong>Second SAT Writing</strong>
+                    <%= f.text_field :sat_2_writing, class: "form-control" %>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>PSAT Total</strong>
+                    <%= f.text_field :psat_total, class: "form-control" %>
+                  </div>
+                  <div class="col-md-6">
+                    <strong>ACT Total</strong>
+                    <%= f.text_field :act_total, class: "form-control" %>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <strong>Honors Classes </strong>
+                  <br/>
+                  <%= f.text_area :honor_classes, class: "form-control" %>
+                </div>
+
+                <div class="form-group">
+                  <strong>Preferred Majors</strong>
+                  <%= f.text_field :preferred_major, class: "form-control" %>
+                </div>
+              </div>
+
+              <!-- END ACADEMIC EDIT -->
+
+              <!-- BEGIN CONTACT EDIT -->
+
+              <div id="athlete-prof-contact-info">
+
+                <h4>Contact Info</h4>
+
+                <div class="form-group">
+                  <%= f.label :mailing_address %><br/>
+                  <%= f.text_field :mailing_address, class: "form-control" %>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :mailing_city %><br/>
+                  <%= f.text_field :mailing_city, class: "form-control" %>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :mailing_state %><br/>
+                  <%= f.text_field :mailing_state, class: "form-control" %>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :mailing_zipcode %><br/>
+                  <%= f.text_field :mailing_zipcode, class: "form-control" %>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :preferred_method_contact %><br/>
+                  <%= f.select :preferred_method_contact, options_for_select(communication_preferences, selected: f.object.preferred_method_contact), {include_blank: true}, class: "form-control" %>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <strong>Primary Phone</strong>
+                    <%= f.text_field :primary_phone, class: "form-control" %>
+                  </div>
+                  <div class="col-md-3">
+                    <strong>Primary Phone Type</strong><br/>
+                    <%= f.select :primary_phone_type, options_for_select(valid_phone_types, selected: f.object.primary_phone_type), class: "form-control" %>
+                  </div>
+                  <div class="col-md-3">
+                    <strong>Secondary Phone</strong>
+                    <%= f.text_field :secondary_phone, class: "form-control" %>
+                  </div>
+                  <div class="col-md-3">
+                    <strong>Secondary Phone Type</strong><br/>
+                    <%= f.select :secondary_phone_type, options_for_select(valid_phone_types, selected: f.object.secondary_phone_type), class: "form-control" %>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>Primary Email</strong>
+                    <%= f.text_field :primary_email, class: "form-control" %>
+                  </div>
+                  <div class="col-md-6">
+                    <strong>Secondary Email</strong>
+                    <%= f.text_field :secondary_email, class: "form-control" %>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <strong>Facebook URL:</strong>
+                    <%= f.text_field :facebook_url, placeholder: "Username only, ex: devan-moylan", class: "form-control" %>
+                  </div>
+                  <div class="col-md-4">
+                    <strong>Twitter URL</strong>
+                    <%= f.text_field :twitter_url, placeholder: "Handle only, ex: @backyardlion", class: "form-control" %>
+                  </div>
+                  <div class="col-md-4">
+                    <strong>Instagram URL</strong>
+                    <%= f.text_field :instagram_url, placeholder: "Username only, ex: devan-moylan", class: "form-control" %>
+                  </div>
+                </div>
+              </div>
+
+              <!-- END CONTACT EDIT -->
+
+              <!-- BEGIN GUARDIAN EDIT -->
+
+              <div id="athlete-prof-guardian-info">
+
+                <h4>Guardian Info</h4>
+
+                <div class="form-group">
+                  <%= f.label :guardian_relationship %><br/>
+                  <%= f.select :guardian_relationship, options_for_select(guardian_relationship, selected: f.object.guardian_relationship), {include_blank: true}, class: "form-control" %>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>Guardian First Name</strong>
+                    <%= f.text_field :guardian_first_name, class: "form-control" %>
+                  </div>
+
+                  <div class="col-md-6">
+                    <strong>Guardian Last Name</strong>
+                    <%= f.text_field :guardian_last_name, class: "form-control" %>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <strong>Guardian Primary Phone</strong>
+                    <%= f.text_field :guardian_primary_phone, class: "form-control" %>
+                  </div>
+                  <div class="col-md-3">
+                    <strong>Guardian Primary Phone Type</strong><br/>
+                    <%= f.select :guardian_primary_phone_type, options_for_select(valid_phone_types, selected: f.object.guardian_primary_phone_type), class: "form-control" %>
+                  </div>
+                  <div class="col-md-3">
+                    <strong>Guardian Secondary Phone</strong>
+                    <%= f.text_field :guardian_secondary_phone, class: "form-control" %>
+                  </div>
+                  <div class="col-md-3">
+                    <strong>Guardian Secondary Phone Type</strong><br/>
+                    <%= f.select :guardian_secondary_phone_type, options_for_select(valid_phone_types, selected: f.object.guardian_secondary_phone_type), {include_blank: true}, class: "form-control" %>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>Guardian E-mail</strong>
+                    <%= f.text_field :guardian_primary_email, class: "form-control" %>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>Guardian Education Level</strong>
+                    <%= f.text_field :guardian_edu_level, class: "form-control" %>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>Guardian Twitter Handle</strong>
+                    <%= f.text_field :guardian_twitter, placeholder: "Handle only, ex: @backyardlion", class: "form-control" %>
+                  </div>
+                  <div class="col-md-6">
+                    <strong>Guardian Facebook Username</strong>
+                    <%= f.text_field :guardian_facebook, placeholder: "Username only, ex: Devan_Moylan", class: "form-control" %>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :guardian_two_relationship %><br/>
+                  <%= f.select :guardian_two_relationship, options_for_select(guardian_relationship, selected: f.object.guardian_two_relationship), {include_blank: true}, class: "form-control" %>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>Second Guardian First Name</strong>
+                    <%= f.text_field :guardian_two_first_name, class: "form-control" %>
+                  </div>
+
+                  <div class="col-md-6">
+                    <strong>Second Guardian Last Name</strong>
+                    <%= f.text_field :guardian_two_last_name, class: "form-control" %>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-3">
+                    <strong>Second Guardian Primary Phone</strong>
+                    <%= f.text_field :guardian_two_primary_phone, class: "form-control" %>
+                  </div>
+                  <div class="col-md-3">
+                    <strong>Second Guardian Primary Phone Type</strong><br/>
+                    <%= f.select :guardian_two_primary_phone_type, options_for_select(valid_phone_types, selected: f.object.guardian_two_primary_phone_type), class: "form-control" %>
+                  </div>
+                  <div class="col-md-3">
+                    <strong>Second Guardian Secondary Phone</strong>
+                    <%= f.text_field :guardian_two_secondary_phone, class: "form-control" %>
+                  </div>
+                  <div class="col-md-3">
+                    <strong>Second Guardian Secondary Phone Type</strong><br/>
+                    <%= f.select :guardian_two_secondary_phone_type, options_for_select(valid_phone_types, selected: f.object.guardian_two_secondary_phone_type), {include_blank: true}, class: "form-control" %>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>Second Guardian E-mail</strong>
+                    <%= f.text_field :guardian_two_primary_email, class: "form-control" %>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>Second Guardian Education Level</strong>
+                    <%= f.text_field :guardian_two_edu_level, class: "form-control" %>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <strong>Second Guardian Twitter Handle</strong>
+                    <%= f.text_field :second_guardian_twitter, placeholder: "Handle only, ex: @backyardlion", class: "form-control" %>
+                  </div>
+                  <div class="col-md-6">
+                    <strong>Second Guardian Facebook Username</strong>
+                    <%= f.text_field :second_guardian_facebook, placeholder: "Username Only, ex: Devan_Moylan", class: "form-control" %>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- END GUARDIAN EDIT -->
+
+              <!-- BEGIN PREFERENCES EDIT -->
+
+
+              <div id="preferences">
+                <%= render "athlete_preferences" %>
+              </div>
+
+              <div id="experiences-div">
+                <h3 class="header primary-color">Experiences</h3>
+
+                <div id="#athlete_experiences">
+                  <%= f.fields_for :athlete_experiences do |ae| %>
+                      <%= render 'athlete_experience_fields', f: ae %>
+                      <hr>
+                  <% end %>
+                </div>
+                <br/>
+                <div class="links add-new-experience">
+                  <%= link_to_add_association 'Add New Experience', f, :athlete_experiences, class: "btn btn-primary" %>
+                </div>
+                <br/>
+              </div>
+
+              <div id="coaches-div">
+                <h3>Coaches</h3>
+                <div id="#coaches">
+                  <%= f.fields_for :coaches do |c| %>
+                      <%= render 'coach_fields', f: c %>
+                  <% end %>
+                </div>
+                <br/>
+                <div class="links">
+                  <%= link_to_add_association 'Add New Coach', f, :coaches, class: "btn btn-success" %>
+                </div>
+                <br/>
+              </div>
+
+              <div id="skills-div">
+                <h3>Skills</h3>
+                <div class="links">
+                  <%= link_to_add_association 'Add New Skill', f, :skills, class: "btn btn-success" %>
+                </div>
+                <br/>
+                <div id="#skills">
+                  <%= f.fields_for :skills do |s| %>
+                      <%= render 'skill_fields', f: s %>
+                  <% end %>
+                </div>
+                <br/>
+              </div>
+
+              <div id="awards-div">
+                <h3>Awards</h3>
+                <div class="links" %>
+                  <%= link_to_add_association 'Add New Award', f, :athlete_awards, class: "btn btn-success" %>
+                </div>
+                <br/>
+                <div id="#athlete_awards">
+                  <%= f.fields_for :athlete_awards do |s| %>
+                      <%= render 'athlete_award_fields', f: s %>
+                  <% end %>
+                </div>
+                <br/>
+              </div>
+              <div class="col-md-12">
+                <nav class="navbar navbar-default navbar-fixed-bottom edit-nav">
+                  <div class="actions">
+                    <%= f.submit "Save", class: 'btn btn-md btn-primary edit-button' %>
+                  </div>
+                </nav>
+              </div>
+              <div class="col-md-12">
+                <div class="actions col-xs-12 profile-edit-save-mobile" style="text-align:center;">
+                  <%= f.submit "Save", class: 'btn btn-md btn-primary edit-button' %>
+                </div>
+              </div>
+
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

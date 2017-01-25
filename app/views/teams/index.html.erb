@@ -1,0 +1,232 @@
+<%= title 'Search Teams' %>
+
+
+
+<div class="container main-container">
+  <div class="container">
+    <div class="page-header">
+      <h1 style="color: #337ab7;">Team
+        <small> search</small>
+      </h1>
+    </div>
+  </div>
+
+  <!--Parameters-->
+
+  <div class="container col-sm-12 col-md-4" style="border-radius: 4px; font-size: 15px; padding: 20px; color: gray;">
+
+    <div class="page-header">
+      <h4 style="color: #337ab7;">Filter</h4>
+    </div>
+
+    <ul class="nav nav-pills nav-stacked search-pill-role">
+      <li role="presentation"><%= link_to "Athletes", athlete_profiles_path %></li>
+      <li role="presentation"><%= link_to "Teams", teams_path %></li>
+    </ul>
+
+    <br>
+
+    <%= search_form_for @q do |f| %>
+        <h4 class="search-header">Sport</h4>
+        <%= f.select :sport_name_eq, valid_sports, {include_blank: true, selected: @athlete_experience.sport}, class: 'form-control' %>
+
+        <h4 class="search-header">College Name</h4>
+        <%= f.search_field :college_name_cont, class: 'form-control' %>
+
+        <h4 class="search-header">Division</h4>
+        <%= f.select :college_college_division_eq, divisions, {include_blank: true}, class: 'form-control' %>
+
+        <h4 class="search-header">State</h4>
+        <%= f.select :college_state_eq, us_states, {include_blank: true}, class: 'form-control' %><br/>
+        <%= f.submit "Search Teams", class: 'btn btn-search-colleges' %>
+    <% end %>
+  </div>
+
+  <!-- Search Results -->
+
+
+  <div class="container col-sm-12 col-md-8" style="border-radius: 4px; font-size: 15px; padding: 20px; color: gray;">
+    <div class="page-header text-right">
+      <h4 style="color: #337ab7;"> Results</h4>
+    </div>
+    <% if @teams.empty? %>
+        <h4>No Teams Found</h4>
+    <% else %>
+        <% @teams.includes(:college).each do |team| %>
+            <div class="team-search-results-container">
+              <!-- <div class="col-md-4">
+                      <div class="college-logo">
+                        <%= image_tag team.college.logo.url(:thumb) %>
+                      </div>
+                    </div> -->
+              <div class="col-md-12">
+                <div class="content">
+                  <h3 class="college-name"><%= link_to team.college.name, team_path(team.id) %>
+                    <small> view profile</small>
+                    <h4><%= team.college.nickname %> <%= team.sport_name %></h4>
+                    <h4>
+                      <small><%= team.college.college_division rescue nil %>
+                        - <%= team.college.college_conference rescue nil %></small>
+                    </h4>
+                    <h4 class="college-location">
+                      <%= team.college.city %>, <%= team.college.state %>
+                    </h4></h3>
+                  <% if user_signed_in? && current_user.athlete? && !current_user.athlete_profile.nil? %>
+                      <% if current_user.athlete_profile.try(:expressed_interest?, team) %>
+                          <%= link_to "Remove Interest", remove_interest_athlete_profile_path(current_user.athlete_profile, team_id: team.to_param), :method => :post, :class => "btn remove-interest-btn" %>
+                      <% else %>
+                          <div class="btn submit-interest-btn" onClick="registerInterest(this)" data="<%= team.to_param %>" athlete_profile="<%= current_user.athlete_profile.id %>">Submit
+                            Interest
+                          </div>
+                      <% end %>
+                  <% elsif !user_signed_in? %>
+                      <%= link_to "Sign up to express interest", new_user_registration_path, :class => "btn submit-interest-btn" %>
+                  <% elsif user_signed_in? && current_user.athlete? && current_user.athlete_profile.nil? %>
+                      <%= link_to "Create Profile To Submit Interest", new_athlete_profile_path, :class => "btn submit-interest-btn", method: :get %>
+                  <% end %>
+                  <% if user_signed_in? && current_user.athlete? && !current_user.athlete_profile.nil? %>
+                      <% if current_user.athlete_profile.try(:followed_team?, team) %>
+                          <%= link_to "Unfollow Team", unfollow_team_athlete_profile_path(current_user.athlete_profile, team_id: team.id), :method => :post, :class => "btn unfollow-team-btn" %>
+                      <% else %>
+                          <div class="btn follow-team-btn" onClick="registerFollow(this)" data="<%= team.to_param %>" athlete_profile="<%= current_user.athlete_profile.id %>">Follow
+                            Team
+                          </div>
+                      <% end %>
+                  <% end %>
+                </div>
+              </div>
+              <a data-toggle="collapse" data-parent="#accordion" href="ui-tabs-accordions.html#team-info-<%= team.id %>-desktop" class="reco-accordion collapsed hidden-xs hidden-md hidden-lg">
+                <%= fa_icon("caret-right", style: "margin-left:3px;") %>
+                Learn more about <%= team.college.name %>'s <%= team.decorate.sport_pronoun %> <%= team.sport_name %>
+                team
+              </a>
+              <div id="team-info-<%= team.id %>-desktop" class="panel-collapse collapse" style="height: 0px">
+                <div class="panel-body">
+                  <% unless team.playing_style.blank? %>
+                      <h3>
+                        Playing Style: <%= team.playing_style %>
+                        <% rating = team.team_ratings.where(factor_id: 2).last %>
+                        <% unless rating.nil? %>
+                            <br/> Rating: <%= FactorPreference.find(rating.factor_preference_id).name %>
+                        <% end %>
+                      </h3>
+                  <% end %>
+                  <% unless team.playing_time.blank? %>
+                      <h3>
+                        Playing Time: <%= team.playing_time %>
+                        <% rating = team.team_ratings.where(factor_id: 3).last %>
+                        <% unless rating.nil? %>
+                            <br/> Rating: <%= FactorPreference.find(rating.factor_preference_id).name %>
+                        <% end %>
+                      </h3>
+                  <% end %>
+                  <% unless team.coach_prestige.blank? %>
+                      <h3>
+                        Coach Prestige: <%= team.coach_prestige %>
+                        <% rating = team.team_ratings.where(factor_id: 4).last %>
+                        <% unless rating.nil? %>
+                            <br/> Rating: <%= FactorPreference.find(rating.factor_preference_id).name %>
+                        <% end %>
+                      </h3>
+                  <% end %>
+                  <% unless team.conference_prestige.blank? %>
+                      <h3>
+                        Conference Prestige: <%= team.conference_prestige %>
+                        <% rating = team.team_ratings.where(factor_id: 5).last %>
+                        <% unless rating.nil? %>
+                            <br/> Rating: <%= FactorPreference.find(rating.factor_preference_id).name %>
+                        <% end %>
+                      </h3>
+                  <% end %>
+                  <% unless team.pro_potential.blank? %>
+                      <h3>
+                        Pro Potential: <%= team.pro_potential %>
+                        <% rating = team.team_ratings.where(factor_id: 6).last %>
+                        <% unless rating.nil? %>
+                            <br/> Rating: <%= FactorPreference.find(rating.factor_preference_id).name %>
+                        <% end %>
+                      </h3>
+                  <% end %>
+                  <% unless team.program_tradition.blank? %>
+                      <h3>
+                        Program Tradition: <%= team.program_tradition %>
+                        <% rating = team.team_ratings.where(factor_id: 7).last %>
+                        <% unless rating.nil? %>
+                            <br/> Rating: <%= FactorPreference.find(rating.factor_preference_id).name %>
+                        <% end %>
+                      </h3>
+                  <% end %>
+                  <% unless team.television_exposure.blank? %>
+                      <h3>
+                        Television Exposure: <%= team.television_exposure %>
+                        <% rating = team.team_ratings.where(factor_id: 8).last %>
+                        <% unless rating.nil? %>
+                            <br/> Rating: <%= FactorPreference.find(rating.factor_preference_id).name %>
+                        <% end %>
+                      </h3>
+                  <% end %>
+                  <% unless team.athletic_facilities.blank? %>
+                      <h3>
+                        Athletic Facilities: <%= team.athletic_facilities %>
+                        <% rating = team.team_ratings.where(factor_id: 9).last %>
+                        <% unless rating.nil? %>
+                            <br/> Rating: <%= FactorPreference.find(rating.factor_preference_id).name %>
+                        <% end %>
+                      </h3>
+                  <% end %>
+                  <% unless team.championship_contender.blank? %>
+                      <h3>
+                        Championship Contender: <%= team.championship_contender %>
+                        <% rating = team.team_ratings.where(factor_id: 10).last %>
+                        <% unless rating.nil? %>
+                            <br/> Rating: <%= FactorPreference.find(rating.factor_preference_id).name %>
+                        <% end %>
+                      </h3>
+                  <% end %>
+                  <% unless team.stadium_atmosphere.blank? %>
+                      <h3>
+                        Stadium Atmosphere: <%= team.stadium_atmosphere %>
+                        <% rating = team.team_ratings.where(factor_id: 11).last %>
+                        <% unless rating.nil? %>
+                            <br/> Rating: <%= FactorPreference.find(rating.factor_preference_id).name %>
+                        <% end %>
+                      </h3>
+                  <% end %>
+                  <% unless team.academic_prestige.blank? %>
+                      <h3>
+                        Academic Prestige: <%= team.academic_prestige %>
+                        <% rating = team.team_ratings.where(factor_id: 12).last %>
+                        <% unless rating.nil? %>
+                            <br/> Rating: <%= FactorPreference.find(rating.factor_preference_id).name %>
+                        <% end %>
+                      </h3>
+                  <% end %>
+                  <% unless team.campus_lifestyle.blank? %>
+                      <h3>
+                        Campus Lifestyle: <%= team.campus_lifestyle %>
+                        <% rating = team.team_ratings.where(factor_id: 13).last %>
+                        <% unless rating.nil? %>
+                            <br/> Rating: <%= FactorPreference.find(rating.factor_preference_id).name %>
+                        <% end %>
+                      </h3>
+                  <% end %>
+                  <% unless team.coach_stability.blank? %>
+                      <h3>
+                        Coach Stability: <%= team.coach_stability %>
+                        <% rating = team.team_ratings.where(factor_id: 14).last %>
+                        <% unless rating.nil? %>
+                            <br/> Rating: <%= FactorPreference.find(rating.factor_preference_id).name %>
+                        <% end %>
+                      </h3>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+        <% end %>
+        </div>
+    <% end %>
+    </div>
+<div class="search-team-paginate"> <%= will_paginate @teams %> </div>
+</div>
+</div>
+</div>

@@ -1,0 +1,31 @@
+<%= form_for ([@college, @user]) do |f| %>
+    <div class="form-group">
+      <%= f.label :first_name %><br/>
+      <%= f.text_field :first_name, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :last_name %><br/>
+      <%= f.text_field :last_name, class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <div class="danger-well well"><span class="danger-text">Note: User's email must end with <%= @college.email_prefix %></span></div>
+      <%= f.label :email %><br/>
+      <%= f.text_field :email, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <label>Is this user an admin?</label>
+      <br/>
+      <%= f.check_box :college_admin_flag, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <label>Is this user the coach of a team?</label>
+      <br />
+      <%= select_tag :team_id, options_for_select(Team.where(college_id: @college.id).collect {|t| [t.sport_name, t.id]}), include_blank: true, class: 'form-control' %>
+    </div>
+
+    <%= f.hidden_field :college_id, :value => @college.id %>
+
+    <%= f.submit class: "btn btn-default" %>
+<% end %>

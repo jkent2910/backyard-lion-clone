@@ -1,0 +1,55 @@
+<div class="nested-fields">
+  <div class="individual-experience-prof">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4">
+          Sport: <span class="required-field-asterick">*</span>
+          <%= f.select :sport, valid_sports, {}, class: "form-control sport-select", id: "#{f.object.class.name}-#{f.index}" %>
+        </div>
+        <div class="col-md-4">
+          Position: <%= f.select :position, options_for_select(valid_coach_positions, selected: f.object.position), {}, class: "form-control position-select", id: "coach-#{f.index}" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4">
+          First Name: <span class="required-field-asterick">*</span>
+          <%= f.text_field :first_name, class: "form-control" %>
+        </div>
+        <div class="col-md-4">
+          Last Name:<span class="required-field-asterick">*</span>
+          <%= f.text_field :last_name, class: "form-control" %>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-4">
+          Email: <%= f.text_field :email, class: "form-control" %>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-4">
+          Primary Phone <%= f.text_field :primary_phone, class: "form-control" %>
+        </div>
+        <div class="col-md-4">
+          Phone Type <%= f.select :primary_phone_type, valid_phone_types, {}, class: "form-control" %>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-4">
+          Secondary Phone <%= f.text_field :secondary_phone, class: "form-control" %>
+        </div>
+        <div class="col-md-4">
+          Phone Type <%= f.select :secondary_phone_type, valid_phone_types, {}, class: "form-control" %>
+        </div>
+      </div>
+    </div>
+    <div class="text-right">
+      <%= link_to_remove_association "Remove Coach", f, class: "btn btn-danger" %><br/><br/>
+    </div>
+  </div>
+</div>

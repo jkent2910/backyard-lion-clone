@@ -1,0 +1,17 @@
+development:
+  bucket: ENV['S3_DEVELOPMENT_BUCKET']
+  access_key_id: ENV['ACCESS_KEY_ID']
+  secret_access_key: ENV['SECRET_ACCESS_KEY_ID']
+
+test: &test
+  bucket: ENV['S3_TEST_BUCKET']
+  access_key_id: ENV['ACCESS_KEY_ID']
+  secret_access_key: ENV['SECRET_ACCESS_KEY']
+
+production:
+  bucket: ENV['S3_PRODUCTION_BUCKET']
+  access_key_id: ENV['ACCESS_KEY_ID']
+  secret_access_key: ENV['SECRET_ACCESS_KEY']
+
+cucumber:
+  <<: *test

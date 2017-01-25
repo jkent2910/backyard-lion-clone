@@ -1,0 +1,66 @@
+<%= title 'Challenge Step 13' %>
+
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Step 13
+      <small> improve credibility</small>
+    </h1>
+  </div>
+
+  <dl class="dl-horizontal large">
+    <dt class="text-muted dt-font-challenge">
+      A recommendation
+    </dt>
+    <dd class="dd-font-challenge">
+      Add credibility to your profile with a recommendation from a coach or trainer. Coaches want to know how you are
+      from a coach's perspective. Can you invite one coach to give you a recommendation
+      for <%= @athlete_profile.athlete_experiences.first.sport %>?
+    </dd>
+  </dl>
+
+  <blockquote class="blockquote-reverse">
+    <p class="primary-color">The average <%= @athlete_profile.athlete_experiences.first.sport %> athlete has 1.3 recommendations.
+      Are you better than average?</p>
+    <footer>Stat geek at <cite title="Source Title">Backyard Lion</cite></footer>
+  </blockquote>
+
+  <div class="col-md-offset-2 col-md-8">
+    <div class="caption text-center"
+         style="padding: 20px !important; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+      <div >
+
+
+
+
+        <% if @athlete_profile.coaches.any? %>
+            <% coach_email = @athlete_profile.coaches.first.email rescue "" %>
+            <p class="text-muted text-left">Can <%= @athlete_profile.coaches.first.first_name %> at <%= coach_email %> help you?</p>
+            <%= form_tag(athlete_profiles_invite_coach_recommendation_path, :method => 'post') do %>
+                <%= text_field_tag 'contact_1', coach_email, {placeholder: "Enter email or phone", class: "form-control reco-box", :required => 'required'} %>
+                <br/>
+                <%= hidden_field_tag 'athlete_profile_id', @athlete_profile.id %>
+                <%= hidden_field_tag 'user_id', current_user.id %>
+
+                <div class="actions">
+                  <%= submit_tag "Send Recommendation Requests", class: 'btn btn-md btn-primary edit-button send-reco-requests', method: :get %>
+                </div>
+            <% end %>
+        <% else %>
+            <%= form_tag(athlete_profiles_invite_coach_recommendation_path, :method => 'post') do %>
+                <%= text_field_tag 'contact_1', nil, {placeholder: "Enter email or phone", class: "form-control reco-box", :required => 'required'} %>
+                <br/>
+                <%= hidden_field_tag 'athlete_profile_id', @athlete_profile.id %>
+                <%= hidden_field_tag 'user_id', current_user.id %>
+                <hr>
+                <div class="actions">
+                  <%= submit_tag "Request Recommendation", class: 'btn btn-md btn-primary edit-button send-reco-requests', method: :get %>
+                </div>
+            <% end %>
+        <% end %>
+      </div>
+      <br>
+      <%= link_to "Step 14", challenge_step_fourteen_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", id: 'challenge-step-fourteen' %>
+    </div>
+  </div>
+</div>

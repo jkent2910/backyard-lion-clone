@@ -1,0 +1,13 @@
+<%= title 'Remove Profile' %>
+
+<div class="container college-show-container">
+  <h2>We're sorry to see you go!</h2>
+  <%= form_tag(delete_my_profile_athlete_profile_path, :method => 'post') do %>
+      <h5 class="stand-out-header text-center">We're always trying to improve our platform!  Please share a few thoughts as to how we could've improved the experience to keep you here! </h5>
+
+      <%= text_area_tag 'why_remove', nil, {class: "form-control", :required => 'required'} %><br />
+      <div class="actions">
+        <%= submit_tag "Delete My Profile", class: 'btn btn-md btn-danger edit-button send-reco-requests', method: :get %>
+      </div><br /> <br />
+  <% end %>
+</div>

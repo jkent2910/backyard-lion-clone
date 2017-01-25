@@ -1,0 +1,26 @@
+<%= title 'Athlete Commitment' %>
+
+<div class="container college-show-container commitment-container">
+  <%= form_for(@athlete_profile) do |f| %>
+
+      <h3>Awesome news! Congratulations!</h3>
+
+      <br/>
+
+      <div class="form-group">
+        What college are you playing at?<span class="required-field-asterick">*</span>
+        <%= f.text_field :school_commit, class: "form-control", required: true %>
+      </div>
+
+      <div class="form-group">
+        What sport are you playing?<span class="required-field-asterick">*</span>
+        <%= f.select :sport_commit, options_for_select(valid_sports), {}, {class: "form-control", required: true} %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Save Your Commitment", class: 'btn btn-md btn-primary edit-button commit-btn' %>
+        <%= link_to "Remove Your Commitment", delete_commitment_path(@athlete_profile), method: :delete, class: "btn btn-md btn-danger" %>
+      </div>
+
+<% end %>
+</div>

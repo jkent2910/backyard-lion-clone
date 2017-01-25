@@ -1,0 +1,240 @@
+<div id="progressive-form" class="profile-progressive-profiling">
+
+  <div id="progressive-gpa" <% if !@athlete_profile.cum_gpa_score.blank? %> style="display: none" <% end %>>
+    <%= form_for(@athlete_profile) do |f| %>
+
+        Recruiters want to know -- what's your GPA?
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-4"><strong>Cumulative GPA Score:</strong>
+              <%= f.text_field :cum_gpa_score, class: "form-control" %>
+            </div>
+            <div class="col-md-4"><strong>Out of:</strong>
+              <%= f.text_field :cum_gpa_out_of, class: "form-control" %>
+            </div>
+            <div class="col-md-4"><strong>Cumulative GPA Scale:</strong>
+              <%= f.text_field :cum_gpa_scale, class: "form-control" %>
+            </div>
+          </div>
+        </div>
+        <div class="text-center btn btn-skip-invert skip-button" id="skip-gpa">Skip</div>
+        <%= f.submit "Save", class: 'text-center btn btn-md btn-primary edit-button' %>
+    <% end %>
+  </div>
+
+
+  <div id="progressive-test-scores" <% if !@athlete_profile.sat_total.blank? && !@athlete_profile.act_total.blank? %> style="display: none" <% end %>>
+    Recruiters want to know -- what are your test scores?
+    <%= form_for(@athlete_profile) do |f| %>
+
+        <% if @athlete_profile.sat_total.blank? %>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-3">
+                  <strong>SAT Total</strong>
+                  <%= f.text_field :sat_total, class: "form-control" %>
+                </div>
+                <div class="col-md-3">
+                  <strong>SAT Math</strong>
+                  <%= f.text_field :sat_math, class: "form-control" %>
+                </div>
+                <div class="col-md-3">
+                  <strong>SAT Reading</strong>
+                  <%= f.text_field :sat_reading, class: "form-control" %>
+                </div>
+                <div class="col-md-3">
+                  <strong>SAT Writing</strong>
+                  <%= f.text_field :sat_writing, class: "form-control" %>
+                </div>
+              </div>
+            </div>
+            <div class="btn btn-skip-invert skip-button" id="skip-academics-sat">Skip</div>
+
+        <% elsif @athlete_profile.act_total.blank? %>
+            <div class="row">
+              <div class="col-md-6">
+                <strong>ACT Total</strong>
+                <%= f.text_field :act_total, class: "form-control" %>
+              </div>
+            </div>
+            <br/>
+            <div class="btn btn-skip-invert skip-button" id="skip-academics-act">Skip</div>
+
+        <% end %>
+        <%= f.submit "Save", class: 'btn btn-md btn-primary edit-button' %>
+    <% end %>
+  </div>
+
+
+  <% @athlete_profile.athlete_experiences.each do |experience| %>
+      <% if experience.videos.empty? %>
+          <div id="progressive-video-highlights" <% if !experience.videos.empty? %> style="display: none" <% end %>>
+            <span>Recruiters want to see you in action!  Add a link to highlights or game film!</span>
+            <h4>Add Video for your <%= experience.sport %> experience</h4>
+            <%= form_for(@athlete_profile) do |f| %>
+                <%= fields_for :video do |video| %>
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-md-4">
+                          Name:<span class="required-field-asterick">*</span>
+                          <%= video.text_field :name, class: "form-control video-name", placeholder: "2017 Senior year highlights" %>
+                        </div>
+                        <div class="col-md-4">
+                          URL:<span class="required-field-asterick">*</span>
+                          <%= video.text_field :url, class: "form-control video-url", placeholder: "www.hudl.com/video/3/4005283/57" %>
+                        </div>
+                        <div class="col-md-4">
+                          Description: <%= video.text_area :description, class: "form-control" %>
+                        </div>
+                        <%= f.hidden_field :athlete_experience_id, :value => experience.id %>
+                      </div>
+                    </div>
+                <% end %>
+                <div class="btn btn-skip-invert skip-button" id="skip-video">Skip</div>
+
+                <%= f.submit "Save", class: 'btn btn-md btn-primary edit-button' %>
+                </div>
+            <% end %>
+      <% end %>
+  <% end %>
+
+
+  <div id="progressive-skills" <% if !@athlete_profile.skills.empty? %> style="display: none" <% end %>>
+
+    <%= form_for(@athlete_profile) do |f| %>
+        <span>Recruiters want to know what you're great at.  Add a skill!</span>
+        <%= f.fields_for :skills, @athlete_profile.skills.build do |s| %>
+            <%= render 'progressive_skill_fields', f: s %>
+        <% end %>
+        <div class="btn btn-skip-invert skip-button text-center" id="skip-skill">Skip</div>
+        <%= f.submit "Save", class: 'btn btn-md btn-primary edit-button text-center' %>
+    <% end %>
+  </div>
+
+
+  <div id="progressive-coaches" <% if !@athlete_profile.coaches.empty? %> style="display: none" <% end %>>
+       <% if !@athlete_profile.coaches.empty? %>
+        <% else  %>
+
+        <h4>Who is your Coach?</h4>
+        <%= form_for(@athlete_profile) do |f| %>
+
+
+            <%= f.fields_for :coaches, @athlete_profile.coaches.build do |c| %>
+                <div class="nested-fields">
+                  <div class="individual-experience-prof">
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-md-4">
+                          Sport:<span class="required-field-asterick">*</span>
+                          <%= c.select :sport, valid_sports, {}, class: "form-control sport-select", id: "#{f.object.class.name}-#{f.index}" %>
+                        </div>
+                        <div class="col-md-4">
+                          Position: <%= c.select :position, valid_coach_positions, {}, class: "form-control position-select", id: "coach-#{f.index}" %>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-md-4">
+                          First Name:<span class="required-field-asterick">*</span>
+                          <%= c.text_field :first_name, class: "form-control" %>
+                        </div>
+                        <div class="col-md-4">
+                          Last Name:<span class="required-field-asterick">*</span>
+                          <%= c.text_field :last_name, class: "form-control" %>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          Email: <%= c.text_field :email, class: "form-control" %>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          Primary Phone <%= c.text_field :primary_phone, class: "form-control" %>
+                        </div>
+                        <div class="col-md-4">
+                          Phone Type <%= c.select :primary_phone_type, valid_phone_types, {}, class: "form-control" %>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          Secondary Phone <%= c.text_field :secondary_phone, class: "form-control" %>
+                        </div>
+                        <div class="col-md-4">
+                          Phone Type <%= c.select :secondary_phone_type, valid_phone_types, {}, class: "form-control" %>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="btn btn-skip-invert skip-button" id="skip-coach">Skip</div>
+
+                <%= f.submit "Save", class: 'btn btn-md btn-primary edit-button' %>
+            <% end %>
+        <% end %>
+    <% end %>
+  </div>
+
+  <div id="progressive-guardian" <% if !@athlete_profile.guardian_first_name.blank? %> style="display: none" <% end %>>
+    <span>Add a guardian to make your profile more attractive to recruiters</span>
+    <%= form_for(@athlete_profile) do |f| %>
+        <div class="form-group">
+          <%= f.label :guardian_relationship %><br/>
+          <%= f.select :guardian_relationship, options_for_select(guardian_relationship), class: "form-control" %>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <strong>Guardian First Name</strong>
+            <%= f.text_field :guardian_first_name, class: "form-control" %>
+          </div>
+
+          <div class="col-md-6">
+            <strong>Guardian Last Name</strong>
+            <%= f.text_field :guardian_last_name, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            <strong>Guardian Primary Phone</strong>
+            <%= f.text_field :guardian_primary_phone, class: "form-control" %>
+          </div>
+          <div class="col-md-3">
+            <strong>Guardian Primary Phone Type</strong><br/>
+            <%= f.select :guardian_primary_phone_type, options_for_select(valid_phone_types), class: "form-control" %>
+          </div>
+          <div class="col-md-3">
+            <strong>Guardian Secondary Phone</strong>
+            <%= f.text_field :guardian_secondary_phone, class: "form-control" %>
+          </div>
+          <div class="col-md-3">
+            <strong>Guardian Secondary Phone Type</strong><br/>
+            <%= f.select :guardian_secondary_phone_type, options_for_select(valid_phone_types), class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <strong>Guardian E-mail</strong>
+            <%= f.text_field :guardian_primary_email, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <strong>Guardian Education Level</strong>
+            <%= f.text_field :guardian_edu_level, class: "form-control" %>
+          </div>
+        </div>
+        <div class="btn btn-skip-invert skip-button" id="skip-guardian">Skip</div>
+
+        <%= f.submit "Save", class: 'btn btn-md btn-primary edit-button' %>
+    <% end %>
+  </div>
+
+
+</div>

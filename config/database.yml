@@ -1,0 +1,23 @@
+
+# PostgreSQL. Versions 8.2 and up are supported.
+#
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  database: backyard-lion_development
+
+test: &test
+  <<: *default
+  database: backyard-lion_test
+
+production:
+  <<: *default
+  database: backyard-lion_production
+
+cucumber:
+  <<: *test

@@ -1,0 +1,55 @@
+<div style='color:white;'>
+  <%= title 'Team Account Verification' %>
+</div>
+<div class="container main-container">
+  <div class="page-header">
+
+    <h1 class="primary-color">Account Verification
+      <small> data security</small>
+    </h1>
+  </div>
+  <dl class="dl-horizontal" style="font-size:large;">
+    <dt style="color:#444;">Provide details</dt>
+    <dd>The protection of our community's data is extremely important to us. For this reason, we do our best to ensure
+      that only the right people can access the data. Please provide the following details so your request can be
+      investigated.
+    </dd>
+  </dl>
+  <hr>
+  <div class="col-md-offset-2 col-md-8">
+    <%= form_for (@user) do |f| %>
+        <div class="form-group">
+          What <span class="primary-color">sport</span> do you coach?
+          <br/>
+          <%= f.select :coach_sport, options_for_select(valid_sports), {include_blank: true}, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          What's your <span class="primary-color">position</span>?
+          <br/>
+          <%= f.select :coach_position, options_for_select(valid_coach_positions), {include_blank: true}, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          What <span class="primary-color">college</span> are you affiliated with?
+          <br/>
+          <%= autocomplete_field_tag 'name', '', autocomplete_college_name_users_path, class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          Provide your <span class="primary-color">college email address</span> (ending in .edu)<br>After Request
+          Verification: <span style="color:orangered">This college email address receives an activation email (spam filter may catch the email)</span>
+          <br/>
+          <%= text_field_tag :college_email_address, nil, {class: "form-control", required: true} %>
+        </div>
+        <div class="form-group">
+          What is your college team's website (url) that verifies this information?
+          <br/>
+          <%= text_field_tag :college_team_website, nil, {class: "form-control"} %>
+        </div>
+        <div class="actions" style="text-align:center;">
+          <%= f.submit "Request Verificiation", class: 'btn btn-md btn-primary edit-button verification-btn' %>
+        </div>
+        <p class="text-center" style="color:orangered">Account Activation: your college email address receives an
+          activation email</p>
+    <% end %>
+  </div>
+
+</div>

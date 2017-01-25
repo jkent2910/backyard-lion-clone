@@ -1,0 +1,90 @@
+<%= title 'Challenge Step 1' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Step One
+      <small> submit interest</small>
+    </h1>
+  </div>
+
+  <dl class="dl-horizontal" style="font-size:large;">
+    <dt style="color:#444;">Submit 10 Interests</dt>
+    <dd>Start right away by letting coaches know you're interested in their college. By doing so you'll be putting your
+      profile in front of the eyes of college recruiters. The more colleges you submit interest to, the more
+      opportunities there will be.
+    </dd>
+  </dl>
+
+  <div class="inner-container">
+    <div class="row">
+      <div class="thumbnail" style="padding: 15px;">
+        <div class="caption text-center">
+
+          <h5 class="stand-out-header">The average beginner athlete submits: 14.8 interests. Can you do better than
+            average?</h5>
+          <div class="progress">
+            <% if @interests_count == 0 %>
+                <div class="progress-bar progress-bar-danger" style="width: 5%">
+                  0 / 10
+                </div>
+            <% elsif @interests_count == 1 %>
+                <div class="progress-bar progress-bar-danger progress-bar-striped" style="width: 10%">
+                  1 / 10
+                </div>
+            <% elsif @interests_count == 2 %>
+                <div class="progress-bar progress-bar-danger" style="width: 20%">
+                  2 / 10
+                </div>
+            <% elsif @interests_count == 3 %>
+                <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 30%">
+                  3 / 10
+                </div>
+            <% elsif @interests_count == 4 %>
+                <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 40%">
+                  4 / 10
+                </div>
+            <% elsif @interests_count == 5 %>
+                <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 50%">
+                  5 / 10
+                </div>
+            <% elsif @interests_count == 6 %>
+                <div class="progress-bar progress-bar-success" style="width: 60%">
+                  6 / 10
+                </div>
+            <% elsif @interests_count == 7 %>
+                <div class="progress-bar progress-bar-success" style="width: 70%">
+                  7 / 10
+                </div>
+            <% elsif @interests_count == 8 %>
+                <div class="progress-bar progress-bar-success progress-bar-striped" style="width: 80%">
+                  8 / 10
+                </div>
+            <% elsif @interests_count == 9 %>
+                <div class="progress-bar progress-bar-success progress-bar-striped" style="width: 90%">
+                  9 / 10
+                </div>
+            <% elsif @interests_count >= 10 %>
+                <div class="progress-bar progress-bar-success progress-bar-striped" style="width: 100%">
+                  10 / 10
+                </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="text-center">
+          <%= link_to "Let's Start!", teams_path(q: {"sport_name_eq" => @athlete_profile.athlete_experiences.first.sport}), class: "btn btn-search-colleges", method: :get %>
+
+          <% if @interests_count < 10 %>
+              <%= link_to_unless @interests_count < 10, "<div class='btn btn-search-colleges-transparent'>Challenge Step 2</div>".html_safe, stand_out_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", disabled: true %>
+          <% else %>
+              <%= link_to "Step Two", challenge_step_two_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", id: 'challenge-step-two' %>
+          <% end %>
+        </div>
+      </div>
+      <div class="thumbnail" style="color:white; background-color:gray;text-align:center; margin: auto; margin-bottom: 30px !important; padding: 20px; font-size: 30px;">
+        <div style="text-align:center;">
+          <p>Did you know? Backyard Lion has <%= @team_count %> collegiate <%= @first_experience_sport %> Teams.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

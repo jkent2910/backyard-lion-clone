@@ -1,0 +1,20 @@
+Yo Devan and Julie,
+
+It's time to promote <%= @user_full_name %>  Their player card is located here: https://www.backyardlion.com/athlete_profiles/<%=@athlete_profile%>/player_card
+
+<br />
+
+                                                                                        <br />
+Copy + Paste this into Twitter: <br />
+
+We celebrate <%= @user_full_name %>'s accomplishment: <%= @accomplishment %> Check 'em > <%= @bitly %> <%= @twitter %>
+<% unless @guardian_twitter.nil? %> <%= @guardian_twitter %> <% end %>
+<% unless @guardian_two_twitter.nil? %> <%= @guardian_two_twitter %> <% end %>
+
+<br /><br />
+
+Copy + Paste this into Facebook: <br />
+We celebrate <%= @user_full_name %>'s accomplishment: <%= @accomplishment %> Check 'em > <%= @bitly %> <%= @facebook %> <br /><br />
+
+
+Later

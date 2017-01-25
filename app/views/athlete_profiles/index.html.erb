@@ -1,0 +1,123 @@
+<%= title 'Athlete Search' %>
+
+
+<div class="container main-container">
+  <div class="container">
+    <div class="page-header">
+      <h1 style="color: #337ab7;">Athletes
+        <small> search</small>
+      </h1>
+    </div>
+  </div>
+
+  <!--Parameters-->
+
+  <div class="container col-sm-12 col-md-4" style="border-radius: 4px; font-size: 15px; padding: 20px; color: gray;">
+
+    <div class="page-header">
+      <h4 style="color: #337ab7;">Filter</h4>
+    </div>
+
+    <ul class="nav nav-pills nav-stacked search-pill-role">
+      <li role="presentation"><%= link_to "Athletes", athlete_profiles_path %></li>
+      <li role="presentation"><%= link_to "Teams", teams_path %></li>
+    </ul>
+
+    <br>
+
+    <%= search_form_for @athlete_search, url: athlete_profiles_path do |f| %>
+
+        <h4 class="search-header">Name</h4>
+        <%= f.search_field :user_first_name_or_user_last_name_or_user_full_name_cont, class: 'form-control' %>
+
+        <h4 class="search-header">Sport</h4>
+        <%= f.select :athlete_experiences_sport_cont, valid_sports, {include_blank: true}, onchange: "updatePositionsSearch(this.value, this.id)", class: 'form-control' %>
+
+        <h4 class="search-header">Position</h4>
+        <%= f.select :athlete_experiences_position_cont, sport_positions, {include_blank: true}, class: 'form-control' %>
+
+        <h4 class="search-header">Gender</h4>
+        <%= f.select :gender_eq, options_for_select(AthleteProfile.genders), {include_blank: true}, class: 'form-control' %>
+
+        <h4 class="search-header">Graduation Year</h4>
+        <% %w[2017 2018 2019 2020 2021 2022].each do |year| %>
+            <%= check_box_tag('q[graduation_year_eq_any][]', year) %>
+            <%= year %>
+        <% end %>
+
+        <h4 class="search-header">State</h4>
+        <%= f.select :state_eq, us_states, {include_blank: true}, class: 'form-control' %>
+
+        <h4 class="search-header">Specific Location</h4>
+        Mile Radius <%= text_field_tag :miles, params[:miles], class: 'form-control' %>
+        From <%= text_field_tag :zipcode, params[:zipcode], class: 'form-control', placeholder: "Enter a zipcode" %>
+
+        <h4 class="search-header">Height</h4><span>In feet and inches.  E.g.: 6.5 (6ft 5in)</span>
+        Minimum: <%= f.search_field :athlete_height_gteq, class: 'form-control' %> <br/>
+        Maxinum: <%= f.search_field :athlete_height_lteq, class: 'form-control' %> <br/>
+
+        <%= f.submit "Search", class: 'btn btn-search-colleges' %>
+    <% end %>
+  </div>
+
+  <!-- Desktop Results -->
+
+  <!-- this container holders the search results -->
+  <div class="container col-sm-12 col-md-8" style="border-radius: 4px; font-size: 15px; padding: 20px; color: gray;">
+    <div class="page-header text-right">
+      <h4 style="color: #337ab7;"> Results</h4>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover table-row-border">
+        <tr class="table-row-border">
+          <th class="text-center">Save</th>
+          <th>Position</th>
+          <th>Name</th>
+          <th>Location</th>
+          <th class="text-center">Grade</th>
+          <th>Height</th>
+          <th>Weight</th>
+        </tr>
+
+        <% @athlete_profiles.order("profile_strength desc nulls last").each do |profile| %>
+            <% experiences = AthleteExperience.where(athlete_profile_id: profile.id) %>
+
+            <% experiences.each do |e| %>
+                <tr class="table-row-border">
+                  <td class="text-center">
+                    <% if user_signed_in? && (current_user.coach? || current_user.college_admin?) && current_user.team_validated? %>
+                        <% if current_user.try(:saved_athlete?, profile) %>
+                            <a onclick="removeAthlete(this)" data="<%= current_user.to_param %>"
+                               athlete_profile_id="<%= profile.to_param %>"><%= fa_icon('times') %><br> Remove
+                              Athlete</a>
+
+                        <% else %>
+                            <a onclick="saveAthlete(this)" data="<%= current_user.to_param %>"
+                               athlete_profile_id="<%= profile.to_param %>"><%= fa_icon('plus') %><br> Save Athlete</a>
+
+                        <% end %>
+                    <% else %>
+                    <% end %>
+                  </td>
+                  <% if e.position.nil? %>
+                      <td><%= e.sport %></td>
+                  <% else %>
+                      <td><%= e.position %><br><span class="text-muted"><%= profile.graduation_year %></span></td>
+                  <% end %>
+                  <td><%= link_to User.find(profile.user_id).full_name, athlete_profile_path(profile), method: :get %></td>
+                  <td><%= e.city %><br><%= e.state %></td>
+                  <td class="text-center"><%= e.decorate.average_rating %></td>
+                  <td><%= profile.format_height %>"</td>
+                  <td><%= profile.weight %></td>
+                </tr>
+            <% end %>
+
+
+        <% end %>
+      </table>
+      <div class="search-team-paginate"> <%= will_paginate @athlete_profiles %> </div>
+    </div>
+  </div>
+
+
+</div>

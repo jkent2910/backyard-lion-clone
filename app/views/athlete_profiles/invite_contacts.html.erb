@@ -1,0 +1,86 @@
+<%= title 'Invite' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">You're invited :-)
+      <small> Take 2 seconds to see who is already on Backyard Lion
+        & Invite the rest!
+      </small>
+    </h1>
+  </div>
+
+  <div class="inner-container">
+    <div class="row text-center">
+
+      <!-- begin: column with action to import gmail contacts -->
+      <div class="col-sm-6 col-md-4">
+        <div class="list-group-item top-add-on text-center text-uppercase">
+          <span style="font-size: xx-large;font-weight: bold; color:#367cb8;">Gmail </span>
+        </div>
+        <div class="connector-top thumbnail text-center" style="padding-top: 20px;">
+          <%= fa_icon("google", class: 'dashboard-icon') %>
+          <div class="caption">
+
+            <h3 class="lead">contacts</h3>
+
+            <br/>
+
+            <div class="btn btn-lg btn-primary">
+              <a href="/contacts/gmail"><span style="color:#ffffff;">Import</span></a>
+            </div>
+            <hr>
+            <span class="label label-primary center-block" style="font-size: inherit;">Most popular</span>
+          </div>
+        </div>
+      </div> <!-- end: gmail contact import -->
+
+
+      <!-- begin: facebook invite column -->
+      <div class="col-sm-6 col-md-4">
+        <div class="list-group-item top-add-on text-center text-uppercase">
+          <span style="font-size: xx-large;font-weight: bold; color:#367cb8;">Facebook </span>
+        </div>
+        <div class="connector-top thumbnail text-center" style="padding-top: 20px;">
+          <%= fa_icon("facebook-official", class: 'dashboard-icon') %>
+          <div class="caption">
+
+            <h3 class="lead">friends</h3>
+
+            <br/>
+
+            <div class="btn btn-lg btn-primary" style="background-color: #007dfd !important;">
+              <div class="fb-send" data-href="https://www.backyardlion.com" data-size="large" data-ref="invite-fb"></div>
+            </div>
+            <hr>
+            <span class="label label-primary center-block" style="font-size: inherit;">New</span>
+          </div>
+        </div>
+      </div> <!-- end: facebook invite column -->
+
+
+      <!-- begin: email / phone invite column -->
+      <div class="col-sm-6 col-md-4">
+        <div class="list-group-item top-add-on text-center text-uppercase">
+          <span style="font-size: xx-large;font-weight: bold; color:#367cb8;">Email <span style="color:lightgray;">|</span> Phone </span>
+        </div>
+        <div class="connector-top thumbnail text-center" style="padding-top: 20px;">
+          <%= fa_icon("envelope", class: 'dashboard-icon') %>
+          <div class="caption">
+
+            <h3 class="lead">teammates</h3>
+
+            <%= form_for (@athlete_profile) do |f| %>
+                <%= f.text_area :contacts, class: "form-control", placeholder:
+                    'Enter email addresses or phone numbers (separated by a comma)' %>
+                <%= hidden_field_tag(:invite_contacts_new, 'invite_contacts_new') %><br/><br/>
+
+                <%= f.submit "Send", class: 'btn btn-primary btn-lg' %>
+            <% end %>
+
+          </div>
+        </div>
+      </div> <!-- end: email / phone invites -->
+
+    </div> <!-- row -->
+  </div> <!-- inner-container -->
+</div> <!-- main-container -->

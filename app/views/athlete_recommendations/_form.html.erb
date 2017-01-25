@@ -1,0 +1,161 @@
+
+
+<div class="col-xs-12 hidden-md hidden-sm hidden-lg experience-div" style="text-align:center;">
+    <div class="col-md-1">
+      <div class="byl-logo">
+        <%= image_tag("glyphicons-151-edit.png") %>
+      </div>
+    </div>
+    <div class="col-md-11">
+      <div class="content">
+        <h3 class="main-header-txt">Recommendation<br/> for<br/> <%= @athlete_profile.decorate.full_name %> </h3>
+        <% if @athlete_recommendation.errors.any? %>
+            <ul>
+              <% @athlete_recommendation.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+        <% end %>
+<%= form_for ([@athlete_profile, @athlete_recommendation]) do |f| %>
+
+    <% unless user_signed_in? %>
+      <div class="form-group">
+        First Name<br/>
+        <%= f.text_field :giver_first_name, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        Last Name<br/>
+        <%= f.text_field :giver_last_name, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        Contact Info (Phone or E-mail)<br/>
+        <%= f.text_field :giver_contact_info, class: "form-control" %>
+      </div>
+
+    <% end %>
+
+    <div class="form-group">
+      What's your relationship to <%= @athlete_profile.decorate.full_name %>?<br/>
+      <%= f.select :giver_relationship, options_for_select(valid_relationships), {}, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      What's your title?<br/>
+      <%= f.text_field :giver_position, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      Why are you recommending <%= @athlete_profile.decorate.full_name %>?<br/>
+      <%= f.text_area :recommendation_text, class: "form-control" %>
+    </div>
+
+    <%= f.hidden_field :athlete_experience_id, :value => params[:athlete_experience_id] %>
+
+    <% if user_signed_in? && current_user.athlete? %>
+      <%= f.hidden_field :giver_first_name, :value => User.find(current_user.id).first_name %>
+      <%= f.hidden_field :giver_last_name, :value => User.find(current_user.id).last_name %>
+      <%= f.hidden_field :giver_contact_info, :value => User.find(current_user.id).email %>
+      <%= f.hidden_field :giver_athlete_profile_id, :value => AthleteProfile.find_by(user_id: current_user.id).id rescue nil %>
+      <%= f.hidden_field :athlete_profile_id, :value => @athlete_profile.id %>
+    <% elsif user_signed_in? && current_user.coach? %>
+      <%= f.hidden_field :giver_first_name, :value => User.find(current_user.id).first_name %>
+      <%= f.hidden_field :giver_last_name, :value => User.find(current_user.id).last_name %>
+      <%= f.hidden_field :giver_contact_info, :value => User.find(current_user.id).email %>
+      <%= f.hidden_field :athlete_profile_id, :value => @athlete_profile.id %>
+    <% elsif user_signed_in? && current_user.supporter? %>
+      <%= f.hidden_field :giver_first_name, :value => User.find(current_user.id).first_name %>
+      <%= f.hidden_field :giver_last_name, :value => User.find(current_user.id).last_name %>
+      <%= f.hidden_field :giver_contact_info, :value => User.find(current_user.id).email %>
+      <%= f.hidden_field :athlete_profile_id, :value => @athlete_profile.id %>
+      <% end %>
+    <div class="actions">
+      <%= f.submit "Submit Recommendation", class: 'btn btn-md btn-primary' %>
+    </div>
+
+<% end %>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="hidden-xs col-md-12 experience-div">
+    <div class="col-md-1">
+      <div class="byl-logo">
+        <%= image_tag("glyphicons-151-edit.png") %>
+      </div>
+    </div>
+    <div class="col-md-11">
+      <div class="content">
+        <h3 class="main-header-txt">Recommendation for <%= @athlete_profile.decorate.full_name %> </h3>
+        <% if @athlete_recommendation.errors.any? %>
+            <ul>
+              <% @athlete_recommendation.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+        <% end %>
+<%= form_for ([@athlete_profile, @athlete_recommendation]) do |f| %>
+    <% unless user_signed_in? %>
+      <div class="form-group">
+        First Name<br/>
+        <%= f.text_field :giver_first_name, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        Last Name<br/>
+        <%= f.text_field :giver_last_name, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        Contact Info (Email or Phone)<br/>
+        <%= f.text_field :giver_contact_info, class: "form-control" %>
+      </div>
+
+    <% end %>
+
+    <div class="form-group">
+      What's your relationship to <%= @athlete_profile.decorate.full_name %>?<br/>
+      <%= f.select :giver_relationship, options_for_select(valid_relationships), {}, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      What's your title?<br/>
+      <%= f.text_field :giver_position, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      Why are you recommending <%= @athlete_profile.decorate.full_name %>?<br/>
+      <%= f.text_area :recommendation_text, class: "form-control" %>
+    </div>
+
+    <%= f.hidden_field :athlete_experience_id, :value => params[:athlete_experience_id] %>
+
+    <% if user_signed_in? && current_user.athlete? %>
+      <%= f.hidden_field :giver_first_name, :value => User.find(current_user.id).first_name %>
+      <%= f.hidden_field :giver_last_name, :value => User.find(current_user.id).last_name %>
+      <%= f.hidden_field :giver_contact_info, :value => User.find(current_user.id).email %>
+      <%= f.hidden_field :giver_athlete_profile_id, :value => AthleteProfile.find_by(user_id: current_user.id).id %>
+      <%= f.hidden_field :athlete_profile_id, :value => @athlete_profile.id %>
+    <% elsif user_signed_in? && current_user.coach? %>
+      <%= f.hidden_field :giver_first_name, :value => User.find(current_user.id).first_name %>
+      <%= f.hidden_field :giver_last_name, :value => User.find(current_user.id).last_name %>
+      <%= f.hidden_field :giver_contact_info, :value => User.find(current_user.id).email %>
+      <%= f.hidden_field :athlete_profile_id, :value => @athlete_profile.id %>
+    <% elsif user_signed_in? && current_user.supporter? %>
+        <%= f.hidden_field :giver_first_name, :value => User.find(current_user.id).first_name %>
+        <%= f.hidden_field :giver_last_name, :value => User.find(current_user.id).last_name %>
+        <%= f.hidden_field :giver_contact_info, :value => User.find(current_user.id).email %>
+        <%= f.hidden_field :athlete_profile_id, :value => @athlete_profile.id %>
+      <% end %>
+    <hr>
+    <div class="actions">
+      <%= f.submit "Submit Recommendation", class: 'btn btn-md btn-primary' %>
+    </div>
+
+<% end %>
+
+      </div>
+    </div>
+  </div>

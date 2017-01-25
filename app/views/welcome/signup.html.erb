@@ -1,0 +1,85 @@
+   
+<!-- MOBILE VIEW -->
+
+
+   <div class="logo-signup"><%= image_tag("logo.png") %></div>
+   <div class="col-xs-12">
+    <%= form_for(:user, :url => registration_path(:user)) do |f| %>
+    <label class="sr-only" for="signup-fname">First Name</label>
+    <%= f.text_field :first_name, class: "form-control-home", placeholder: "First Name" %>
+  </div>
+  <div class="col-xs-12">
+    <label class="sr-only" for="signup-lname">Last Name</label>
+    <%= f.text_field :last_name, class: "form-control-home", placeholder: "Last Name" %>
+  </div>
+</div>
+<div class="form-group">
+  <div class="col-xs-12">
+    <label class="sr-only" for="signup-email">Your Email</label>
+    <%= f.email_field :email, autofocus: true, class: "form-control-home", placeholder: "Email" %>
+  </div>
+  <div class="form-group">
+    <div class="col-xs-12">
+      <label class="sr-only" for="signup-password">Your password</label>
+      <%= f.password_field :password, autocomplete: "off", class: "form-control-home", placeholder: "Password" %>
+    </div>
+    <div class="col-xs-12">
+      <label class="sr-only" for="signup-password2">Repeat Password</label>
+      <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control-home", placeholder: "Repeat Password" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-xs-12" style="margin:4px 0; text-align: center;">
+      I'm an
+      <label class="radio-inline" style="color: rgb(169, 169, 169);">
+        <%= f.radio_button(:user_type, "athlete") %>Athlete
+      </label>
+      <label class="radio-inline" style="color: rgb(169, 169, 169);">
+        <%= f.radio_button(:user_type, "coach") %>Coach
+      </label>
+                    <!-- <label class="radio-inline" style="color: rgb(169, 169, 169);">
+                      <%= f.radio_button(:user_type, "supporter") %>Supporter
+                    </label> -->
+                  </div>
+                </div>
+                <div class="col-xs-12" style="color: #fff; padding-top: 8px;">
+                  <%= f.submit "Sign up", class: "btn dark-btn btn-block btn-cta-primary" %>
+                </div>
+                
+                <% if flash[:errors].present? %>
+                <% flash[:errors].each do |msg| %>
+
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <strong><%= msg %></strong>
+                </div>
+
+                <% end %>
+                <% end %>
+                <% end %>
+
+              </div>
+
+              <div class="form-group">
+                <div class="col-xs-12">
+                  <button class="btn facebook-btn2 btn-block btn-cta-primary"
+                  style="font-size: 16px !important;">
+                  <span>
+                   <%= link_to omniauth_authorize_path(resource_name, :facebook) do %>
+                   <%= fa_icon("facebook-square", class: 'white-fa-icon')%><span style="color: white !important;">Facebook&nbsp;</span>
+                   <% end %>
+                 </span>
+               </button>
+             </div>
+             <div class="col-xs-12">
+              <button class="btn linkedin-btn2 btn-block btn-cta-primary" type="button"
+              style="font-size: 16px !important;">
+              <span>
+               <%= link_to omniauth_authorize_path(resource_name, :twitter) do %>
+               <%= fa_icon("twitter-square", class: 'white-fa-icon') %><span style="color: white !important;">Twitter&nbsp</span>
+               <% end %>
+             </span>
+           </button>
+         </div>
+       </div>
+              

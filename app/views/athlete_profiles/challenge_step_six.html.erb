@@ -1,0 +1,27 @@
+<%= title 'Challenge Step 6' %>
+
+
+<div class="container college-show-container">
+  <div class="page-header">
+    <h1 class="primary-color" style="font-size: 30px;">You're invited :-)
+      <small> follow athlete promotions</small>
+    </h1>
+    <h4 style="font-weight:normal;color:gray;">Take an
+      extra 10 seconds to
+      follow Backyard Lion athlete promotions on social media</h4>
+    <div class="text-center">
+      Click
+      <%= link_to "https://twitter.com/backyardlion" do %>
+          <%= fa_icon("twitter 4x", class: "btn btn-share-social") %>
+      <% end %> and <%= link_to "https://facebook.com/backyardlionpage" do %>
+          <%= fa_icon("facebook 4x", class: "btn btn-share-social") %>
+      <% end %>
+    </div>
+
+  </div>
+      <div class="text-center">
+        <%= link_to "Challenge Step 7", challenge_step_seven_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", id: 'challenge-step-seven' %>
+      </div>
+    </div>
+  </div>
+</div>

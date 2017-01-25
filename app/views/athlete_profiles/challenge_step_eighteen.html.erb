@@ -1,0 +1,30 @@
+<%= title 'Challenge Step 18' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Because you've made progress:
+      <small> here's an exclusive promotion</small>
+    </h1>
+  </div>
+  <dl class="dl-horizontal" style="font-size:large;">
+    <dt style="color:#444;">Select a promotion</dt>
+    <dd>Hi, <%= @athlete_profile.user.first_name %> - We Have Some News for You >> Take a free promotion! We want to
+      give you a little extra exposure to college coaches
+      so you can reach your goal and play <%= @first_experience_sport %> in college.
+    </dd>
+  </dl>
+  <div class="skills-edit">
+    <div class="col-md-offset-2 col-md-8" style="padding: 15px;">
+
+
+      <h4 class="lead">Select one</h4>
+      <div style="text-align:center;">
+        <div class="list-group">
+          <%= link_to "Promotion to your Top-10 Teams", extra_promotion_athlete_profile_path(@athlete_profile), class: "btn btn-lg btn-primary-invert", :data => {:athlete_profile => current_user.athlete_profile.id} %>
+          <%= link_to "Social Media Shoutout", social_media_shoutout_athlete_profile_path(@athlete_profile), class: "btn btn-lg btn-primary-invert", :data => {:athlete_profile => current_user.athlete_profile.id} %>
+        </div>
+        <br/>
+      </div>
+    </div>
+  </div>
+</div>

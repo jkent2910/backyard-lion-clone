@@ -1,0 +1,291 @@
+<%= title 'College Team Profile' %>
+
+
+<div class="container main-container">
+  <!-- Basic and Actions --> 
+  <div class="page-header">
+    <h1 class="primary-color"><%= @college.name %> <small><%= @team.sport_name %></small></h1>
+    <p><strong><%= @team.sport_division %> - <%= @team.sport_conference %></strong><small> <%= @college.city %>, <%= @college.state %></small></p>
+    <p>
+      <% if user_signed_in? && current_user.athlete? && !current_user.athlete_profile.nil? %>
+          <% if current_user.athlete_profile.try(:expressed_interest?, @team) %>
+            <div class="btn remove-interest-btn" onClick="removeInterest(this)" data="<%= @team.to_param %>" athlete_profile="<%= current_user.athlete_profile.to_param %>">Remove Interest </div>
+        <% else %>
+            <div class="btn submit-interest-btn" onClick="registerInterest(this)" data="<%= @team.to_param %>" athlete_profile="<%=current_user.athlete_profile.id%>">Submit Interest</div>
+        <% end %>
+      <% elsif !user_signed_in? %>
+          <%= link_to "Sign up to express interest", new_user_registration_path, :class => "btn btn-primary" %>
+      <% end %>
+    </p>
+  </div>
+
+
+  <!-- College Grades --> 
+
+
+  <div>
+    <div class="col-sm-6 col-md-4" style="margin-left: -15px; margin-right: -15px;">
+      <div class="thumbnail" style="padding: 15px;">
+        <div class="caption">
+          <h3>Overall Grade </h3> <h1 class="primary-color text-center"><%= @college.overall_grade %></h1>
+          <p>
+            <table class="table-hover">
+            <ul class="list-group">
+              <li class="list-group-item" style="border:none;">
+                <a>Athletics</a> 
+                <span class="badge college-grade-badge"><%= @college.athletics_grade %></span>
+              </li>
+              <li class="list-group-item" style="border:none;">
+                <a>Academics</a> 
+                <span class="badge college-grade-badge"><%= @college.academics_grade %></span>
+              </li>
+              <li class="list-group-item" style="border:none;">
+                <a>Diversity</a> 
+                <span class="badge college-grade-badge"><%= @college.diversity_grade %></span>
+              </li>
+              <li class="list-group-item" style="border:none;">
+                <a>Professors</a> 
+                <span class="badge college-grade-badge"><%= @college.professors_grade %></span>
+              </li>
+              <li class="list-group-item" style="border:none;">
+                <a>Dorms</a> 
+                <span class="badge college-grade-badge"><%= @college.dorms_grade %></span>
+              </li>
+              <li class="list-group-item" style="border:none;">
+                <a>Student Life</a> 
+                <span class="badge college-grade-badge"><%= @college.student_life_grade %></span>
+              </li>
+              <li class="list-group-item" style="border:none;">
+                <a>Value</a> 
+                <span class="badge college-grade-badge"><%= @college.value_grade %></span>
+              </li>
+              <li class="list-group-item" style="border:none;">
+                <a>Campus</a> 
+                <span class="badge college-grade-badge"><%= @college.campus_grade %></span>
+              </li>
+              <li class="list-group-item" style="border:none;">
+                <a>Party Scene</a> 
+                <span class="badge college-grade-badge"><%= @college.party_scene_grade %></span>
+              </li>
+              <li class="list-group-item" style="border:none;">
+                <a>Location</a> 
+                <span class="badge college-grade-badge"><%= @college.location_grade %></span>
+              </li>
+              <li class="list-group-item" style="border:none;">
+                <a>Safety</a> 
+                <span class="badge college-grade-badge"><%= @college.safety_grade %></span>
+              </li>
+            </ul>
+          </table>
+
+          </p>
+          <!-- <p><a href="#" class="btn btn-primary" role="button">Submit interest</a></p> -->
+        </div>
+      </div>
+    </div>
+
+  <!-- College attribute sections -->
+
+  <div class="col-sm-6 col-md-8">
+    <div class="row">
+     <div class="col-sm-12 col-md-12">
+      <div class="thumbnail" style="padding: 15px;">
+          <div class="caption">
+            <h1 style="font-size: 30px; color: #367cb8;">Admissions</h1>
+            <h3>Acceptance Rate</h3>
+            <h4 style="color: #367cb8;"><%= @college.acceptance_rate %> <small></small></h4>
+              <table class="table table-responsive table-hover">
+                <tr>
+                  <th style="border:none;"></th>
+                </tr>
+                <tr>
+                  <td>SAT Range</td>
+                  <td><%= @college.sat_range %></td>
+                </tr>
+                <tr>
+                  <td>ACT Range</td>
+                  <td><%= @college.act_range %></td>
+                </tr>
+                <tr>
+                  <td>Application Fee</td>
+                  <td><%= @college.application_fee %></td>
+                </tr>
+                <tr>
+                  <td>Application Website</td>
+                  <td><%= @college.application_website %></td>
+                </tr>
+
+              </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+     <div class="col-sm-12 col-md-12">
+      <div class="thumbnail" style="padding: 15px;">
+          <div class="caption">
+            <h1 style="font-size: 30px; color: #367cb8;">Academics</h1>
+            <h3>Professors Grade</h3>
+            <h4 class="lead" style="color: #367cb8;"><span class="badge professors-badge"><%= @college.professors_grade %></span><br> <small> Based on faculty accomplishments, salary, student reviews, and additional factors. </small></h4>
+              <table class="table table-responsive table-hover">
+                <tr>
+                  <td>Graduation Rate</td>
+                  <td><%= @college.graduation_rate %></td>
+                </tr>
+                <tr>
+                  <td>Student Faculty Ratio</td>
+                  <td><%= @college.student_faculty_ratio %></td>
+                </tr>
+                <tr>
+                  <td>Median Earnings Post-Graduation</td>
+                  <td><%= @college.median_earnings %></td>
+                </tr>
+
+              </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+     <div class="col-sm-12 col-md-12">
+      <div class="thumbnail" style="padding: 15px;">
+          <div class="caption">
+            <h1 style="font-size: 30px; color: #367cb8;">Basic</h1>
+            <h3>Enrollment</h3>
+            <h4 style="color: #367cb8;"><%= @college.enrollment %> <small> Undergrads </small></h4>
+              <table class="table table-responsive table-hover">
+                <tr>
+                  <th style="border:none;"><%= @college.name %></th>
+                </tr>
+                <tr>
+                  <td>Website</td>
+                  <td><%= @college.website %></td>
+                </tr>
+                <tr>
+                  <td>Address</td>
+                  <td><%= @college.address %></td>
+                </tr>
+                <tr>
+                  <td>City</td>
+                  <td><%= @college.city %></td>
+                </tr>
+                <tr>
+                  <td>State</td>
+                  <td><%= @college.state %></td>
+                </tr>
+                <tr>
+                  <td>Nickname</td>
+                  <td><%= @college.nickname %></td>
+                </tr>
+                <tr>
+                  <td>Campus Setting</td>
+                  <td><%= @college.campus_setting %></td>
+                </tr>
+                <tr>
+                  <td>School Type</td>
+                  <td><%= @college.school_type %></td>
+                </tr>
+                <tr>
+                  <td>Number of Years</td>
+                  <td><%= @college.num_years %></td>
+                </tr>
+
+              </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+     <div class="col-sm-12 col-md-12">
+      <div class="thumbnail" style="padding: 15px;">
+          <div class="caption">
+            <h1 style="font-size: 30px; color: #367cb8;">Cost</h1>
+            <h3>Net Price</h3>
+            <h4 style="color: #367cb8;"><%= @college.net_price %> <small> / year </small></h4>
+            <p style="color:grey;">National average is $15,431</p>
+              <table class="table table-responsive table-hover">
+                <tr>
+                  <th style="border:none;"></th>
+                </tr>
+                <tr>
+                  <td>Tuition In-State</td>
+                  <td><%= @college.tuition_in_state %></td>
+                </tr>
+                <tr>
+                  <td>Tuition Out-of-State</td>
+                  <td><%= @college.tuition_out_of_state %></td>
+                </tr>
+
+              </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+     <div class="col-sm-12 col-md-12">
+      <div class="thumbnail" style="padding: 15px;">
+          <div class="caption">
+            <h1 style="font-size: 30px; color: #367cb8;">Financial Aid</h1>
+            <h3>Any Financial Aid</h3>
+            <h4 style="color: #367cb8;"><%= @college.financial_aid_percentage %><small> of students </small></h4>
+              <table class="table table-responsive table-hover">
+                <tr>
+                  <th style="border:none;"></th>
+                </tr>
+                <tr>
+                  <td>Average Total Aid Awarded</td>
+                  <td><%= @college.avg_total_aid_awarded %></td>
+                </tr>
+
+              </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12 col-md-12">
+        <div class="thumbnail" style="padding: 15px;">
+          <div class="caption table-responsive">
+            <h1 style="font-size: 30px; color: #367cb8;">Majors <small><%= @college.name %></small></h1>
+            <br>
+            <table class="table table-hover table-row-border" style="border-radius: 4px;">
+              <tr>
+                <th class="primary-color">Most Popular</th>
+              </tr>
+              <% @most_popular.each do |mp| %>
+              <tr>
+                <td><%= mp.name %></td>
+              </tr>
+              <% end %>
+            </table>
+
+            <hr>
+            <table class="table table-hover table-row-border" style="border-radius: 4px;">
+              <tr>
+                <th class="primary-color">All Majors</th>
+              </tr>
+              <% @majors.each do |m| %>
+                  <tr>
+                    <td><%= m.name %></td>
+                  </tr>
+              <% end %>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+   </div>
+  </div>
+</div>

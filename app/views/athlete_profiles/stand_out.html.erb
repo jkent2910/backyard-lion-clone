@@ -1,0 +1,444 @@
+<%= title 'Stand Out' %>
+
+
+<div class="top-banner">
+  <h2 style="background-color:#0D4775;color:white;">Stand Out & Get Recruited</h2>
+</div>
+
+<div class="container">
+  <h4 class="stand-out-header">Congratulations to the most recent athletes to commit to play at the next level!</h4>
+  <% @commitments.each do |a| %>
+      <% athlete = AthleteProfile.find(a.athlete_profile_id) %>
+    <div class="row">
+      <div class="col-md-12">
+        <%= fa_icon("star") %>
+        <h2 class="newsfeed-header-text"><%= User.find(athlete.user_id).full_name %>
+        from <%= athlete.city %>, <%= athlete.state %> just committed!</h2>
+      </div>
+    </div>
+  <% end %>
+  <h4 class="stand-out-header">Increase your value by using these tools!  Let's get you recruited!</h4>
+  <div class="row">
+    <div class="col-md-6 col-xs-12">
+      <div class="experience-div">
+        <div class="row">
+          <div class="col-md-12">
+            <h3 class="main-header-txt"><%= image_tag("logo.png", class: "logo-header") %>Gain Maximum Exposure</h3>
+            <div class="text-center">
+              <!--<%= embed("https://www.youtube.com/watch?v=hWdKwYKUe1M") %>-->
+            </div>
+          </div>
+        </div>
+        <hr>
+        
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="stand-out-header">1. Earn Additional Promotion To Coaches</h4>
+            <div class="skills-edit">
+              <h5 class="stand-out-header"></h5>
+              <!-- *** -->
+
+            <div class="skills-edit">
+              <div class="col-md-12 extra-margin-bottom">
+                <h5 class="stand-out-header">Invite 10 athletes in exchange for additional promotion to college coaches</h5>
+                <div class="progress">
+                    <% if @invites < 1 %>
+                        <div class="progress-bar progress-bar-danger" style="width: 30%">
+                          <%= @invites %> / 10
+                        </div>
+                    <% elsif @invites < 2 %>
+                        <div class="progress-bar progress-bar-danger progress-bar-striped" style="width: 35%">
+                          <%= @invites %> / 10
+                        </div>
+                    <% elsif @invites < 3 %>
+                        <div class="progress-bar progress-bar-danger" style="width: 40%">
+                          <%= @invites %> / 10
+                        </div>
+                    <% elsif @invites < 4 %>
+                        <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 50%">
+                          <%= @invites %> / 10
+                        </div>
+                    <% elsif @invites < 5 %>
+                        <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 60%">
+                          <%= @invites %> / 10
+                        </div>    
+                    <% elsif @invites < 6 %>
+                        <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 70%">
+                          <%= @invites %> / 10
+                        </div>
+                    <% elsif @invites < 7 %>
+                        <div class="progress-bar progress-bar-success" style="width: 80%">
+                          <%= @invites %> / 10
+                        </div>
+                    <% elsif @invites < 8 %>
+                        <div class="progress-bar progress-bar-success" style="width: 90%">
+                          <%= @invites %> / 10
+                        </div>
+                    <% elsif @invites < 9 %>
+                        <div class="progress-bar progress-bar-success progress-bar-striped" style="width: 95%">
+                          <%= @invites %> / 10
+                        </div>
+                    <% elsif @invites > 9 %>
+                        <div class="progress-bar progress-bar-success progress-bar-striped" style="width: 100%">
+                          <%= @invites %> / 10 - Congrats! Your promotion will be sent out the coming week. 
+                        </div>    
+                    <% end %>
+                    </div>    
+                  </div>
+              <%= form_tag(promotion_contacts_athlete_profile_path, :method => 'post') do %>
+                  <h5 class="stand-out-header">Enter E-mail addresses or Phone Numbers (Separated with a comma) </strong> </h5>
+
+                  <%= text_area_tag 'promo_contacts', nil, {placeholder: "Enter email or phone numbers, separated with a comma", class: "form-control", :required => 'required'} %><br />
+                  <div class="actions">
+                    <%= submit_tag "Send Invite Requests", class: 'btn btn-md btn-primary edit-button send-reco-requests', method: :get %>
+                  </div>
+              <% end %>
+
+             </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="stand-out-header">2. Share Your Profile or Player Card</h4>
+            <div class="skills-edit">
+              <h5 class="stand-out-header">Most college recruiters are 1 to 2 degrees of separation away and can be reached by someone you already know.</h5>
+
+              <hr>
+              <h5 class="stand-out-header">Share on 
+
+                <% if @athlete_profile.guardian_twitter.blank? && @athlete_profile.second_guardian_twitter.blank? %>
+                  <%= link_to "http://twitter.com/home?status=Check out my profile on Backyard Lion: #{@bitly_url}" do %>
+                    <%= fa_icon("twitter 2x", class: "btn btn-share-social") %>
+                  <% end %>
+                <% elsif @athlete_profile.guardian_twitter.blank? && !@athlete_profile.second_guardian_twitter.blank? %>
+                    <%= link_to "http://twitter.com/home?status=Check out my profile on Backyard Lion: #{@bitly_url} #{@athlete_profile.second_guardian_twitter}" do %>
+                        <%= fa_icon("twitter 2x", class: "btn btn-share-social") %>
+                    <% end %>
+                <% elsif !@athlete_profile.guardian_twitter.blank? && @athlete_profile.second_guardian_twitter.blank? %>
+                    <%= link_to "http://twitter.com/home?status=Check out my profile on Backyard Lion: #{@bitly_url} #{@athlete_profile.guardian_twitter}" do %>
+                        <%= fa_icon("twitter 2x", class: "btn btn-share-social") %>
+                    <% end %>
+                <% elsif !@athlete_profile.guardian_twitter.blank? && !@athlete_profile.second_guardian_twitter.blank? %>
+                    <%= link_to "http://twitter.com/home?status=Check out my profile on Backyard Lion: #{@bitly_url} #{@athlete_profile.guardian_twitter} #{@athlete_profile.second_guardian_twitter}" do %>
+                        <%= fa_icon("twitter 2x", class: "btn btn-share-social") %>
+                    <% end %>
+                <% end %>
+              and
+              <%= link_to "https://wwww.facebook.com/sharer/sharer.php?u=#{@bitly_url}&name=Check%20out%20my%20Backyard%20Lion%20profile&description=Check%20out%20my%20Backyard%20Lion%20profile" do %>
+                <%= fa_icon("facebook 2x", class: "btn btn-share-social") %>
+              <% end %>
+              </h5>
+
+              <hr>
+
+                <h5 class="stand-out-header"><%= link_to "View Your Card", player_card_athlete_profile_path(@athlete_profile), class: "btn-search-colleges" %>
+              
+              </h5>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-12 extra-margin-bottom">
+            <h4 class="stand-out-header">3. Submit Interest To Colleges</h4>
+            <div class="skills-edit">
+              <div class="col-md-12 extra-margin-bottom">
+                <h5 class="stand-out-header">Increase your number of opportunities by letting colleges know you're interested</h5>
+                <div class="progress">
+                  <% if @athlete_profile.interests.count < 10 %>
+                      <div class="progress-bar progress-bar-danger" style="width: 30%">
+                        <%= @athlete_profile.interests.count %> / 886
+                      </div>
+                  <% elsif @athlete_profile.interests.count < 30 %>
+                      <div class="progress-bar progress-bar-danger progress-bar-striped" style="width: 35%">
+                        <%= @athlete_profile.interests.count %> / 886
+                      </div>
+                  <% elsif @athlete_profile.interests.count < 40 %>
+                      <div class="progress-bar progress-bar-danger" style="width: 40%">
+                        <%= @athlete_profile.interests.count %> / 886
+                      </div>
+                  <% elsif @athlete_profile.interests.count < 50 %>
+                      <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 50%">
+                        <%= @athlete_profile.interests.count %> / 886
+                      </div>
+                  <% elsif @athlete_profile.interests.count < 60 %>
+                      <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 60%">
+                        <%= @athlete_profile.interests.count %> / 886
+                      </div>
+                  <% elsif @athlete_profile.interests.count < 70 %>
+                      <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 70%">
+                        <%= @athlete_profile.interests.count %> / 886
+                      </div>
+                  <% elsif @athlete_profile.interests.count < 80 %>
+                      <div class="progress-bar progress-bar-success" style="width: 80%">
+                        <%= @athlete_profile.interests.count %> / 886
+                      </div>
+                  <% elsif @athlete_profile.interests.count < 90 %>
+                      <div class="progress-bar progress-bar-success" style="width: 90%">
+                        <%= @athlete_profile.interests.count %> / 886
+                      </div>
+                  <% elsif @athlete_profile.interests.count > 100 %>
+                      <div class="progress-bar progress-bar-success progress-bar-striped" style="width: 95%">
+                        <%= @athlete_profile.interests.count %> / 886
+                      </div>
+                  <% end %>
+                </div>
+              </div>
+              <%= link_to "Browse Teams", teams_path(q: {"sport_name_eq" => @athlete_profile.athlete_experiences.first.sport}), class: "btn btn-search-colleges", method: :get %>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="stand-out-header more-margin-bottom">4. Request Promotion</h4>
+            <div class="skills-edit">
+              <%= form_tag(athlete_profiles_request_promotion_path, :method => 'post') do %>
+                  <span class="col-sm-12">Recent Accomplishment<span class="required-field-asterick">*</span></span><br />
+                  <%= text_area_tag 'accomplishment', nil, {placeholder: "Enter accoplishment", class: "form-control reco-box"} %><br />
+                  <span class="col-sm-12">Twitter Handle<span class="required-field-asterick">*</span></span><br />
+                  <%= text_field_tag 'twitter_handle', nil, {placeholder: "For ex: @devan_moylan", class: "form-control reco-box"} %><br />
+                  <span class="col-sm-12">Facebook Name<span class="required-field-asterick">*</span></span><br />
+                  <%= text_field_tag 'facebook_name', nil, {placeholder: "For ex: Devan.Moylan", class: "form-control reco-box"} %><br />
+                  <%= hidden_field_tag 'athlete_profile_id', @athlete_profile.id %>
+                  <div class="actions promote-me-btn">
+                    <%= submit_tag "Submit Request", class: 'btn btn-md btn-primary', method: :get %>
+                  </div><br /> <br />
+              <% end %>
+              <h4>Be sure to follow Backyard Lion on <%= link_to "https://twitter.com/backyardlion" do %>
+                    <%= fa_icon("twitter 2x", class: "btn btn-share-social") %>
+                <% end %> and <%= link_to "https://facebook.com/backyardlionpage" do %>
+                    <%= fa_icon("facebook 2x", class: "btn btn-share-social") %>
+                <% end %></h4>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="stand-out-header">5. Edit/Create Your Top-10</h4>
+            <div class="skills-edit">
+              <h3>This feature is coming soon!</h3>
+              <!--<%= link_to "My Top 10", athlete_profile_interests_path(@athlete_profile), class: "btn btn-search-colleges", method: :get %>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xs-12">
+      <div class="experience-div">
+        <div class="row">
+          <div class="col-md-12">
+            <h3 class="main-header-txt"><%= image_tag("logo.png", class: "logo-header") %>Build An Elite Profile</h3>
+            <div class="text-center">
+              <!--<%= embed("https://www.youtube.com/watch?v=hWdKwYKUe1M") %>-->
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="stand-out-header">1. Attain "Lion Rated" Status</h4>
+            <span style="font-style: italic;">Your rating will only be visible to coaches if you have at least 10 ratings for your experience.</span>
+          </div>
+        </div>
+        <% @athlete_profile.athlete_experiences.each do |experience| %>
+          <h4 class="ratings-count">
+            You have <%= experience.decorate.ratings_count %> ratings for your
+            <%= experience.sport %>
+              <% if !experience.position.nil? %> <%= experience.position %> <% end %>
+            experience
+          </h4>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="skills-edit">
+                  You've invited <%= @invites %> people
+                  <%= form_for(@athlete_profile) do |f| %>
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <strong>Invite via Facebook</strong><br/>
+                            <div class="fb-send" data-href="https://www.backyardlion.com" data-size="large" data-ref="invite-fb"></div>
+                          </div>
+                        </div><br />
+                        <div class="row">
+                          <div class="col-md-12">
+                            <strong>Provide E-mail addresses or Phone Numbers (Separate by comma)</strong>
+                            <%= f.text_area :contacts, class: "form-control", :required => 'required'  %>
+                          </div>
+                        </div><br />
+                        <div class="actions">
+                          <%= f.submit "Send Rating Request", class: 'btn btn-md btn-primary edit-button', method: :get %>
+                        </div>
+                      </div>
+                  <% end %>
+                </div>
+              </div>
+            </div><br />
+        <% end %>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="stand-out-header">2. Add 5 Skills</h4>
+          </div>
+        </div>
+        <div class="content">
+          <h4>You currently have: <%= @athlete_profile.skills.count %> skills</h4>
+          <ul class="skills-section">
+            <% unless @athlete_profile.skills.empty? %>
+                <% @athlete_profile.skills.each do |skill| %>
+                    <li class="skill-item">
+              <span class="skill-pill-profile">
+                <a class="link-to-endorse">
+                  <span class="num-endorsements"> <%= @athlete_profile.endorsements.where(skill_id: skill).count %></span>
+                </a>
+                <span class="skill-name">
+                  <a class="skill-name-a">
+                    <span><%= skill.name %></span>
+                  </a>
+                </span>
+                <span class="skill-result-prof">
+                  <span class="num-endorsements"><%= skill.skill_result %> <%= skill.units %></span>
+                </span>
+              </span>
+                      <div class="endorsers-container">
+                        <% unless @athlete_profile.endorsements.where(skill_id: skill).count == 0 %>
+                            <% @athlete_profile.endorsements.where(skill_id: skill).each do |endorser| %>
+                                <ul class="endorsers-pics">
+                                  <li>
+                    <span class="new-miniprofile-container">
+                      <strong>
+                        <% if endorser.user_type == "athlete" %>
+                            <%= image_tag(AthleteProfile.find(endorser.endorser_id).profile_picture, class: "endorse-mini-pic") %>
+                        <% elsif endorser.user_type == "supporter" %>
+                            <%= image_tag("missing.png", class: "endorse-mini-pic") %>
+                        <% end %>
+                      </strong>
+                    </span>
+                                  </li>
+                                </ul>
+                            <% end %>
+                        <% end %>
+                      </div>
+                    </li>
+                <% end %>
+            <% end %>
+          </ul>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="skills-edit">
+              <%= link_to "Add Skills", edit_athlete_profile_path(@athlete_profile, button: "skills-edit"), method: :get, class: "btn-search-colleges" %>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="stand-out-header">3. Show Your Character</h4>
+          </div>
+        </div>
+        <% @athlete_profile.athlete_experiences.each do |experience| %>
+            <div class="reco-strength">
+              <h4>Recommendation Strength for your <%= experience.sport %> experience</h4>
+              <div class="progress">
+                <% if experience.athlete_recommendations.count < 1 %>
+                    <div class="progress-bar progress-bar-danger" style="width: 20%">
+                      0% Strength - 0 Recommendations
+                    </div>
+                <% elsif experience.athlete_recommendations.count == 1 %>
+                    <div class="progress-bar progress-bar-danger progress-bar-striped" style="width: 20%">
+                      20% Strength - 1 Recommendation
+                    </div>
+                <% elsif experience.athlete_recommendations.count == 2 %>
+                    <div class="progress-bar progress-bar-danger" style="width: 40%">
+                      40% Strength - 2 Recommendations
+                    </div>
+                <% elsif experience.athlete_recommendations.count == 3 %>
+                    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 60%">
+                      60% Strength - 3 Recommendations
+                    </div>
+                <% elsif experience.athlete_recommendations.count == 4 %>
+                    <div class="progress-bar progress-bar-success" style="width: 90%">
+                      80% Strength - 4 Recommendations
+                    </div>
+                <% elsif experience.athlete_recommendations == 5 %>
+                    <div class="progress-bar progress-bar-success progress-bar-striped" style="width: 100%">
+                      100% Strength - 5 Recommendations
+                    </div>
+                <% end %>
+              </div>
+              <% if experience.athlete_recommendations.count < 1 %>
+                  RECRUITERS SEE: <%= @athlete_profile.decorate.full_name %>'s established credibility is <span style="color:red; font-weight:bold;">VERY LOW</span>
+              <% elsif experience.athlete_recommendations.count == 1 %>
+                  Recruiters See: <%= @athlete_profile.decorate.full_name %>'s established credibity is <span style="color:#a94442; font-weight:bold;">LOW</span>
+              <% elsif experience.athlete_recommendations.count == 2 %>
+                  RECRUITERS SEE: <%= @athlete_profile.decorate.full_name %>'s established credibity is <span style="color:#743433; font-weight:bold;">BELOW AVERAGE</span>
+              <% elsif experience.athlete_recommendations.count == 3 %>
+                  RECRUITERS SEE: <%= @athlete_profile.decorate.full_name %>'s established credibity is <span style="color:#777777; font-weight:bold;">AVERAGE</span>
+              <% elsif experience.athlete_recommendations.count == 4 %>
+                  RECRUITERS SEE: <%= @athlete_profile.decorate.full_name %>'s established credibity is <span style="color:#0077b7; font-weight:bold;">ABOVE AVERAGE</span>
+              <% elsif experience.athlete_recommendations.count > 4 %>
+                  RECRUITERS SEE: <%= @athlete_profile.decorate.full_name %>'s established credibity is <span style="color:#25215e; font-weight:bold;">STRONG</span>
+              <% end %>
+              <hr>
+              <%= form_tag(athlete_profiles_update_athlete_contacts_path, :method => 'post') do %>
+                  <% if experience.athlete_recommendations.count < 1 %>
+                      <%= text_field_tag 'contact_1', nil, {placeholder: "Enter email or phone", class: "form-control reco-box", :required => 'required'} %><br />
+                  <% else %>
+                      <%= fa_icon("check 2x") %> <br />
+                  <% end %>
+                  <% if experience.athlete_recommendations.count == 1 || experience.athlete_recommendations.count > 1 %>
+                      <%= fa_icon("check 2x") %> <br />
+                  <% else %>
+                      <%= text_field_tag 'contact_2', nil, {placeholder: "Enter email or phone", class: "form-control reco-box"} %><br />
+                  <% end %>
+                  <% if experience.athlete_recommendations.count == 2 || experience.athlete_recommendations.count > 2 %>
+                      <%= fa_icon("check 2x") %> <br />
+                  <% else %>
+                      <%= text_field_tag 'contact_3', nil, {placeholder: "Enter email or phone", class: "form-control reco-box"} %><br />
+                  <% end %>
+                  <% if experience.athlete_recommendations.count == 3 || experience.athlete_recommendations.count > 3 %>
+                      <%= fa_icon("check 2x") %> <br />
+                  <% else %>
+                      <%= text_field_tag 'contact_4', nil, {placeholder: "Enter email or phone", class: "form-control reco-box"} %><br />
+                  <% end %>
+                  <% if experience.athlete_recommendations.count == 4 || experience.athlete_recommendations.count > 4 %>
+                      <%= fa_icon("check 2x") %> <br />
+                  <% else %>
+                      <%= text_field_tag 'contact_5', nil, {placeholder: "Enter email or phone", class: "form-control reco-box"} %><br />
+                  <% end %>
+                  <% if experience.athlete_recommendations.count == 5 || experience.athlete_recommendations.count > 5 %>
+                      <%= fa_icon("check 2x") %> <br />
+                  <% else %>
+                      <%= text_field_tag 'contact_6', nil, {placeholder: "Enter email or phone", class: "form-control reco-box"} %><br />
+                  <% end %>
+                  <%= hidden_field_tag 'athlete_profile_id', @athlete_profile.id %>
+                  <hr>
+                  <div class="actions">
+                    <%= submit_tag "Send Recommendation Requests", class: 'btn btn-md btn-primary edit-button send-reco-requests', method: :get %>
+                  </div>
+              <% end %>
+            </div>
+        <% end %>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="stand-out-header">4. Keep Coaches Updated</h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="skills-edit">
+              <h3>This feature is coming soon!</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

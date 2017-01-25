@@ -1,0 +1,9 @@
+.reco-container {
+  margin-top: 150px;
+}
+
+@media only screen and (max-width: 425px) {
+  .reco-container {
+  margin-top: 0px;
+  }
+}

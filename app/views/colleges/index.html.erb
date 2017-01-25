@@ -1,0 +1,80 @@
+<div class="container college-show-container">
+  <% @colleges.each do |college| %>
+</div>
+  <div class="container">
+    <div class="byl-inner-content-wrapper">
+      <div class="col-md-4">
+        <div class="college-logo">
+          <%= image_tag college.logo.url(:thumb) %>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="content">
+          <h3 class="college-name"><%= college.name %>
+            <% unless college.nickname.blank? %>
+                <span><%= college.nickname %></span>
+            <% end %>
+          </h3>
+          <% if current_user.byl_admin? %>
+              <%= link_to "Edit College", edit_college_path(college), class: "btn submit-interest-btn" %>
+          <% end %>
+          <h4 class="college-location">
+            <%= college.city %>, <%= college.state %>
+          </h4>
+          <h3 class="other-college-info">
+            Tuition (In-State): <span><%= college.tuition_in_state %></span>
+          </h3>
+          <h3 class="other-college-info">
+            Tuition (Out-of-State): <span><%= college.tuition_out_of_state %></span>
+          </h3>
+          <h4 class="college-location">
+            Campus: <strong><%= college.campus_setting %> | <%= college.school_type %> | <%= college.enrollment %> Students </strong>
+          </h4>
+        </div>
+      </div>
+      <a data-toggle="collapse" data-parent="#accordion" href="ui-tabs-accordions.html#college-teams-<%=college.id%>" class="reco-accordion collapsed">
+        <%= fa_icon("caret-right", style: "margin-left:3px;") %>
+        <%= college.name %> teams (<%= college.teams.count %>)
+      </a>
+      <div id="college-teams-<%=college.id%>" class="panel-collapse collapse" style="height: 0px">
+        <div class="panel-body">
+          <% if college.teams.empty? %>
+              <span>No Teams Yet</span>
+          <% else %>
+              <% college.teams.each do |t| %>
+                  <h3>
+                    <%= t.sport_name %>
+                    <span class="team-bubble-info">
+                  <%= t.sport_division %>, <%= t.sport_conference %>
+                </span>
+                  </h3>
+                  <% if current_user.athlete? && !current_user.athlete_profile.nil? %>
+                      <% if current_user.athlete_profile.try(:followed_team?, t) %>
+                          <%= link_to "Unfollow Team", unfollow_team_athlete_profile_path(current_user.athlete_profile, team_id: t.id), :method => :post, :class => "btn follow-team-btn" %>
+                          or
+                          <% if current_user.athlete? && !current_user.athlete_profile.nil? %>
+                              <% if current_user.athlete_profile.try(:expressed_interest?, t) %>
+                                  <%= link_to "Remove Interest", remove_interest_athlete_profile_path(current_user.athlete_profile, team_id: t.to_param), :method => :post, :class => "btn remove-interest-btn" %>
+                              <% else %>
+                                  <%= link_to "Submit Interest", express_interest_athlete_profile_path(current_user.athlete_profile, team_id: t.to_param), :method => :post, class: "btn submit-interest-btn" %>
+                              <% end %>
+                          <% end %>
+                      <% else %>
+                          <%= link_to "Follow Team", follow_team_athlete_profile_path(current_user.athlete_profile, team_id: t.id), :method => :post, :class => "btn unfollow-team-btn" %>
+                          or
+                          <% if current_user.athlete? && !current_user.athlete_profile.nil? %>
+                              <% if current_user.athlete_profile.try(:expressed_interest?, t) %>
+                                  <%= link_to "Remove Interest", remove_interest_athlete_profile_path(current_user.athlete_profile, team_id: t.to_param), :method => :post, :class => "btn remove-interest-btn" %>
+                              <% else %>
+                                  <%= link_to "Submit Interest", express_interest_athlete_profile_path(current_user.athlete_profile, team_id: t.to_param), :method => :post, class: "btn submit-interest-btn" %>
+                              <% end %>
+                          <% end %>
+                      <% end %>
+                  <% end %>
+              <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

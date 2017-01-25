@@ -1,0 +1,10 @@
+      Hi, <%= @first_name %> <%= @last_name %>!<br/>
+      <p><%= @admin_email %> has invited you to join Backyard Lion.</p>
+      <p>To sign-in, use your e-mail as your username and your temporary password is: "password"</p>
+        <p>Click the link below to get started! </p>
+        <p><%= link_to "Sign in", new_user_session_url, class: "btn btn-primary" %></p>
+      
+    		Thanks, <br/>
+    		Devan Moylan <br/>
+    		Backyard Lion CEO
+

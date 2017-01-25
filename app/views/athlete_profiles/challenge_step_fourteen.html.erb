@@ -1,0 +1,39 @@
+<%= title 'Challenge Step 14' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Step 14
+      <small> help</small>
+    </h1>
+  </div>
+
+  <dl class="dl-horizontal large">
+    <dt class="text-muted dt-font-challenge">
+      <small>Leave 5 feedbacks</small>
+    </dt>
+    <dd class="dd-font-challenge">
+      A lot of athletes send us their information, <%= @athlete_profile.user.first_name %>. It can take 24 hours to
+      process and prepare for promotions, but our Backyard Lion community could use your help. We'll be grateful and
+      move you to the front of the list if you can provide <u> feedback
+      (good, bad and improvement ideas) for 5 <%= @athlete_profile.athlete_experiences.first.sport %> athletes</u>.
+    </dd>
+  </dl>
+
+  <div style="text-align:center;">
+    <h4 class="text-muted">Jump to the front of the line by helping us with feedback on
+      five <%= @athlete_profile.athlete_experiences.first.sport %> athletes or continue the challenge in 24 hours.</h4>
+    <br/>
+
+    <%= link_to "Leave Feedback", rate_athletes_athlete_profile_path, class: "btn btn-search-colleges" %>
+    <% if @athlete_profile.challenge_step_fourteen_time.to_time.utc > DateTime.now.to_time.utc %>
+        <%= link_to "Step 15", challenge_step_fifteen_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges" %>
+    <% elsif @comment_count > 5 %>
+        <%= link_to "Step 15", challenge_step_fifteen_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges" %>
+    <% elsif @athlete_profile.challenge_step_fourteen_time < DateTime.now.utc %>
+        <%= link_to_unless @athlete_profile.challenge_step_fourteen_time.to_time.utc < DateTime.now, "<div class='btn btn-search-colleges-transparent'>Step 15</div>".html_safe, stand_out_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", disabled: true %>
+    <% else %>
+        <%= link_to "Step 15", challenge_step_fifteen_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", id: 'challenge-step-fifteen' %>
+    <% end %>
+  </div>
+</div>
+å

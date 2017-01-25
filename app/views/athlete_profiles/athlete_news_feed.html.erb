@@ -1,0 +1,285 @@
+<%= title 'Newsfeed' %>
+
+<div class="container main-container">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h1 class="primary-color">Newsfeed
+        <small class="small-headers"></small>
+      </h1>
+    </div>
+
+    <div class="row">
+
+      <!-- left column: profile strength -->
+      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 text-center">
+        <div class="thumbnail"
+             style="padding: 20px !important; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+          <div class="caption">
+            <h4 class="text-uppercase primary-color text-left"><%= image_tag @athlete_profile.profile_picture, class: 'img-circle profile-image-thumb-custom' %>
+              <%= link_to @athlete_profile.decorate.full_name, athlete_profile_path(@athlete_profile) %>
+            </h4>
+
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped active" role="progressbar" style="width:<%= @athlete_profile.profile_strength %>%"></div>
+            </div>
+            <div class="pull-right">Total Notifications <strong class="primary-color">
+              <%= link_to @athlete_profile.athlete_notifications.count, profile_views_athlete_profile_path(@athlete_profile) %></strong>
+            </div>
+            <br>
+            <br>
+            <div class="text-center">
+              <%= link_to "Improve Your Profile", edit_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-primary-invert" %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+
+        <div class="row">
+          <div class="col-sm-12 col-md-12">
+            <li class="row list-group-item comment-group-top background-color-primary-container" style="border-bottom-color: transparent;">
+              <div class="input-group">
+              </div>
+            </li>
+
+            <%= form_tag(create_athlete_newsfeed_item_path, :method => 'post', :multipart => 'true') do %>
+                <li class="row list-group-item background-color-primary-container" style="border-top-color:transparent; border-radius: 0px !important; margin-bottom: -2px;">
+                  <span class="label label-danger label-100 pull-right" style="margin-bottom: 5px;">NEW</span>
+                  <div class="col-md-2" style="padding-bottom: 10px;">
+                    <%= image_tag @athlete_profile.profile_picture, class: 'img-circle profile-image-thumb-custom' rescue "" %>
+                  </div>
+                  <div class="col-md-10 input-group">
+                    <div>
+                      <%= text_field_tag 'media_comment', nil, {placeholder: "What's happening?", class:
+                          "form-control", style: 'border-radius: 4px !important;'} %>
+                      <%= hidden_field_tag "athlete_profile_id", current_user.athlete_profile.id %>
+                    </div>
+                    <div class="row" style="margin-top: 70px;">
+                      <div class="col-md-8 text-left">
+                        <%= fa_icon('camera', class: 'primary-color', style: 'font-size:30px; padding-left:23px;') %>
+                        <%= file_field_tag 'media', :required => true %>
+                      </div>
+                      <div class="col-md-4 text-right">
+                        <span style="margin-right: 5px;" id="counter" data-maximum-length="<%= @maximum_length %>"><%= @maximum_length %></span>  <%= submit_tag "Post", class: 'btn btn-primary', method: :get %>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+            <% end %>
+
+            <% @activities.each do |a| %>
+
+
+                <% if a.activity_type == "new_video" %>
+
+                    <% video = Video.find(a.associated_activity_id) %>
+                    <% experience = AthleteExperience.find(video.athlete_experience_id) rescue nil %>
+                    <% athlete = AthleteProfile.find(experience.athlete_profile_id) rescue nil %>
+
+                    <div class="row thumbnail connector-top thumbnail-feed-custom" style="padding: 15px;">
+                      <ul class="caption">
+                        <div class="col-md-2">
+                          <%= image_tag athlete.profile_picture, class: 'img-circle profile-image-thumb-custom' rescue "" %>
+                        </div>
+                        <div class="col-md-10">
+                          <h4 class="primary-color">
+                            <%= link_to User.find(athlete.user_id).full_name, athlete_profile_path(athlete.id), method: :get %>
+                            <small>
+                              <%= athlete.city %> <%= athlete.state %>
+                            </small>
+                          </h4>
+
+                          <% if experience.position.blank? %>
+                              <p class="text-muted">Top video for <%= experience.sport %></p>
+                          <% else %>
+                              <p class="text-muted">Top video for <%= experience.position %></p>
+                          <% end %>
+                          <br>
+                          <div class="embed-container">
+                            <%= embed(video.url) %>
+                          </div>
+                          <div class="text-center">
+                            <% if user_signed_in? && current_user.athlete? && !current_user.athlete_profile.nil? %>
+                                <h4 style="font-weight:normal;color:gray;"><strong class="primary-color">Rate</strong>
+                                  How well
+                                  does <%= athlete.user.first_name %> play?</h4>
+                                <% unless current_user.athlete_profile.id == experience.athlete_profile_id %>
+                                    <i class="fa fa-star rating-attributes rating" data="<%= experience.id %>"
+                                       user_id="<%= current_user.id %>" id="<%= experience.id %>" athlete_profile="<%= athlete.id %>" style="margin-left:3px;"></i>
+                                <% end %>
+                            <% end %>
+                          </div>
+
+                          <!-- Video comments -->
+                          <% unless video.comments.empty? %>
+                              <% video.comments.each do |c| %>
+                                  <li class="list-group-item">
+                                    <dl>
+                                      <% user = User.find(c.user_id) rescue nil %>
+                                      <% unless user.nil? %>
+
+                                          <% if user.athlete? %>
+                                              <dt><%= link_to user.full_name, athlete_profile_path(user.athlete_profile), method: :get %></dt>
+                                          <% else %>
+                                              <dt><%= user.full_name %></dt>
+                                          <% end %>
+                                      <% end %>
+                                      <dd><%= c.body %></dd>
+                                    </dl>
+                                  </li>
+                              <% end %>
+                          <% end %>
+
+                          <% if user_signed_in? %>
+                              <%= form_tag(leave_video_feedback_path, :method => 'post') do %>
+                                  <li class="list-group-item">
+                                    <div class="input-group">
+                                      <%= text_field_tag 'video_comment', nil, {placeholder: "Enter comment", class:
+                                          "form-control", :required => 'required'} %>
+                                      <%= hidden_field_tag "video_id", video.id %>
+                                      <%= hidden_field_tag "user_id", current_user.id %>
+                                      <%= hidden_field_tag "athlete_profile_id", athlete.id %>
+                                      <%= hidden_field_tag "newsfeed", "newsfeed" %>
+                                      <span class="input-group-btn">
+                                  <%= submit_tag "Comment", class: 'btn btn-default', method: :get %>
+                                </span>
+                                    </div><!-- /input-group -->
+                                  </li>
+                              <% end %>
+                          <% end %>
+                        </div>
+                      </ul>
+                    </div>
+
+                <% elsif a.activity_type == "byl_video" %>
+                    <div class="row thumbnail connector-top thumbnail-feed-custom" style="padding: 15px;">
+                      <ul class="caption">
+                        <div class="col-md-2"><%= image_tag("logo.png", class: 'logo-header-mobile') %></div>
+                        <div class="col-md-8">
+
+                          <% video = Video.find(a.associated_activity_id) %>
+                          Backyard Lion
+                          added a new video!
+                          <%= video.name %>
+
+                          <%= embed(video.url) %>
+                          <%= video.description %>
+
+                        </div>
+                      </ul>
+                    </div>
+
+                <% elsif a.activity_type == "new_athlete" %>
+
+                <% elsif a.activity_type == "new_skill" %>
+
+
+                    <% athlete = AthleteProfile.find(a.athlete_profile_id) %>
+                    <% experience = AthleteExperience.find_by(athlete_profile_id: athlete.id) %>
+                    <% user = User.find(athlete.user_id) %>
+                    <div class="row thumbnail connector-top thumbnail-feed-custom" style="padding: 15px;">
+                      <ul class="caption">
+                        <div class="col-md-2">
+                          <%= image_tag athlete.profile_picture, class: 'img-circle profile-image-thumb-custom' rescue "" %>
+                        </div>
+                        <div class="col-md-10">
+                          <h4 class="primary-color">
+                            <%= link_to User.find(athlete.user_id).full_name, athlete_profile_path(athlete.id), method: :get %>
+                            <small>
+                              <%= athlete.city %> <%= athlete.state %>
+                            </small>
+                          </h4>
+                          <p class="text-muted">New skill reported</p>
+                          <div class="table-responsive">
+                            <table class="table table-hover" style="border-top:0px !important;">
+                              <tr>
+                                <th class="text-muted" style="border-top:0px !important;"><%= Skill.find(a.associated_activity_id).name %></th>
+                                <th class="lead primary-color text-right" style="border-top:0px !important;"><%= Skill.find(a.associated_activity_id).skill_result %></th>
+                                <th class="text-muted text-left" style="border-top:0px !important;"><%= Skill.find(a.associated_activity_id).units %></th>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </ul>
+                    </div>
+
+                <% elsif a.activity_type == "new_commitment" %>
+
+
+                    <% athlete = AthleteProfile.find(a.athlete_profile_id) %>
+                    <% experience = AthleteExperience.find_by(athlete_profile_id: athlete.id) %>
+                    <% user = User.find(athlete.user_id) %>
+
+                    <div class="row thumbnail connector-top thumbnail-feed-custom" style="padding: 15px;">
+                      <ul class="caption">
+                        <div class="col-md-2">
+                          <%= image_tag athlete.profile_picture, class: 'img-circle profile-image-thumb-custom' rescue "" %>
+                        </div>
+                        <div class="col-md-10">
+
+
+                          <h2 class="primary-color" style="margin-top: 0px !important;">
+                            News >>
+                            <small>  <%= User.find(athlete.user_id).full_name %> Commits</small>
+                          </h2>
+                          <h4 class="primary-color" style="padding-bottom:25px">
+                            <%= link_to User.find(athlete.user_id).full_name, athlete_profile_path(athlete.id), method: :get %>
+                            <small>
+                              <%= athlete.city %> <%= athlete.state %>
+                            </small>
+                          </h4>
+
+                        </div>
+                      </ul>
+                    </div>
+
+                <% elsif a.activity_type == "athlete_media" %>
+                    <% athlete = AthleteProfile.find(a.athlete_profile_id) %>
+                    <div class="row thumbnail connector-top thumbnail-feed-custom" style="padding: 15px;">
+                      <ul class="caption">
+                        <div class="col-md-2">
+                          <%= image_tag athlete.profile_picture, class: 'img-circle profile-image-thumb-custom' rescue "" %>
+                        </div>
+                        <div class="col-md-10">
+                          <h4 class="primary-color">
+                            <%= link_to User.find(athlete.user_id).full_name, athlete_profile_path(athlete.id), method: :get %>
+                            <small>
+                              <%= athlete.city %> <%= athlete.state %>
+                            </small>
+                          </h4>
+                          <p class="text-muted">
+                            <% unless a.media_comment.blank? %>
+                                <%= a.media_comment %>
+                            <% end %>
+                          </p>
+                          <br>
+                          <div class="col-md-12">
+                            <div class="row">
+                            <%= image_tag a.media, class: 'picture-newsfeed' %>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <% if current_user.try(:liked_activity?, a) %>
+                                <a onclick="unlikeActivity(this)" data="<%= current_user.to_param %>" activity_id="<%= a.to_param %>"><%= fa_icon('thumbs-down', style: 'margin-left: 17px') %>
+                                  Unlike</a> <%= ActivityLike.where(activity_id: a.id).count %>
+
+                            <% else %>
+                                <a onclick="likeActivity(this)" data="<%= current_user.to_param %>" activity_id="<%= a.to_param %>"><%= fa_icon('thumbs-up', style: 'margin-left: 17px') %>
+                                  Like</a> <%= ActivityLike.where(activity_id: a.id).count %>
+                            <% end %>
+                          </div>
+                        </div>
+                      </ul>
+                    </div>
+                <% end %>
+
+
+            <% end %>
+            <%= will_paginate @activities %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

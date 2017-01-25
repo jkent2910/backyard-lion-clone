@@ -1,0 +1,40 @@
+<div class="container card-container">
+  <div class="col-md-12">
+    <div class="card-bg">
+      <div class="year">
+        <%= @athlete_profile.graduation_year %>
+      </div>
+      <div class="stars">
+        <%= @first_experience.decorate.average_rating %>
+      </div>
+      <div class="text-center">
+        <div class="player">
+          <%= image_tag (@athlete_profile.profile_picture), class: 'text-center' %>
+                  <span class="ply-name" style="text-align: center;">
+                    <strong class="athlete-name"><%= @user.first_name.upcase %></br><%= @user.last_name.upcase %></strong>
+                  </span>
+        </div>
+        <div class="club">
+          <%= @athlete_profile.school_name.upcase %>
+        </div>
+        <div class="ply-detail">
+          <% if @first_experience.position.blank? %>
+              <p>SPORT: <%= @first_experience.sport.upcase %></p>
+          <% else %>
+            <p>POSITION: <%= @first_experience.position.upcase %></p>
+          <% end %>
+          <p>AGE: <%= @athlete_profile.decorate.calculate_age %></p>
+          <p>HT: <%= @athlete_profile.format_height %> | WT: <%= @athlete_profile.weight %></p>
+        </div>
+        <div class="text-center">
+          <span class="backyard-lion-text">BACKYARD LION</span>
+        </div>
+        <div class="logo-sec" style="text-align: center;">
+          <%= image_tag("logo.png") %>
+        </div>
+        <div class="trade-mark-card">TM</div>
+      </div>
+    </div>
+  </div>
+</div>
+

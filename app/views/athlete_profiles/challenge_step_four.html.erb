@@ -1,0 +1,50 @@
+<%= title 'Challenge Step 4' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Step Four
+      <small> put a face to your name</small>
+    </h1>
+  </div>
+
+  <dl class="dl-horizontal" style="font-size:large;">
+    <dt style="color:#444;">Add a picture</dt>
+    <dd>Take the opportunity to add a photograph to your profile to help <%= @first_experience_sport %> coaches
+      recognize you.
+    </dd>
+  </dl>
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-offset-2 col-md-8" style="padding: 15px;">
+        <div class="caption text-muted">
+
+            <ol>
+              <li>Click the <span class="primary-color">'Choose File'</span> below.</li>
+              <li><span class="primary-color">Select</span> an image file from your computer or mobile device upload.</li>
+              <li>Click <span class="primary-color">Save</span>.</li>
+            </ol>
+            <%= form_for(@athlete_profile) do |f| %>
+                <div class="col-md-offset-5 col-md-4">
+                  <%= f.file_field :profile_picture, class: "profile-picture-upload" %>
+                </div>
+                <%= hidden_field_tag(:challenge_step_four, 'challenge_step_four') %><br/><br/>
+                <div class="actions" style="text-align:center;">
+                  <%= f.submit "Save", class: 'btn btn-lg btn-primary-invert' %>
+                </div>
+            <% end %>
+
+        </div>
+        <br>
+        <div class="text-center">
+        <% if @athlete_profile.profile_picture.blank? %>
+            <%= link_to_unless @athlete_profile.profile_picture.blank?, "<div class='btn btn-search-colleges-transparent'>Challenge Step 5</div>".html_safe, stand_out_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", disabled: true %>
+        <% else %>
+            <%= link_to "Challenge Step 5", challenge_step_five_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-lg btn-primary", id: 'challenge-step-five' %>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<%= title 'Challenge Step 5' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Add Social Media
+    </h1>
+  </div>
+  <dl class="dl-horizontal" style="font-size:large;">
+    <dt class="text-muted">Include handles</dt>
+    <dd>Backyard Lion presents stand-out athletes on social media from time-to-time. We want to make your online
+      promotion more personal and keep you in the know.
+    </dd>
+  </dl>
+  <div class="skills-edit">
+    <div class="col-md-offset-2 col-md-8" style="padding: 15px;">
+      <h5 class="stand-out-header">Add Your Social Media Handles</h5>
+
+      <div class="row">
+        <%= form_for(@athlete_profile) do |f| %>
+            <div class="col-md-4">
+              <strong>Facebook URL:</strong>
+              <%= f.text_field :facebook_url, placeholder: "Username only, ex: devan-moylan", class: "form-control" %>
+            </div>
+            <div class="col-md-4">
+              <strong>Twitter URL</strong>
+              <%= f.text_field :twitter_url, placeholder: "Handle only, ex: @backyardlion", class: "form-control" %>
+            </div>
+            <div class="col-md-4">
+              <strong>Instagram URL</strong>
+              <%= f.text_field :instagram_url, placeholder: "Username only, ex: devan-moylan", class: "form-control" %>
+            </div>
+
+            <br>
+
+            <%= hidden_field_tag(:challenge_step_five, 'challenge_step_five') %><br/><br/>
+            <div class="actions text-center">
+              <br>
+              <%= f.submit "Add Social Media", class: 'btn btn-md btn-primary-invert' %>
+            </div>
+        <% end %>
+
+
+        <br>
+        <div style="text-align:center;">
+          <% if @athlete_profile.facebook_url.blank? && @athlete_profile.twitter_url.blank? && @athlete_profile.instagram_url.blank? %>
+              <%= link_to_unless @athlete_profile.facebook_url.blank? && @athlete_profile.twitter_url.blank? && @athlete_profile.instagram_url.blank?, "<div class='btn btn-search-colleges-transparent'>Step Six</div>".html_safe, stand_out_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", disabled: true %>
+          <% else %>
+              <%= link_to "Challenge Step 6", challenge_step_six_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", id: 'challenge-step-six' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

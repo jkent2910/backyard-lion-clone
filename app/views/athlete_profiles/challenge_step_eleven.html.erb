@@ -1,0 +1,50 @@
+<%= title 'Challenge Step 11' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Step 11
+      <small> improve credibility</small>
+    </h1>
+  </div>
+
+
+  <dl class="dl-horizontal" style="font-size:large;">
+    <dt class="text-muted dt-font-challenge">
+      Endorsement
+    </dt>
+    <dd class="dd-font-challenge">Add credibility to your skills with an endorsement from a teammate, coach or trainer. Do you know one person who
+      can endorse your skills? <br/>
+    </dd>
+  </dl>
+
+  <blockquote class="blockquote-reverse">
+    <p class="primary-color">The average <%= @first_experience_sport %> athlete has 2.7
+      endorsements. You currently have <u> <%= @athlete_profile.endorsements.count %> </u> endorsements. Are you
+      better than average?</p>
+    <footer>Stat geek at <cite title="Source Title">Backyard Lion</cite></footer>
+  </blockquote>
+
+  <div class="col-md-offset-2 col-md-8">
+    <div class="caption text-center"
+         style="padding: 20px !important; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+      <div class="text-left">
+        <div class="text-center">
+          <%= form_tag(athlete_profiles_invite_skill_endorsements_path, :method => 'post') do %>
+              <%= text_field_tag 'contact_1', nil, {placeholder: "Enter email or phone", class: "form-control reco-box", :required => 'required'} %>
+              <br/>
+              <%= hidden_field_tag 'athlete_profile_id', @athlete_profile.id %>
+              <%= hidden_field_tag 'user_id', current_user.id %>
+              <%= submit_tag "Send Endorsement Requests", class: 'btn btn-md btn-primary edit-button send-reco-requests', method: :get %>
+
+          <% end %>
+          <br>
+          <% if @skill_endorsement_invite_count < 1 %>
+              <%= link_to_unless @skill_endorsement_invite_count < 1, "<div class='btn btn-search-colleges-transparent'> Step 12</div>".html_safe, stand_out_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", disabled: true %>
+          <% else %>
+              <%= link_to "Challenge Step 12", challenge_step_twelve_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", id: 'challenge-step-twelve' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

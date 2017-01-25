@@ -1,0 +1,59 @@
+<%= title 'Challenge Step 9' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Step Nine
+      <small> film of game or skills</small>
+    </h1>
+  </div>
+
+  <dl class="dl-horizontal" style="font-size:large;">
+    <dt style="color:#444;">Add a video</dt>
+    <dd>We encourage you to be creative and find what works best for the attributes you're are trying to showcase
+      for <%= @first_experience_sport %>. Overall, here are few key guidelines: Don’t build a long form reel. Keep it
+      to within 2-3 minutes. If you have different skills you want to showcase, don’t be afraid to create more than
+      one reel. Put your best video at the front of the reel. Don’t build your recruiting reel in chronological order
+      of your season. Use spot shadows when necessary. You need to stand out from the rest of the athletes. Don’t
+      overuse spot shadows if they are not necessary. Be honest with your personal information. We talk to a lot of
+      users and recruiters tell us that they value honest data over unbelievable metrics.
+    </dd>
+  </dl>
+  <div class="skills-edit">
+    <div class="col-md-offset-2 col-md-8" style="padding: 15px;">
+      <% @athlete_profile.athlete_experiences.each do |experience| %>
+          <h4>Add video for your <%= experience.sport %> experience</h4>
+          <%= form_for(@athlete_profile) do |f| %>
+              <%= fields_for :video do |video| %>
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-md-4">
+                        Name:<span class="required-field-asterick">*</span>
+                        <%= video.text_field :name, class: "form-control video-name", placeholder: "2017 Senior year highlights" %>
+                      </div>
+                      <div class="col-md-4">
+                        URL:<span class="required-field-asterick">*</span>
+                        <%= video.text_field :url, class: "form-control video-url", placeholder: "www.hudl.com/video/3/4005283/57" %>
+                      </div>
+                      <div class="col-md-4">
+                        Description: <%= video.text_area :description, class: "form-control" %>
+                      </div>
+                      <%= f.hidden_field :athlete_experience_id, :value => experience.id %>
+                      <%= hidden_field_tag(:challenge_step_nine, 'challenge_step_nine') %><br/><br/>
+
+                    </div>
+                  </div>
+              <% end %>
+              <div class="text-center">
+                <%= f.submit "Save Video", class: 'btn btn-lg btn-primary-invert' %>
+              </div>
+              <br>
+          <% end %>
+      <% end %>
+      <div class="text-center">
+        <%= link_to "Step 10", challenge_step_ten_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", id: 'challenge-step-ten' %>
+      </div>
+
+    </div>
+
+  </div>
+</div>

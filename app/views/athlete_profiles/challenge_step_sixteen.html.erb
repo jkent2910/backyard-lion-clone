@@ -1,0 +1,46 @@
+<%= title 'Challenge Step 16' %>
+
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Profile Strength Summary
+    </h1>
+  </div>
+
+  <div class="row">
+    <div class="col-md-offset-3 col-md-6 text-center">
+      <div class="thumbnail"
+           style="padding: 20px !important; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+        <%= image_tag @athlete_profile.profile_picture, class: 'athlete-profile-image' %>
+        <div class="caption">
+          <h3 class="text-uppercase text-center primary-color"><%= @athlete_profile.decorate.full_name %>
+            <br>
+            <small>
+              <%= @athlete_profile.athlete_experiences.first.sport %> <%= @athlete_profile.athlete_experiences.first.position %>
+            </small>
+          </h3>
+          <p>Profile Strength</p>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width:<%= @athlete_profile.profile_strength %>%"><%= @athlete_profile.profile_strength.round %>
+            </div>
+          </div>
+
+          <p class="text-muted">
+            <%= @athlete_profile.user.first_name %>, we've collected <span class="primary-color">feedback</span> on how
+            your profile can improve. Would
+            you like to improve your profile?
+          </p>
+
+          <br>
+
+          <p style="text-align:center;">
+            <%= link_to "Improve", challenge_step_seventeen_athlete_profile_path(@athlete_profile), class: "btn btn-primary btn-lg", id: 'challenge-step-seventeen' %>
+            <%= link_to "No", athlete_profile_path(@athlete_profile), class: "btn btn-default btn-lg active" %>
+          </p>
+        </div>
+      </div>
+      <div class="text-center"></div>
+    </div>
+  </div>
+</div>
+</div>

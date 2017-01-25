@@ -1,0 +1,58 @@
+<%= title 'Challenge Step 15' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Exposure Summary
+      <small> your story so far</small>
+    </h1>
+  </div>
+
+  <div class="row">
+    <div class="col-md-offset-3 col-md-6 text-center">
+      <div class="thumbnail"
+           style="padding: 20px !important; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+        <%= image_tag @athlete_profile.profile_picture, class: 'athlete-profile-image' %>
+        <div class="caption">
+          <h3 class="text-uppercase text-center primary-color"><%= @athlete_profile.decorate.full_name %>
+            <br>
+            <small>
+              <%= @athlete_profile.athlete_experiences.first.sport %> <%= @athlete_profile.athlete_experiences.first.position %>
+            </small>
+          </h3>
+          <address>
+            <%= @athlete_profile.city %>, <%= @athlete_profile.state %> <%= @athlete_profile.zipcode %><br>
+            <abbr title="Phone">P:</abbr> <%= @athlete_profile.primary_phone %>
+          </address>
+          <div class="text-muted text-left"><%= @athlete_profile.user.first_name %>, based on the effort you've put in
+            since creating your account <%= @athlete_profile.decorate.date_since_creation %> days ago; Colleges have
+            interacted with your profile <%= @team_views %> times.
+          </div>
+          <br/>
+
+          <table class="table table-hover">
+            <tr>
+              <th class="text-center">Exposure steps taken</th>
+              <th class="text-center">Interactions received (Colleges)</th>
+              <th class="text-center">Interactions received (Total)</th>
+            </tr>
+            <tr>
+              <td class="text-center"><%= @interests_count %></td>
+              <td class="text-center"><%= @team_views %></td>
+              <td class="text-center"><%= @athlete_profile.athlete_notifications_count %></td>
+            </tr>
+          </table>
+
+          <blockquote class="blockquote-reverse">
+            <p class="primary-color">A river cuts through rock, not because of its power, but because of its
+              persistence.</p>
+            <footer>The famous <cite title="Source Title">James N. Watkins</cite></footer>
+          </blockquote>
+
+          <p style="text-align:center;">Are you up for improving this number?</p>
+
+          <p style="text-align:center;"><%= link_to "Learn More", challenge_step_sixteen_athlete_profile_path(@athlete_profile), class: "btn btn-primary btn-lg", id: 'challenge-step-sixteen' %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

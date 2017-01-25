@@ -1,0 +1,21 @@
+<%= title 'Stand Out Challenge' %>
+
+
+<div class="container main-container">
+	<div class="jumbotron">
+	  <h1>Hello, <%= @athlete_profile.user.first_name rescue nil %>!</h1>
+	  <hr>
+	  <dl class="dl-horizontal" style="font-size:large;">
+		  <dt>Stand-Out Goal</dt>
+		  <dd>Simply put, to give you more exposure to college coaches so you can play <%= @first_experience.sport %> in college. There are tasks that are necessary to reach this milestone. The Challenge breaks down activities into a step-by-step approach that helps you achieve your goal.</dd>
+	  </dl>
+		  <div style="text-align:center;">
+  			<p>Are you up for the challenge?</p><br/>
+		  	<p><%= link_to "YES!", challenge_step_one_athlete_profile_path(@athlete_profile), class: "btn btn-primary btn-lg" %> 
+		  		<%= link_to "No", athlete_profile_path(@athlete_profile), class: "btn btn-default btn-lg active" %>
+		  	</p>
+		  </div>
+		  
+	</div>
+  <div class="text-center"></div>
+</div>

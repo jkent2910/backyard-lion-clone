@@ -1,0 +1,25 @@
+<% @interests.each do |i| %>
+    <% team = Team.find(i.team_id) %>
+    <% college = College.find(team.college_id) %>
+    <div class="panel panel-default panel-styling-saved-number-rank" data-id="<%= i.id %>" data-athlete-profile="<%= current_user.athlete_profile.to_param %>">
+      <div class="row table table-hover">
+        <div class="col-md-2 saved-number-rank"><%= i.row_order %></div>
+        <div class="col-md-2"><%= link_to college.name, team_path(team) %></div>
+        <div class="col-md-2"><%= link_to team.sport_name, team_path(team) %></div>
+        <div class="col-md-2"><%= college.city %></div>
+        <div class="col-md-2"><%= college.state %></div>
+        <div class="col-md-1 text-right" style="display:inline;">
+          <% if user_signed_in? && current_user.athlete? %>
+              <% if current_user.athlete_profile.try(:expressed_interest?, team) %>
+                  <a onclick="removeInterestChallenge(this)" data="<%= team.to_param %>"
+                     athlete_profile="<%= current_user.athlete_profile.to_param %>"><%= fa_icon('times') %></a>
+              <% else %>
+                  <a onClick="registerInterestChallenge(this)" data="<%= team.to_param %>"
+                     athlete_profile="<%= current_user.athlete_profile.to_param %>"><%= fa_icon('plus') %></a>
+              <% end %>
+          <% else %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+<% end %>

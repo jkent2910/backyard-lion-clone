@@ -1,0 +1,43 @@
+<%= title 'Challenge Step 10' %>
+
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Step Ten
+      <small> your greatest strength</small>
+    </h1>
+  </div>
+  <dl class="dl-horizontal" style="font-size:large;">
+    <dt style="color:#444;">
+      <small>Write a strength</small>
+    </dt>
+    <dd>Coaches want athletes who are self-aware. List the greatest assets you would bring to a collegiate team.
+    </dd>
+  </dl>
+  <div class="skills-edit">
+    <div class="col-md-offset-2 col-md-8" style="padding: 15px;">
+      <%= form_for(@athlete_profile) do |f| %>
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <%= hidden_field_tag "athlete_profile[characteristic_answers_attributes][]characteristic_id", 1 %>
+              <%= text_area_tag "athlete_profile[characteristic_answers_attributes][]athlete_answer", nil, class: 'form-control' %>
+            </div>
+          </div>
+          <%= hidden_field_tag(:challenge_step_ten, 'challenge_step_ten') %><br/><br/>
+          <div class="actions text-center">
+            <%= f.submit "Save", class: 'btn btn-lg btn-primary-invert edit-button' %>
+          </div>
+          <br>
+      <% end %>
+      <div style="text-align:center;">
+        <% if @athlete_profile.characteristic_answers.count < 1 %>
+            <%= link_to_unless @athlete_profile.characteristic_answers.count < 1, "<div class='btn btn-search-colleges-transparent'>Challenge Step 11</div>".html_safe, stand_out_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", disabled: true %>
+        <% else %>
+            <%= link_to "Challenge Step 11", challenge_step_eleven_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", id: 'challenge-step-eleven' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>

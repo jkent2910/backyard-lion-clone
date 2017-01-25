@@ -1,0 +1,55 @@
+csv << ['ID', 'Referred', 'Profile Pic?', 'Contacts Invited', 'Date Signed Up', 'Sign up method', 'Name', 'Email', 'Gender', 'City', 'State', 'Graduation Year', 'High School',
+        'Primary Sport', 'Primary Position', 'Profile Strength', 'Sign In Count', 'Days Since Last Sign In', '# Skills',
+        '# Experiences', '# Teams Followed', '# Teams Submitted Interest', '# Videos', '# Profile Views', '# Ratings Received']
+@users.each do |u|
+    athlete = u.athlete_profile
+    unless athlete.nil?
+
+    video_count = 0
+    athlete.athlete_experiences.each do |exp|
+        video_count = video_count + exp.videos.count
+    end
+
+    rating_count = 0
+    athlete.athlete_experiences.each do |exp|
+        rating_count = rating_count + AthleteRating.where(athlete_experience_id: exp.id).count
+    end
+
+    if athlete.athlete_experiences.first.sport.nil?
+        sport = ""
+    else
+        sport = athlete.athlete_experiences.first.sport
+    end
+
+    if athlete.athlete_experiences.first.position.nil?
+        position = ""
+    else
+        position = athlete.athlete_experiences.first.position
+    end
+
+        csv << [athlete.id,
+                u.referred_flag,
+                !athlete.profile_picture.blank?,
+                athlete.contacts_invited,
+                u.created_at.strftime('%x'),
+                u.decorate.sign_up_method,
+                u.decorate.full_name,
+                u.email,
+                athlete.gender.capitalize,
+                athlete.city,
+                athlete.state,
+                athlete.graduation_year,
+                athlete.school_name,
+                sport,
+                position,
+                athlete.profile_strength.to_f,
+                u.sign_in_count,
+                u.decorate.days_since_last_signin,
+                athlete.skills.count,
+                athlete.athlete_experiences.count,
+                athlete.followers.count,
+                athlete.interests.count,
+                video_count,
+                rating_count]
+    end
+end

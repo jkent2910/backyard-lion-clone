@@ -1,0 +1,14 @@
+<div class="container college-show-container">
+  <div class="jumbotron">
+    <h1 class="challenge-step-one-header" style="font-size:36px!important; text-align:left !important;">Verify Your Account <small> check college e-mail address</small></h1>
+      <dl class="dl-horizontal" style="font-size:large;">
+        <dt style="color:#444;"><%= image_tag ("logo.png"), class: 'small-logo' %></dt>
+          <dd>To verify your account (and be able to take full advantage of our platform), please click the link included in the e-mail sent to your college e-mail address.
+          </dd><br>
+
+  <div class="text-center">
+    <%= link_to "Resend Confirmation", resend_verification_user_path(@user), class: 'btn remove-interest-btn' %>
+  </div>
+  </dl>
+</div>
+</div>

@@ -1,0 +1,22 @@
+<div class="nested-fields">
+  <div class="individual-experience-prof">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-4 ui-widget">
+          Name: <%= f.select :stat, valid_stats, {include_blank: true}, class: "form-control stat-select"%>
+        </div>
+        <div class="col-md-4">
+          Result: <%= f.text_field :result, class: "form-control video-url" %>
+        </div>
+        <!-- <div class="col-md-4">
+          Unit: <%= f.text_field :result_unit, class: "form-control video-url" %>
+        </div> -->
+        <div class="col-md-4">
+          Year: <%= f.text_field :year, class: "form-control video-url" %>
+        </div>
+      </div>
+    </div>
+
+    <%= link_to_remove_association "Remove Stat", f, class: "btn btn-danger" %>
+  </div>
+</div>

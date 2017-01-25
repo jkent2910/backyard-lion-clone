@@ -1,0 +1,47 @@
+<%= title 'Rate Athletes' %>
+
+
+<div class="container mobile-rate-container">
+  <% if @videos.empty? %>
+    <h3>There are no videos for your sport yet.  Check back soon!</h3>
+  <% else %>
+    <% @videos.each do |v| %>
+          <% experience = AthleteExperience.find(v.athlete_experience_id) %>
+          <% athlete = AthleteProfile.find(experience.athlete_profile_id) %>
+        <div class="embed-container">
+          <%= embed(v.url) %>
+        </div>
+        <% if user_signed_in? && (current_user.athlete? || current_user.supporter?) %>
+          <% unless current_user.athlete? && current_user.athlete_profile.id == experience.athlete_profile_id %>
+              <div class="profile-rate-experience" style="text-align: center;">
+                <div class="profile-rate-experience" style="text-align: center;">
+                  <% if experience.position.blank? %>
+                    <p>Can you rate <%= athlete.decorate.full_name %> at <%= experience.sport %>? </p>
+                  <% else %>
+                    <p>Can you rate <%= athlete.decorate.full_name %> at <%= experience.position %>? </p>
+                  <% end %>
+                  <i class="fa fa-star rating-attributes rating" athlete_profile="<%= athlete.id %>" data="<%= experience.id %>" user_id="<%= current_user.id %>" style="margin-left:3px;"> </i>
+              </div>
+            </div>
+            <div class="feedback-div">
+              <h4>Leave Feedback for <%= athlete.user.full_name %></h4>
+              <%= form_tag(leave_video_feedback_path, :method => 'post') do %>
+                  <%= text_area_tag 'video_feedback', nil, {placeholder: "Enter feedback", class: "form-control", :required => 'required'} %><br />
+                  <%= hidden_field_tag "video_id", v.id %>
+                  <%= hidden_field_tag "user_id", current_user.id %>
+                  <%= hidden_field_tag "athlete_profile_id", athlete.id %>
+                  <%= hidden_field_tag "rate_athletes", "rate_athletes" %>
+                  <div class="actions">
+                    <%= submit_tag "Submit Feedback", class: 'btn btn-md btn-primary edit-button send-reco-requests rate-athletes-feedback-btn', method: :get %>
+                  </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+          <hr>
+    <% end %>
+        <div class="text-center">
+          <%= will_paginate @videos, :page_links => false %>
+        </div>
+  <% end %>
+</div>

@@ -1,0 +1,42 @@
+<div class="nested-fields">
+  <div class="form-group">
+    <%= f.label :sport_name %>
+    <br/>
+    <%= f.select :sport_name, options_for_select: valid_sports, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :sport_division %>
+    <br/>
+    <%= f.select :sport_division, options_for_select: divisions, class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :sport_conference %>
+    <br/>
+    <%= f.text_field :sport_conference, class: "form-control" %>
+  </div>
+
+  <h4>Team Ratings</h4>
+  <div class="row">
+    <div class="col-md-8">
+      <% Factor.where.not(name: ['Campus Setting']).each do |factor| %>
+          <% team_rating = @college.team_ratings.where(factor_id: factor.id).take %>
+          <% preferences = factor.factor_preferences.map { |preference| [preference.name, preference.id] } %>
+          <div class="row factor-<%= factor.name.gsub(/\s+/, "-").downcase %>">
+            <div class="col-md-3">
+              <%= label_tag "college[team_ratings_attributes][]factor_preference_id", factor.name %>
+              <%= hidden_field_tag "college[team_ratings_attributes][]id", team_rating.try(:id) %>
+              <%= hidden_field_tag "college[team_ratings_attributes][]factor_id", factor.id %>
+              <%= hidden_field_tag "college[team_ratings_attributes][]team_id", f.object.id %>
+            </div>
+            <div class="col-md-4">
+              <%= select_tag "college[team_ratings_attributes][]factor_preference_id", options_for_select(preferences, team_rating.try(:factor_preference_id)) %><br />
+            </div>
+            <% factor_name = factor.name.downcase.tr(" ", "_") %>
+            <%= f.text_area factor_name.to_sym, class: "form-control" %>
+          </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%= link_to_remove_association "Remove Team", f, class: "btn btn-danger" %>
+</div>

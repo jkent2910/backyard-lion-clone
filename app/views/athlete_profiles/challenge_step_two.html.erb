@@ -1,0 +1,65 @@
+<%= title 'Challenge Step 2' %>
+
+<div class="container main-container">
+  <div class="page-header">
+    <h1 class="primary-color">Step Two
+      <small> add skills</small>
+    </h1>
+  </div>
+
+  <dl class="dl-horizontal" style="font-size:large;">
+    <dt style="color:#444;">Add One Skill</dt>
+    <dd>Some college coaches like to look at the details behind the on-the-field performance, athletic skills. Athletic
+      skills give more perspective to the type of success you can have in <%= @first_experience.sport %>.
+    </dd>
+  </dl>
+
+
+  <div class="inner-container">
+    <div class="row">
+      <div class="thumbnail" style="padding: 15px;">
+        <div class="caption text-center">
+          <h3 class="text-muted">The average <%= @first_experience.sport %> athlete adds: 2.8 skills.<br> Can you do
+            better than average?</h3>
+          <div class="progress">
+            <% if @skills_count == 0 %>
+                <div class="progress-bar progress-bar-danger" style="width: 5%">
+                  0 / 1
+                </div>
+            <% elsif @skills_count == 1 %>
+                <div class="progress-bar progress-bar-success progress-bar-striped" style="width: 100%">
+                  1 / 1
+                </div>
+            <% end %>
+          </div>
+          <%= form_for(@athlete_profile) do |f| %>
+
+              <div class="form-group">
+                <div class="row">
+                  <div class="links text-left">
+                    <%= link_to_add_association 'Add Skill', f, :skills, class: "btn btn-success" %>
+                  </div>
+                  <br/>
+                  <div id="#skills" class="text-center">
+                    <%= f.fields_for :skills do |s| %>
+                        <%= render 'skill_fields', f: s %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+              <%= hidden_field_tag(:stand_out, 'stand_out') %>
+              <%= f.submit "Save", class: 'btn btn-primary btn-lg' %>
+
+          <% end %>
+        </div>
+        <div class="text-center">
+          <% if @skills_count < 1 %>
+              <%= link_to_unless @skills_count < 1, "<div class='btn btn-search-colleges-transparent'>Step Three</div>".html_safe, stand_out_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-primary", disabled: true %>
+          <% else %>
+              <%= link_to "Challenge Step 3", challenge_step_three_athlete_profile_path(@athlete_profile), method: :get, class: "btn btn-search-colleges", id: 'challenge-step-three' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

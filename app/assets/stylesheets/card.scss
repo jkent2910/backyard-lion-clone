@@ -1,0 +1,148 @@
+
+.card-bg{
+  background: image-url("card-bg2.png");
+  list-style: outside none none;
+  position: relative;
+  height: 359px;
+  width: 222px;
+}
+
+.card-container {
+
+}
+
+.year{
+  float: left;
+  position: relative;
+  font-family: arial;
+  font-size: 15px;
+  font-weight: 800;
+  margin: 33px 19px 6px;
+
+  background: white; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(rgba(255,255,255,1) ,rgba(184,184,184,1) ,rgba(255,255,255,1) ); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(rgba(255,255,255,1) ,rgba(184,184,184,1) ,rgba(255,255,255,1) ); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(rgba(255,255,255,1) ,rgba(184,184,184,1) ,rgba(255,255,255,1) ); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(rgba(255,255,255,1) ,rgba(184,184,184,1) ,rgba(255,255,255,1) ); /* Standard syntax */
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+}
+.stars {
+  float: right;
+  margin: 37px 20px 10px;
+  position: relative;
+}
+.stars .glyphicon-star{
+  color:#6A767C;
+}
+.trade-mark-card {
+  font-size: 6px;
+  vertical-align: bottom;
+  margin-left: 31px;
+  margin-top: -8px;
+}
+.stars .glyphicon-star.rated{
+  color: #F2BB08;
+}
+.player{
+  position: relative;
+}
+.player img{
+  position: relative;
+  border: 3px solid rgb(36, 31, 98);
+  border-radius: 50%;
+  box-shadow: 0 40px 40px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  height: 135px;
+  width: 135px;
+}
+.ply-contnr>div{
+  display: table;
+  margin: 0 auto;
+}
+
+.athlete-name {
+  color: #241f62;
+}
+
+.ply-name{
+  position: relative;
+  bottom: 0px;
+  display: table;
+  margin: 0 auto;
+  margin-top: -24px;
+  background: #afbabf;
+  padding: 4px 33px;
+  line-height: 13px;
+  border-radius: 4px;
+  font-family: 'Roboto Slab', serif;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+.club{
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 19px;
+    font-family: sans-serif;
+    color: rgba(82, 85, 89, 0.74);
+}
+
+.backyard-lion-text{
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 21px;
+  font-family: 'Roboto Slab', serif;
+  color: rgba(89, 95, 98, 0.55);
+  text-align: center;
+  filter: drop-shadow(1px 1px 1px rgba(255,255,255,0.6));
+  -webkit-mask-image: -webkit-linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,.6) 50%, rgba(0,0,0,1));
+  -webkit-mask-image: -linear-gradient(top, rgba(0,0,0,1), rgba(0,0,0,.6) 50%, rgba(0,0,0,1));
+}
+
+.ply-detail{
+  position: relative;
+
+}
+.ply-detail p {
+  font-size: 9px;
+  font-family: sans-serif;
+  text-align: center;
+  line-height: 14px;
+  margin: 0px 0px 2px;
+  padding: 1px 20px;
+  color: #241f62;
+  font-weight: 800;
+  background: white; /* For browsers that do not support gradients */
+  /* For Safari 5.1 to 6.0 */
+  background: -webkit-linear-gradient(left,rgba(255,0,0,0),rgba(255,255,255,1),rgba(255,0,0,0));
+  /* For Opera 11.1 to 12.0 */
+  background: -o-linear-gradient(left,rgba(255,0,0,0),rgba(255,255,255,1),rgba(255,0,0,0));
+  /* For Fx 3.6 to 15 */
+  background: -moz-linear-gradient(left,rgba(255,0,0,0),rgba(255,255,255,1),rgba(255,0,0,0));
+  /* Standard syntax */
+  background: linear-gradient(to right,rgba(255,0,0,0),rgba(255,255,255,1),rgba(255,0,0,0));
+}
+
+.ply-detail-twitter p {
+  font-size: 9px;
+  font-family: sans-serif;
+  text-align: center;
+  line-height: 14px;
+  margin: 0px 0px 2px;
+  padding: 1px 20px;
+  color: #241f62;
+  font-weight: 800;
+}
+
+
+.logo-sec img{
+  position: relative;
+  width: 17%;
+  filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.6));
+}
+
+.darker {
+  color: #585858;
+  font-weight: bold;
+}
